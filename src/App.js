@@ -3,7 +3,6 @@ import LoginPage from './Components/LoginPage';
 import ThankYou from './Components/ThankYou';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Register from './Components/Register';
-import FirstPage from './Components/FirstPage';
 import About from './Components/About';
 import Contact from './Components/Contact';
 import Update from './Components/Update';

@@ -251,12 +251,14 @@ class Register extends Component {
             coworkers_required,
             total_ven, working_at
         } = this.state
+
+        console.log(radio, acc_type);
            
         return ( 
         <div>          
             <div>
                 <div class="header">
-                    <a class="logo">
+                    <a class="logo" href="/">
                         <img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/>
                     </a>
                     <div class='project_name'><b>Helping Hearts</b></div>
@@ -525,7 +527,7 @@ class Register extends Component {
                 <input type='submit' className='registerButton btn form-control mb-3' value="Register" />
                 <p>Already have an Account? &nbsp;
                     <Link to='/login'>
-                        <a>Log in</a>
+                        <span>Log in</span>
                     </Link>
                 </p>
                </form>

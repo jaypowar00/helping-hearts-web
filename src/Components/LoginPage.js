@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './CSS/MyCSS.css'
-import {Link} from 'react-router-dom';
 import axios from 'axios'
 import mylogo from './CSS/HHLogo.jpg'
 
@@ -87,7 +86,7 @@ class LoginPage extends Component {
 
             <div>
                 <div class="header">
-                    <a class="logo">
+                    <a class="logo" href="/">
                     <img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/>
                     </a>
                     <div class='project_name'><b>Helping Hearts</b></div>

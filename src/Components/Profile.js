@@ -65,7 +65,7 @@ export class Profile extends Component {
             
                 <div>
                     <div className="header mb-3">
-                        <a className="logo"><img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/></a>
+                        <a className="logo" href="/"><img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/></a>
                         <div className='project_name'><b>Helping Hearts</b></div>
                         <div className="header-right">
                             <a className="active" href="/">Home</a>               

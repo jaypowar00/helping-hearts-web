@@ -8,7 +8,7 @@ class ThankYou extends Component {
         <div>
             <div>
                 <div class="header">
-                    <a class="logo"><img src={mylogo} alt="" height={50} width={50} /></a>
+                    <a class="logo" href="/"><img src={mylogo} alt="" height={50} width={50} /></a>
                     <div class='project_name'><b>Helping Hearts</b></div>
                     <div class="header-right">
                         <a class="active" href="/">Home</a>               
