@@ -1,0 +1,237 @@
+.header {
+  overflow: hidden;
+  background-color: rgb(123, 113, 192);
+  opacity: 0.9;
+  padding: 18px 10px;
+}
+
+/* Style the header links */
+.header a {
+  float: left;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+.project_name{
+  color:white;
+  float: left;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 35px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* Change the background color on mouse-over */
+.header a:hover {
+  background-color: lightskyblue;
+  color: black;
+}
+
+/* Style the active/current link*/
+.header a.active {
+  background-color: lightskyblue;
+  color: black;
+}
+
+/* Float the link section to the right */
+.header-right {
+  float: right;
+}
+/*--------------------------------------------------------------*/
+
+body{
+  background-color:lightskyblue;
+}
+
+h1{
+  color: crimson;
+}
+
+a {
+  color: darkslateblue;
+}
+
+p{
+  color: firebrick;
+  margin: 5px 0px;
+}
+
+
+.container{
+  padding: 5px;
+  text-decoration: none;
+  border: none;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: rgb(84, 176, 233);
+  transition: 0.3s;
+  padding: 2px 16px;
+  width: 60%;
+  border-radius: 10px;
+  display: inline-block;
+  background-color: rgb(165, 214, 245);
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
+input[type='text'], input[type='password'],input[type='number'],input[type='email'],input[type='checkboxa']{
+  width: 40%;
+  padding: 5px;
+  margin: 10px 0px 10px 0px;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+#grad {
+  background-image: linear-gradient(to bottom right, lightskyblue, darkslateblue);
+}
+
+input[type='text']:focus, input[type='password']:focus{
+  
+  /*background-color: rgb(229, 242, 247);*/
+  outline: none;
+}
+
+.select_class{
+  width: 20%;
+  padding: 5px;
+  margin: 10px 0px 10px 0px;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+br{
+  border: 1px #f1f1f1;
+}
+
+.submitButton{
+  background-color: darkslateblue ;
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  width: 10%
+}
+
+.submitButton:hover{
+  opacity: 100%;
+}
+
+.registerButton{
+  background-color: darkslateblue ;
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  width: 15%
+}
+
+.registerButton:hover{
+  opacity: 100%;
+}
+
+
+/*body{
+    background-color: steelblue;
+  }    
+  h1{
+    font-size: 38px;
+    color: firebrick;
+  }*/
+  
+ /*input[type=text] {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px;
+    border-radius: 15px;
+    background-color: rgb(255, 249, 249);
+    color: rgb(10, 10, 10);
+    font-family: Arial, Helvetica, sans-serif;
+  }*/
+  
+  /*input[type=password] {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px;
+    border-radius: 15px;
+    background-color: rgb(255, 249, 249);
+    color: rgb(10, 10, 10);
+    font-family: Arial, Helvetica, sans-serif;
+  }*/
+  
+  /*input[type=submit] {
+    background-color: #ddd;
+    border: 1px;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    /* cursor: pointer; */
+    /*border-radius: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 22px;
+  }*/
+  
+  /*select {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(10, 10, 10);
+    font-family: Arial, Helvetica, sans-serif;
+  }*/
+  
+  
+  /*.container{
+    background-color: antiquewhite;
+    border-style: hidden;
+    border-radius: 15px;
+    padding:18px;
+    text-align: center;
+    box-shadow: 0 8px 6px -6px black;
+    
+   
+    
+  }*/
+  /*@media screen and (max-width:900px){
+  
+      .main-contianer{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: space-evenly; 
+        
+      }
+    
+    }*/
