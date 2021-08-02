@@ -9,11 +9,12 @@ import Update from './Components/Update';
 import Profile from './Components/Profile';
 import ChangePassword from './Components/ChangePassword';
 import Home from './Components/Home';
+import React from 'react';
 
 function App() {
   return (
     <div className="App">
-      <>
+      <React.Fragment>
         <Switch>
           <Route path='/' exact component={Home}/>
           <Route path='/register'   component={Register}/>
@@ -25,7 +26,7 @@ function App() {
           <Route path='/profile'  component={Profile}/>
           <Route path='/changepassword'  component={ChangePassword}/>
         </Switch>
-      </> 
+      </React.Fragment> 
     </div>
   );
 }
