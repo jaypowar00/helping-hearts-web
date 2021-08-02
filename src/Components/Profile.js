@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import mylogo from './CSS/HHLogo.jpg'
+import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios'
 
 export class Profile extends Component {

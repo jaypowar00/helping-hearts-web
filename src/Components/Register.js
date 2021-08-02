@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import './CSS/MyCSS.css'
+import '../Styles/mycss.css'
 import {Link} from 'react-router-dom';
-import mylogo from './CSS/HHLogo.jpg'
+import mylogo from '../Styles/helpinghearts_logo.jpg'
 
 class Register extends Component {
 

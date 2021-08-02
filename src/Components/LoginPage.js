@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import './CSS/MyCSS.css'
+import '../Styles/mycss.css'
 import axios from 'axios'
-import mylogo from './CSS/HHLogo.jpg'
+import mylogo from '../Styles/helpinghearts_logo.jpg'
 
 
 class LoginPage extends Component {

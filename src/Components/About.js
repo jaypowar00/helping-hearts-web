@@ -1,5 +1,5 @@
 import React from 'react'
-import mylogo from './CSS/HHLogo.jpg'
+import mylogo from '../Styles/helpinghearts_logo.jpg'
 
 function About() {
     return (

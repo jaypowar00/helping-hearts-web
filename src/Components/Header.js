@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import mylogo from './CSS/HHLogo.jpg'
+import mylogo from '../Styles/helpinghearts_logo.jpg'
 import {Link} from 'react-router-dom';
 import About from './About';
 import Contact from './FirstPage';
