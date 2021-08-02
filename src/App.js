@@ -13,7 +13,7 @@ import Home from './Components/Home';
 function App() {
   return (
     <div className="App">
-      <Router>
+      <>
         <Switch>
           <Route path='/' exact component={Home}/>
           <Route path='/register'   component={Register}/>
@@ -25,7 +25,7 @@ function App() {
           <Route path='/profile'  component={Profile}/>
           <Route path='/changepassword'  component={ChangePassword}/>
         </Switch>
-      </Router> 
+      </> 
     </div>
   );
 }
