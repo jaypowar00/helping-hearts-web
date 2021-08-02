@@ -12,34 +12,49 @@ export class Profile extends Component {
              address: "",
              phone : "",
              email : "",
-             username : ""
+             username : "",
+             age: "",
+             gender: ""
         }
 
     }
 
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     componentDidMount(){
-   
-        console.log(document.cookie)
+        var access_token = this.getCookie('access_token');
+        if(access_token){
+            axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
+                headers : {
+                    'Authorization' : `token `+access_token
+                }
+            })
+            .then(response=>{
+                console.log(response)
+                if(response.data.status){
+                    this.setState({
+                        name: response.data.user.name,
+                        address: response.data.user.address,
+                        phone: response.data.user.phone,
+                        email: response.data.user.email,
+                        username: response.data.user.username,
+                        age: response.data.user.detail.age,
+                        gender: response.data.user.detail.gender,
+                    })
+                }
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+        }else{
+            alert('Not logged in!\nPlease log in again!');
+            window.location.href='/login';
+        }
 
-        axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
-            headers : {
-                'Authorization' : `token${access_token}`
-            }
-        })
-        .then(response=>{
-            console.log(response)
-        })
-        .catch(error=>{
-            console.log(error)
-        })
-
-        this.setState({
-            name: "",
-            address: "",
-            phone : "",
-            email : "",
-            username : ""
-        })
         
     }
 
@@ -49,40 +64,31 @@ export class Profile extends Component {
             <div>
             
                 <div>
-                    <div class="header">
-                        <a class="logo"><img src={mylogo} alt="" height={50} width={50} /></a>
-                        <div class='project_name'><b>Helping Hearts</b></div>
-                            <div class="header-right">
-                                <a class="active" href="/">Home</a>               
-                                <a href="/contact">Contact</a>
-                                <a href="/about">About</a>                
-                            </div>
+                    <div className="header mb-3">
+                        <a className="logo"><img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/></a>
+                        <div className='project_name'><b>Helping Hearts</b></div>
+                        <div className="header-right">
+                            <a className="active" href="/">Home</a>               
+                            <a href="/contact">Contact</a>
+                            <a href="/about">About</a>                
                         </div>
-                    </div>  
+                    </div>
+                </div>  
                 <div>
-                    <h1>Profile</h1>
-                    <div>
-                        Name : {this.name}
+                        {
+                            (this.state.username)?
+                            <h1>Welcome back {this.state.username}!</h1>:<h1>Loading...</h1>
+                        }
+                    <div className="container card profile-div p-5 m-2" style={{textAlign: 'left'}}>
+                        <h5>Name : &nbsp; </h5> <span> {this.state.name} </span> <br/>
+                        <h5>Email : &nbsp; </h5> <span> {this.state.email} </span> <br/>
+                        <h5>Age : &nbsp; </h5> <span> {this.state.age} </span> <br/>
+                        <h5>Gender : &nbsp; </h5> <span> {this.state.gender} </span> <br/>
+                        <h5>Phone : &nbsp; </h5> <span> {this.state.phone} </span> <br/>
+                        <h5>Address : &nbsp; </h5> <span> {this.state.address} </span> <br/>
+                        <input type="button" className="btn btn-success mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/update'}} value="Edit" />
+                        <input type="button" className="btn btn-primary mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/changepassword'}} value="Change Password" />
                     </div>
-                    <div>
-                        Address : {this.address}
-                    </div>
-                    <div>
-                        Phone Number : {this.phone}
-                    </div>
-                    <div>
-                        Email : {this.email}
-                    </div>
-                    <div>
-                        Username : {this.username}
-                    </div>
-                        <p>Want to update your profile?
-                        <a href="/update">Update Profile</a>
-                        </p>
-
-                        <p>Want to change your password?
-                        <a href="/changepassword">Change Password</a>
-                        </p>
                 </div>
                 
             </div>

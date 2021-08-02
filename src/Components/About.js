@@ -4,13 +4,14 @@ import mylogo from './CSS/HHLogo.jpg'
 function About() {
     return (
         <div>
-                <div class="header">
-                    <a class="logo"><img src={mylogo} alt="" height={50} width={50} /></a>
-                    <div class='project_name'><b>Helping Hearts</b></div>
-                    <div class="header-right">
-                        <a class="active" href="/">Home</a>               
+                <div className="header">
+                    <a className="logo"><img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/></a>
+                    <div className='project_name'><b>Helping Hearts</b></div>
+                    <div className="header-right">
+                        <a href="/">Home</a>
+                        <a href="/login">Login</a>
                         <a href="/contact">Contact</a>
-                        <a href="/about">About</a>                
+                        <a className="active" href="/about">About</a>
                     </div>
                 </div>
                 <div>

@@ -53,7 +53,7 @@
 /*--------------------------------------------------------------*/
 
 body{
-  background-color:lightskyblue;
+  background-color:rgb(226, 244, 255);
 }
 
 h1{
@@ -93,7 +93,7 @@ p{
 
 
 input[type='text'], input[type='password'],input[type='number'],input[type='email'],input[type='checkboxa']{
-  width: 40%;
+  width: 20vw;
   padding: 5px;
   margin: 10px 0px 10px 0px;
   display: inline-block;
@@ -105,7 +105,7 @@ input[type='text'], input[type='password'],input[type='number'],input[type='emai
   background-image: linear-gradient(to bottom right, lightskyblue, darkslateblue);
 }
 
-input[type='text']:focus, input[type='password']:focus{
+input[type='text']:focus, input[type='button']:focus, input[type='password']:focus{
   
   /*background-color: rgb(229, 242, 247);*/
   outline: none;
@@ -235,3 +235,10 @@ br{
       }
     
     }*/
+.profile-div h5{
+  display: inline-block;
+}
+
+.profile-div span {
+  font-size: 18px;
+}

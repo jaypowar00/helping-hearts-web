@@ -256,10 +256,13 @@ class Register extends Component {
         <div>          
             <div>
                 <div class="header">
-                    <a class="logo"><img src={mylogo} alt="" height={50} width={50} /></a>
+                    <a class="logo">
+                        <img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/>
+                    </a>
                     <div class='project_name'><b>Helping Hearts</b></div>
                     <div class="header-right">
-                        <a class="active" href="/">Home</a>               
+                        <a href="/">Home</a>               
+                        <a class="active" href="/register">Register</a>               
                         <a href="/contact">Contact</a>
                         <a href="/about">About</a> 
                                       
@@ -267,142 +270,139 @@ class Register extends Component {
                 </div>
             </div>  
 
-            <div className="container">
-                <div className="card">
-               <form onSubmit={this.handleSubmit}>
-               <div >
-                   <h1>Register</h1>
-                   <p>Please fill in this form to create an account.</p>
-                </div>
-                <div>
-                   <label><b>Name </b></label>
-                   <input type='text' placeholder='Enter Name' name="name" value={name} onChange={this.onchangeHandler} required/><br/>
-                </div>
+            <div className="container my-4" style={{width: '70vw'}}>
+                <div className="card py-4 px-0" style={{textAlign: 'center'}}>
+               <form style={{minWidth: '500px'}} onSubmit={this.handleSubmit}>
+                <div className="container px-5" style={{textAlign: 'start', width: 'fit-content'}}>
+                    <div className="form-group my-3">
+                        <label htmlFor="name_reg"><b>Name : </b></label><br/>
+                        <input className="form-control my-0" id="name_reg" type='text' placeholder='Enter Name' name="name" value={name} onChange={this.onchangeHandler} required/><br/>
+                    </div>
 
-                <div >
-                   <label><b>Phone Number </b></label>
-                   <input type='text' placeholder='Enter Phone No' name="phone" value={phone} onChange={this.onchangeHandler} required/><br/>
-                </div>
+                    <div className="form-group my-3">
+                    <label htmlFor="phone_reg"><b>Phone Number : </b></label><br/>
+                    <input className="form-control my-0" id="phone_reg" type='text' placeholder='Enter Phone No' name="phone" value={phone} onChange={this.onchangeHandler} required /><br/>
+                    </div>
 
-                <div >
-                   <label><b>Address </b></label>
-                   <input type='text' placeholder='Enter Address' name="address" value={address} onChange={this.onchangeHandler} required/><br/>
-                </div>
+                    <div className="form-group my-3">
+                    <label htmlFor="address_reg"><b>Address : </b></label><br/>
+                    <input className="form-control my-0" id="address_reg" type='text' placeholder='Enter Address' name="address" value={address} onChange={this.onchangeHandler} required /><br/>
+                    </div>
 
-                <div >
-                   <label><b>Username </b></label>
-                   <input type='text' placeholder='Enter username' name="username" value={username} onChange={this.onchangeHandler} required/><br/>
-                </div>
+                    <div className="form-group my-3">
+                    <label htmlFor="username_reg"><b>Username : </b></label><br/>
+                    <input className="form-control my-0" id="username_reg" type='text' placeholder='Enter username' name="username" value={username} onChange={this.onchangeHandler} required /><br/>
+                    </div>
 
-                <div >
-                   <label><b>Email </b></label>
-                   <input type='email' placeholder='Enter email' name="email" value={email} onChange={this.onchangeHandler} required/><br/>
-                </div>
+                    <div className="form-group my-3">
+                    <label htmlFor="email_reg"><b>Email : </b></label><br/>
+                    <input className="form-control my-0" id="email_reg" type='email' placeholder='Enter email' name="email" value={email} onChange={this.onchangeHandler} required /><br/>
+                    </div>
 
-                <div >
-                   <label><b>Password </b></label>
-                   <input type='password' placeholder='Enter password' name="password" value={password} onChange={this.onchangeHandler} required/><br/>
-                </div>
+                    <div className="form-group mt-3 mb-1">
+                    <label htmlFor="password_reg"><b>Password : </b></label><br/>
+                    <input className="form-control my-0" id="password_reg" type='password' placeholder='Enter password' name="password" value={password} onChange={this.onchangeHandler} required /><br/>
+                    </div>
+
                 <br/>
-
-                <div >
-                   <label><b>Select Account Type </b></label>
-                   <select  id="selectaccounttype" name="account-type"  ref={this.accountRef} onChange={this.onAccountChange} required>
-                        <option hidden disabled selected value="none">--</option>
-                        <option value={1} >Patient</option>
-                        <option value={2} >Hospital</option>
-                        <option value={3} >Ventilator Provider</option>
-                        <option value={4} >Co-Worker</option>
-                        <option value={5} >Doctor</option>
-                        <option value={6} >Nurse</option>
-                    </select>
-                </div>
+                    <div className="form-group">
+                        <label htmlFor="selectaccounttype"><b>Select Account Type: &nbsp; </b></label><br/>
+                        <select   id="selectaccounttype" name="account-type"  ref={this.accountRef} onChange={this.onAccountChange} required>
+                            <option hidden disabled selected value="none">--</option>
+                            <option value={1} >Patient</option>
+                            <option value={2} >Hospital</option>
+                            <option value={3} >Ventilator Provider</option>
+                            <option value={4} >Co-Worker</option>
+                            <option value={5} >Doctor</option>
+                            <option value={6} >Nurse</option>
+                        </select>
+                    </div>
                 <br/>
 
                 {
                     (this.state.radio === "1")?
                     <>
-                    <div className="container">
-                        <label htmlFor="age-input" ><b>Age </b></label>
-                        <input type="text"  id="age-input" name="age" placeholder="Enter Age" value={age} onChange={this.onchangeHandler}required/>
+                    <div className="form-group">
+                        <label htmlFor="age-input" ><b>Age : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" type="text"  id="age-input" name="age" placeholder="Enter Age" value={age} onChange={this.onchangeHandler}required/>
                     </div>
 
-                    <div className="container">
-                        <label htmlFor="genderselect" ><b>Gender </b></label>
-                        <input type="radio" value="male" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male">Male</label>
-                        <input type="radio" value="female" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female">Female</label>
-                        <input type="radio" value="other"  checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other">Other</label>
+                    <div className="form-group mb-2">
+                        <label htmlFor="genderselect" ><b>Gender : &nbsp; </b></label><br/>
+                        <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="male" name="gender" id="male_r" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male_r">Male</label>
+                        <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="female" name="gender" id="female_r" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female_r">Female</label>
+                        <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="other" name="gender"  id="other_r" checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other_r">Other</label>
                     </div>
 
-                    <div className="container">
-                        <label><b>Diseases </b></label>
-                        <input type = 'text' placeholder='Enter Diseases' name="diseases" value={diseases} onChange={this.onchangeHandler}required/><br/>
+                    <div className="form-group">
+                        <label htmlFor="diseases_reg"><b>Diseases : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" id="diseases_reg" type='text' placeholder='Enter Diseases' name="diseases" value={diseases} onChange={this.onchangeHandler}required/><br/>
                     </div>
                     
                     </>
                     :
                     (this.state.radio === "2")?
                     <>
-                    <div className="container">
-                        <input  type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_patients} id="accepting_patients" 
+                    <div className="form-group form-check">
+                        <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_patients} id="accepting_patients" 
                         onChange={this.handle_accepting_patients} />
-                        <label ><b>Accepting Patients </b></label>
+                        <label htmlFor="accepting_patients" className="form-check-label"><b>Accepting Patients</b></label>
                     </div>
 
-                    <div className="container">
-                        <input type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_coworkers} id="accepting_coworkers"
+                    <div className="form-group form-check">
+                        <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_coworkers} id="accepting_coworkers"
                         onChange={this.handle_accepting_coworkers} />
-                        <label><b>Accepting Co-Workers </b></label>
+                        <label htmlFor="accepting_coworkers" className="form-check-label"><b>Accepting Co-Workers</b></label>
                     </div>
 
-                    <div className="container">
-                        <input type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_doctors} id="accepting_doctors"
+                    <div className="form-group form-check">
+                        <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_doctors} id="accepting_doctors"
                         onChange={this.handle_accepting_doctors} />
-                        <label  ><b>Accepting Doctors </b></label>
+                        <label htmlFor="accepting_doctors" className="form-check-label"><b>Accepting Doctors</b></label>
                     </div>
 
-                    <div className="container">
-                        <input type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_nurses} id="accepting_nurses"
+                    <div className="form-group form-check">
+                        <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.accepting_nurses} id="accepting_nurses"
                         onChange={this.handle_accepting_nurses}  />
-                        <label ><b>Accepting Nurses </b></label>
+                        <label htmlFor="accepting_nurses" className="form-check-label"><b>Accepting Nurses</b></label>
                     </div>
 
-                    <div className="container">
-                        <input type="checkbox" name="myCheckbox" defaultChecked={this.state.need_ventilators}  id="need-ventilators"
+                    <div className="form-group form-check">
+                        <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.need_ventilators}  id="need-ventilators"
                         onChange={this.handle_need_ventilators}  />
-                        <label  ><b>Need Ventilators </b></label>
+                        <label htmlFor="need-ventilators" className="form-check-label"><b>Need Ventilators</b></label>
                     </div>
 
-                    <div className="container">
-                        <label htmlFor="c-count-input" ><b>Covid Patients Count </b></label>
-                        <input type="number" id="c-count-input" name="c_count" min={0} placeholder="Enter Covid Patients Count"
+                    <div className="form-group">
+                        <label htmlFor="c-count-input" ><b>Covid Patients Count : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" type="number" id="c-count-input" name="c_count" min={0} placeholder="Enter Covid Patients Count"
                         value={c_count} onChange={this.onchangeHandler}required />
                     </div>
 
-                    <div className="container">
-                        <label htmlFor="beds-input" ><b>Available Beds Count </b></label>
-                        <input type="number" id="beds-input" name="beds" min={0} placeholder="Enter Beds Count" 
+                    <div className="form-group">
+                        <label htmlFor="beds-input" ><b>Available Beds Count : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" type="number" id="beds-input" name="beds" min={0} placeholder="Enter Beds Count" 
                         value={beds} onChange={this.onchangeHandler}required/>
                     </div>
 
-                    <div className="container">
-                        <label htmlFor="ventilators-input" ><b>Available Ventilators Count </b></label>
-                        <input type="number"  id="ventilators-input" name="ventilators" min={0} placeholder="Enter Ventilators Count"
+                    <div className="form-group">
+                        <label htmlFor="ventilators-input" ><b>Available Ventilators Count : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" type="number"  id="ventilators-input" name="ventilators" min={0} placeholder="Enter Ventilators Count"
                         value={ventilators} onChange={this.onchangeHandler}required />
                     </div>
 
-                    <div className="container">
-                        <label htmlFor="oxygen-input" ><b>Available Oxygen Cylinders Count </b></label>
-                        <input type="number" id="oxygens-input" name="oxygens" min={0} placeholder="Enter Oxygen Cylinder Count" 
+                    <div className="form-group">
+                        <label htmlFor="oxygen-input" ><b>Available Oxygen Cylinders Count : &nbsp; </b></label><br/>
+                        <input className="form-control mb-3" type="number" id="oxygens-input" name="oxygens" min={0} placeholder="Enter Oxygen Cylinder Count" 
                         value={oxygens} onChange={this.onchangeHandler}required/>
                     </div>
 
                     {
                         (this.state.need_ventilators)?
                         <>
-                        <div className="container">
-                            <label htmlFor="req-ventilators-input" ><b>Required Ventilators </b></label>
-                            <input type="number"  id="req-ventilators-input" name="ventilators_required" min={1} placeholder="Enter Required Ventilators" 
+                        <div className="form-group">
+                            <label htmlFor="req-ventilators-input" ><b>Required Ventilators : &nbsp; </b></label><br/>
+                            <input className="form-control" type="number"  id="req-ventilators-input" name="ventilators_required" min={1} placeholder="Enter Required Ventilators" 
                             value={ventilators_required} onChange={this.onchangeHandler}required/>
                         </div>
                         </>
@@ -413,9 +413,9 @@ class Register extends Component {
                     {
                         (this.state.accepting_doctors)?
                         <>
-                        <div className="container">
-                            <label htmlFor="req-doctors-input" ><b>Required Doctors </b></label>
-                            <input type="number"  id="req-doctors-input" name="doctors_required" min={1} placeholder="Enter Required Doctors" 
+                        <div className="form-group">
+                            <label htmlFor="req-doctors-input" ><b>Required Doctors : &nbsp; </b></label><br/>
+                            <input className="form-control" type="number"  id="req-doctors-input" name="doctors_required" min={1} placeholder="Enter Required Doctors" 
                             value={doctors_required} onChange={this.onchangeHandler}required/>
                         </div>
                         </>
@@ -426,9 +426,9 @@ class Register extends Component {
                     {
                         (this.state.accepting_nurses)?
                         <>
-                        <div className="container">
-                            <label htmlFor="req-nurses-input" ><b>Required Nurses </b></label>
-                            <input type="number" id="req-nurses-input" name="nurses_required" min={1} placeholder="Enter Required Nurses"
+                        <div className="form-group">
+                            <label htmlFor="req-nurses-input" ><b>Required Nurses : &nbsp; </b></label><br/>
+                            <input className="form-control" type="number" id="req-nurses-input" name="nurses_required" min={1} placeholder="Enter Required Nurses"
                             value={nurses_required} onChange={this.onchangeHandler}required/>
                         </div>
                         </>
@@ -439,9 +439,9 @@ class Register extends Component {
                     {
                         (this.state.accepting_coworkers)?
                         <>
-                        <div className="container">
-                        <label htmlFor="req-co-workers-input" ><b>Required Co-Workers </b></label>
-                        <input type="number" id="req-co-workers-input" name="coworkers_required" min={1} placeholder="Enter Required Co-Workers"
+                        <div className="form-group">
+                        <label htmlFor="req-co-workers-input" ><b>Required Co-Workers : &nbsp; </b></label><br/>
+                        <input className="form-control" type="number" id="req-co-workers-input" name="coworkers_required" min={1} placeholder="Enter Required Co-Workers"
                         value={coworkers_required} onChange={this.onchangeHandler}required />
                         </div>
                         </>
@@ -454,29 +454,29 @@ class Register extends Component {
                     :
                         (this.state.radio === "3")?
                         <>
-                        <div className="container">
-                            <label htmlFor="age-input" ><b>Age </b></label>
-                            <input type="text"  id="age-input" name="age" placeholder="Enter Age" value={age} onChange={this.onchangeHandler}required/>
+                        <div className="form-group mb-2">
+                            <label htmlFor="age-input" ><b>Age : &nbsp; </b></label><br/>
+                            <input className="form-control" type="text"  id="age-input" name="age" placeholder="Enter Age" value={age} onChange={this.onchangeHandler}required/>
                         </div>
 
-                        <div className="container">
-                            <label htmlFor="genderselect" ><b>Gender </b></label>
-                            <input type="radio" value="male" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male">Male</label>
-                            <input type="radio" value="female" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female">Female</label>
-                            <input type="radio" value="other"  checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other">Other</label>
+                        <div className="form-group mb-3">
+                            <label htmlFor="genderselect" ><b>Gender : &nbsp; </b></label><br/>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="male" id="male_r" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male_r">Male</label>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="female" id="female_r" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female_r">Female</label>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="other" id="other_r" checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other_r">Other</label>
                         </div>
                         
-                        <div className="container">                           
-                            <input type="checkbox" name="myCheckbox" defaultChecked={this.state.ven_available} id="ven_available"
-                            onChange={this.handle_ven_available}  />
-                            <label><b>Ventilators Available? </b></label>                            
+                        <div className="form-group form-check mb-3">                           
+                            <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.ven_available} id="ven_available"
+                            onChange={this.handle_ven_available}/>
+                            <label className="form-check-label" htmlFor="ven_available"><b>Ventilators Available? </b></label>                            
                         </div>
 
                         {
                             (this.state.ven_available)?
-                                <div className="container">
-                                    <label htmlFor="total_ven" ><b>Total Ventilators </b></label>
-                                    <input type="number" id="total_ven" name="total_ven" placeholder="Total Ventilators" value={total_ven} onChange={this.onchangeHandler}required/>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="total_ven" ><b>Total Ventilators : &nbsp; </b></label><br/>
+                                    <input className="form-control" type="number" id="total_ven" name="total_ven" placeholder="Total Ventilators" value={total_ven} onChange={this.onchangeHandler}required/>
                                 </div>
                             :
                             <></>
@@ -487,32 +487,32 @@ class Register extends Component {
                         
                         (this.state.radio === "4") || (this.state.radio === "5") || (this.state.radio === "6")?
                         <>
-                        <div className="container">
-                            <label htmlFor="age-input" ><b>Age </b></label>
+                        <div className="form-group mb-3">
+                            <label htmlFor="age-input" ><b>Age : &nbsp; </b></label><br/>
                             <input type="text"  id="age-input" name="age" placeholder="Enter Age" value={age} onChange={this.onchangeHandler}required/>
                         </div>
 
-                        <div className="container">
-                            <label htmlFor="genderselect" ><b>Gender  </b></label>
-                            <input type="radio" value="male" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male">Male</label>
-                            <input type="radio" value="female" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female">Female</label>
-                            <input type="radio" value="other"  checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other">Other</label>
+                        <div className="form-group mb-3">
+                            <label htmlFor="genderselect" ><b>Gender : &nbsp; </b></label><br/>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="male" id="male_r" checked={this.state.gender === "male"} onChange={this.genderHandler}/><label htmlFor="male_r">Male</label>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="female" id="female_r" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label htmlFor="female_r">Female</label>
+                            <input style={{marginLeft: '10px', marginRight: '3px'}} type="radio" value="other" id="other_r"  checked={this.state.gender === "other"} onChange={this.genderHandler}/><label htmlFor="other_r">Other</label>
                         </div>
                         
                         
-                        <div className="container">                           
-                            <input type="checkbox" name="myCheckbox" defaultChecked={this.state.available} id="available"
+                        <div className="form-group form-check mb-3">                           
+                            <input className="form-check-input" type="checkbox" name="myCheckbox" defaultChecked={this.state.available} id="available"
                             onChange={this.handle_available}  />
-                            <label><b>Available for work? </b></label>                            
+                            <label htmlFor="available" className="form-check-label"><b>Available for work? </b></label>                            
                         </div>
 
                         {
                             (this.state.available)?
                                 <></>
                                 :
-                                <div className="container">
-                                    <label htmlFor="working_at" ><b>Currently Working At </b></label>
-                                    <input type="number"  id="hospital_id" name="working_at" placeholder="Enter current working place" value={working_at} onChange={this.onchangeHandler}required/>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="working_at" ><b>Currently Working At: &nbsp; </b></label><br/>
+                                    <input className="form-control" type="number"  id="hospital_id" name="working_at" placeholder="Enter current working place" value={working_at} onChange={this.onchangeHandler}required/>
                                 </div>
                         }
                         
@@ -521,24 +521,18 @@ class Register extends Component {
                         :
                         <></>
             }
-               
-                   <button type='submit' className='registerButton'>Register</button>
-                   <p>Already have an account?
-                    <Link to='/loginpage'>
-                    <a>Log in</a>
-                   </Link>
-                    </p>
-
+                </div>
+                <input type='submit' className='registerButton btn form-control mb-3' value="Register" />
+                <p>Already have an Account? &nbsp;
+                    <Link to='/login'>
+                        <a>Log in</a>
+                    </Link>
+                </p>
                </form>
             </div>
             </div>
         </div>
         )
-        
-        
-
-        
-    
     }
 }
 
