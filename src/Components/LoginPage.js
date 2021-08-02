@@ -44,7 +44,7 @@ class LoginPage extends Component {
                 document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                alert(err);
+                console.log(err);
             });
         }
     }
@@ -86,15 +86,15 @@ class LoginPage extends Component {
 
             <div>
                 <div class="header">
-                    <a class="logo" href="/">
-                    <img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/>
+                    <a className="logo mx-2" style={{borderRadius: '50%'}}>
+                        <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
                     </a>
                     <div class='project_name'><b>Helping Hearts</b></div>
                     <div class="header-right">
-                        <a href="/">Home</a>               
-                        <a class="active" href="/login">Login</a>               
-                        <a href="/contact">Contact</a>
-                        <a href="/about">About</a>                                      
+                        <a className="mx-1" href="/">Home</a>               
+                        <a class="active mx-1" href="/login">Login</a>               
+                        <a className="mx-1" href="/contact">Contact</a>
+                        <a className="mx-1" href="/about">About</a>                                      
                     </div>
                 </div>
             </div>  

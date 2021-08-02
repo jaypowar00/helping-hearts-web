@@ -51,7 +51,7 @@ export class Profile extends Component {
                 console.log(error)
             })
         }else{
-            alert('Not logged in!\nPlease log in again!');
+            console.log('Not logged in!\nPlease log in again!');
             window.location.href='/login';
         }
 
@@ -65,7 +65,9 @@ export class Profile extends Component {
             
                 <div>
                     <div className="header mb-3">
-                        <a className="logo" href="/"><img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/></a>
+                        <a className="logo mx-2" style={{borderRadius: '50%'}}>
+                            <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
+                        </a>
                         <div className='project_name'><b>Helping Hearts</b></div>
                         <div className="header-right">
                             <a className="active" href="/">Home</a>               

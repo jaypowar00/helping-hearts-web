@@ -45,49 +45,49 @@ class Home extends PureComponent {
             .then(response=>{
                 console.log(response);
                 if(response.data.status){
-                    alert('successfully logged out!');
+                    console.log('successfully logged out!');
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }else{
-                    alert('something went wrong!');
+                    console.log('something went wrong!');
                 }
-                window.location.href='/';
             }).catch(e=>{
                 document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                alert('error!\n'+e);
                 console.log(e);
-                window.location.href = '/';
+                window.location.reload();
+            }).finally(() => {
+                window.location.reload();
             });
         }else{
-            alert('already logged out!');
-            window.location.href='/';
+            console.log('already logged out!');
+            window.location.reload();
         }
     }
 
     render() {
         return (
             <>
-                <div class="header">
-                    <a class="logo" href="/">
-                        <img src={mylogo} alt="" height={50} width={50} style={{marginTop: '-20px', marginBottom: '-10px'}}/>
+                <div className="header">
+                    <a className="logo mx-2" style={{borderRadius: '50%'}}>
+                        <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
                     </a>
-                    <div class='project_name'><b>Helping Hearts</b></div>
-                    <div class="header-right">
-                        <a className="active" href="/">Home</a>
+                    <div className='project_name'><b>Helping Hearts</b></div>
+                    <div className="header-right">
+                        <a className="active mx-1" href="/">Home</a>
                         {
                             (this.state.loggedin)?
-                            <a href='/profile'>Profile</a>
+                            <a className="mx-1" href='/profile'>Profile</a>
                             :
-                            <a href="/login">Login</a>
+                            <a className="mx-1" href="/login">Login</a>
                         }
-                        <a href="/contact">Contact</a>
-                        <a href="/about">About</a>
+                        <a className="mx-1" href="/contact">Contact</a>
+                        <a className="mx-1" href="/about">About</a>
                         {
                             (this.state.loggedin)?
-                            <a href='/' onClick={this.onLogoutClick}>Logout</a>:<></>
+                            <a className="mx-1" href='/' onClick={this.onLogoutClick}>Logout</a>:<></>
                         }
                     </div>
                 </div>
@@ -95,7 +95,7 @@ class Home extends PureComponent {
                     <div className="sidebar p-3">
                         <div className='mb-1'><b>Search:</b></div>
                         <input className='m-1' name='search'/>
-                        <button style={{borderRadius: '17%'}}><i class="fas fa-search"></i></button>
+                        <button style={{borderRadius: '17%'}}><i className="fas fa-search"></i></button>
                         <hr/>
                         <div className='mb-1'><b>Sort by:</b></div>
                         <label>
@@ -134,7 +134,7 @@ class Home extends PureComponent {
                         </label>
                         <br/>
                     </div>
-                    <div className = "mt-4" style={{float:'left'}}>
+                    <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
                         <Hospitals set_state_values={this.set_state_values} />
                     </div>

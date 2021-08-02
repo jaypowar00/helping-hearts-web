@@ -34,7 +34,7 @@ class Hospitals extends PureComponent {
                 }
             }).catch(err=>{
                 console.log(err);
-                alert(err);
+                // alert(err);
             });
         }
         axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/')
@@ -47,7 +47,7 @@ class Hospitals extends PureComponent {
                 });
                 this.props.set_state_values(response.data.total_pages, response.data.hospitals.length, loggedin);
             }else{
-                alert('error: '+response.data.message);
+                console.log('error: '+response.data.message);
                 this.setState({
                     loading: false
                 });
@@ -56,7 +56,7 @@ class Hospitals extends PureComponent {
             this.setState({
                 loading: false
             });
-            alert(err);
+            console.log(err);
         });
     }
 

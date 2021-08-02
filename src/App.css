@@ -36,3 +36,42 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 450px) {
+  .sidebar {
+    display: none;
+  }
+
+  .mycard {
+    float: none;
+    width: 90px;
+    min-width: 85vw;
+  }
+
+  .header .logo {
+    margin-left: 0px !important; 
+  }
+
+  .header .logo img {
+    height: 35px;
+    width: 35px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header .project_name {
+    font-size: 19px;
+    margin-left: -12px;
+  }
+
+  .header-right {
+    padding: 7px 0 7px 0;
+  }
+
+  .header-right a{
+    font-size: 15px !important;
+    margin-left: 1px !important;
+    margin-right: 1px !important;
+    padding: 5px 5px 5px 5px !important;
+  }
+}
