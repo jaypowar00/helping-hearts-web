@@ -7,7 +7,9 @@ export class Update extends Component {
             <div>
                 <div>
                     <div className="header">
-                        <a className="logo" href="/"><img src={mylogo} alt="" height={50} width={50} /></a>
+                        <a href="/" className="logo mx-2" style={{borderRadius: '50%'}}>
+                            <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
+                        </a>
                         <div className='project_name'><b>Helping Hearts</b></div>
                         <div className="header-right">
                             <a className="active" href="/">Home</a>               
