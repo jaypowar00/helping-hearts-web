@@ -53,6 +53,23 @@ class Home extends PureComponent {
     }
 
     onSearchHospital(sinput_id) {
+        if(sinput_id==='dropdown-search-input'){
+            var MenuBtn = document.getElementById("menuBtn");
+            MenuBtn.classList.toggle("active");
+            var panel = MenuBtn.nextElementSibling.nextElementSibling.nextElementSibling;
+            console.log(panel);
+            if(panel.style.maxHeight){
+                panel.style.maxHeight=null;
+                window.setTimeout(() => {
+                    panel.classList.toggle('panel-margin-top');
+                    panel.classList.toggle('panel-hide');
+                }, 200);
+            }else{
+                panel.classList.toggle('panel-hide');
+                panel.classList.toggle('panel-margin-top');
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+            }
+        }
         let input_tag = document.getElementById(sinput_id);
         this.setState({
             search: input_tag.value
@@ -203,7 +220,7 @@ class Home extends PureComponent {
                                         </ul>
                                         <form className="form-inline my-2 my-lg-0">
                                         <input id="dropdown-search-input" className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                                        <button onClick={()=>{this.onSearchHospital('dropdown-search-input');}} className="btn btn-success form-control my-2 my-sm-0" type="submit">Search</button>
+                                        <button onClick={()=>{this.onSearchHospital('dropdown-search-input');}} className="btn btn-success form-control my-2 my-sm-0" type="button">Search</button>
                                         </form>
                                     </div>
                                     {/*  */}
@@ -257,8 +274,8 @@ class Home extends PureComponent {
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
                         <Hospitals ref={this.hospitalRef} get_page={this.state.get_page} set_state_values={this.set_state_values} />
-                        <div className="container mx-5 pagination">
-                            <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
+                        <div className="container pagination">
+                            <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop', display: 'none'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
                             <small style={{marginTop: '17px'}}>
                             {   
                             (this.state.page_count!==0)?
@@ -326,7 +343,7 @@ class Home extends PureComponent {
                             :<></>
                             }
                             </small>
-                            <span onClick={() => {if(this.state.isNext){this.goToPage(this.state.current_page+1)}}} style={(this.state.isNext)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-forward my-3 mx-1 px-2 py-1"></i></span>
+                            <span onClick={() => {if(this.state.isNext){this.goToPage(this.state.current_page+1)}}} style={(this.state.isNext)?{cursor: 'pointer'}:{cursor: 'no-drop', display: 'none'}} ><i className="fas fa-step-forward my-3 mx-1 px-2 py-1"></i></span>
                         </div>
                     </div>
                 </section>
