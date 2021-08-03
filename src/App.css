@@ -37,7 +37,32 @@
   }
 }
 
-@media (max-width: 450px) {
+.panel {
+  display: none;
+  margin-top: -30px;
+  padding: 0 18px;
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.2s linear;
+}
+
+#menuBtn {
+  display: none;
+  font-size: 10px;
+  padding: 5px 10px;
+  margin-top: -4px !important;
+  margin-bottom: -4px !important;
+}
+.panel-margin-top {
+  margin-top: -10px;
+}
+
+@media (max-width: 700px) {
+
+  #menuBtn {
+    display: inline-block;
+  }
+
   .sidebar {
     display: none;
   }
@@ -50,28 +75,39 @@
 
   .header .logo {
     margin-left: 0px !important; 
+    margin-top: -15px !important; 
+    margin-bottom: -15px !important; 
   }
 
   .header .logo img {
-    height: 35px;
-    width: 35px;
-    margin: 0;
+    height: 30px;
+    width: 30px;
     padding: 0;
   }
 
   .header .project_name {
     font-size: 19px;
     margin-left: -12px;
+    margin-top: -15px;
+    margin-bottom: -15px;
   }
 
   .header-right {
-    padding: 7px 0 7px 0;
+    display: none;
   }
 
-  .header-right a{
-    font-size: 15px !important;
-    margin-left: 1px !important;
-    margin-right: 1px !important;
-    padding: 5px 5px 5px 5px !important;
+  .panel {
+    display: block;
+    padding-top: 4px;
+  }
+  
+  .panel-margin-top {
+    padding-top: 10px;
+  }
+
+  .panel a{
+    padding: 6px !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 }

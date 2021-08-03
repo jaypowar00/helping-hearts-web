@@ -16,6 +16,7 @@ class Home extends PureComponent {
         }
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
+        this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
     }
 
     getCookie(name) {
@@ -34,6 +35,22 @@ class Home extends PureComponent {
             total_hospitals: hcount,
             loggedin: loggedin
         });
+    }
+
+    onMenuBtnClick() {
+        var MenuBtn = document.getElementById("menuBtn");
+        MenuBtn.classList.toggle("active");
+        var panel = MenuBtn.nextElementSibling.nextElementSibling.nextElementSibling;
+        console.log(panel);
+        if(panel.style.maxHeight){
+            panel.style.maxHeight=null;
+            window.setTimeout(() => {
+                panel.classList.toggle('panel-margin-top');
+            }, 200);
+        }else{
+            panel.classList.toggle('panel-margin-top');
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
     }
 
     onLogoutClick(e) {
@@ -71,24 +88,66 @@ class Home extends PureComponent {
         return (
             <>
                 <div className="header">
-                    <a href="/" className="logo mx-2" style={{borderRadius: '50%'}}>
-                        <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
-                    </a>
-                    <div className='project_name'><b>Helping Hearts</b></div>
-                    <div className="header-right">
-                        <a className="active mx-1" href="/">Home</a>
-                        {
-                            (this.state.loggedin)?
-                            <a className="mx-1" href='/profile'>Profile</a>
-                            :
-                            <a className="mx-1" href="/login">Login</a>
-                        }
-                        <a className="mx-1" href="/contact">Contact</a>
-                        <a className="mx-1" href="/about">About</a>
-                        {
-                            (this.state.loggedin)?
-                            <a className="mx-1" href='/' onClick={this.onLogoutClick}>Logout</a>:<></>
-                        }
+                    <div>
+                        <a href="/" className="logo mx-2" style={{borderRadius: '50%'}}>
+                            <img src={mylogo} alt="" height={50} width={50} onClick={()=>{window.location.href='/'}} style={{borderRadius: '50%', marginTop: '-20px', marginBottom: '-15px', marginLeft: '-15px', marginRight: '-15px'}}/>
+                        </a>
+                        <div className='project_name'><b>Helping Hearts</b></div>
+                        <div className="header-right">
+                            <a className="active mx-1" href="/">Home</a>
+                            {
+                                (this.state.loggedin)?
+                                <a className="mx-1" href='/profile'>Profile</a>
+                                :
+                                <a className="mx-1" href="/login">Login</a>
+                            }
+                            <a className="mx-1" href="/contact">Contact</a>
+                            <a className="mx-1" href="/about">About</a>
+                            {
+                                (this.state.loggedin)?
+                                <a className="mx-1" href='/' onClick={this.onLogoutClick}>Logout</a>:<></>
+                            }
+                {/*  */}
+                {/*  */}
+                        </div>
+                        <div className="header-right-mobile">
+                            <button className="btn btn-success my-1" id="menuBtn" style={{float: 'right'}} onClick={this.onMenuBtnClick} ><i className="fas fa-bars"></i></button><br/><br/>
+                            <section className="panel">
+                                    {/*  */}
+                                    <div className="navbar-collapse">
+                                        <ul className="navbar-nav mr-auto">
+                                        <li className="nav-item active">
+                                            <a className="nav-link active" href="/">Home</a>
+                                        </li>
+                                        <li className="nav-item">
+                                        {
+                                            (this.state.loggedin)?
+                                            <a className="nav-link" href="/profile">Profile</a>
+                                            :
+                                            <a className="nav-link" href="/login">Login</a>
+                                        }
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/contact">Contact</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/about">About</a>
+                                        </li>
+                                        {
+                                            (this.state.loggedin)?
+                                            <li className="nav-item">
+                                                <a className="nav-link" href='/' onClick={this.onLogoutClick}>Logout</a>
+                                            </li>:<></>
+                                        }
+                                        </ul>
+                                        <form className="form-inline my-2 my-lg-0">
+                                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                                        <button className="btn btn-success form-control my-2 my-sm-0" type="submit">Search</button>
+                                        </form>
+                                    </div>
+                                    {/*  */}
+                            </section>
+                        </div>
                     </div>
                 </div>
                 <section style={{textAlign: 'left'}}>
