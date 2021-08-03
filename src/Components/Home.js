@@ -8,16 +8,24 @@ class Home extends PureComponent {
     constructor(props) {
         super(props);
         this.default_radio_ref = React.createRef();
-
+        let urlParams = new URLSearchParams(window.location.search);
         this.state = {
             page_count: 0,
+            current_page: 1,
+            isNext: false,
+            isPrev: false,
             total_hospitals: 0,
-            loggedin: false
+            loggedin: false,
+            get_page: (urlParams.has('pg'))?urlParams.get('pg'):1
         }
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
     }
+
+    range(start, end) {
+        return Array(end - start + 1).fill().map((_, idx) => start + idx)
+      }
 
     getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -29,11 +37,14 @@ class Home extends PureComponent {
         this.default_radio_ref.current.checked = true;
     }
 
-    set_state_values(pcount, hcount, loggedin) {
+    set_state_values(pcount, cpage, hcount, loggedin, isNext, isPrev) {
         this.setState({
             page_count: pcount,
+            current_page: cpage,
             total_hospitals: hcount,
-            loggedin: loggedin
+            loggedin: loggedin,
+            isNext: isNext,
+            isPrev: isPrev
         });
     }
 
@@ -51,6 +62,10 @@ class Home extends PureComponent {
             panel.classList.toggle('panel-margin-top');
             panel.style.maxHeight = panel.scrollHeight + 'px';
         }
+    }
+
+    goToPage(page) {
+        window.location.href = '/?pg='+page;
     }
 
     onLogoutClick(e) {
@@ -195,7 +210,78 @@ class Home extends PureComponent {
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
-                        <Hospitals set_state_values={this.set_state_values} />
+                        <Hospitals get_page={this.state.get_page} set_state_values={this.set_state_values} />
+                        <div className="container mx-5 pagination">
+                            <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 py-1"></i></span>
+                            <small className="my-3">
+                            {   
+                            (this.state.page_count!==0)?
+                                (this.state.current_page===1 || this.state.current_page===2)?
+                                    (this.state.page_count>=3)?
+                                        [...Array(3)].map((x, i) => 
+                                        (i+1===this.state.current_page)?
+                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                        :
+                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                    :(this.state.page_count>=2)?
+                                        [...Array(2)].map((x, i) => 
+                                        (i+1===this.state.current_page)?
+                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                        :
+                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                    :
+                                        [...Array(2)].map((x, i) => 
+                                        (i+1===this.state.current_page)?
+                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                        :
+                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                :((this.state.page_count-this.state.current_page)===0)?
+                                    [...Array(3)].map((x, i) => 
+                                    (i+1===this.state.current_page)?
+                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                    :
+                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                :(this.state.page_count-this.state.current_page>=1)?
+                                    [...this.range(this.state.current_page-1, this.state.current_page+1)].map((x, i) => 
+                                    (x===this.state.current_page)?
+                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{x}</span>
+                                    :
+                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{x}</span>)
+                                :<></>
+                            :<></>
+                            }
+                            {
+                            (this.state.page_count>3)?
+                                (this.state.page_count-3===1)?
+                                <></>
+                                :(this.state.page_count-3===2)?
+                                    [...this.range(this.state.page_count,this.state.page_count)].map((x, i) => 
+                                    (x===this.state.current_page)?
+                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{x}</span>
+                                    :
+                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{x}</span>)
+                                :(this.state.page_count-3===3)?
+                                    [...this.range(this.state.page_count-1,this.state.page_count)].map((x, i) => 
+                                    (x===this.state.current_page)?
+                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{x}</span>
+                                    :
+                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{x}</span>)
+                                :(this.state.page_count-3>3)?
+                                    <> &nbsp; . . . &nbsp; &nbsp;
+                                    {
+                                        [...this.range(this.state.page_count-2,this.state.page_count)].map((x, i) => 
+                                        (x===this.state.current_page)?
+                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{x}</span>
+                                        :
+                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{x}</span>)
+                                    }
+                                    </>
+                                :<></>
+                            :<></>
+                            }
+                            </small>
+                            <span onClick={() => {if(this.state.isNext){this.goToPage(this.state.current_page+1)}}} style={(this.state.isNext)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-forward my-3 mx-1 px-2 py-1"></i></span>
+                        </div>
                     </div>
                 </section>
             </>

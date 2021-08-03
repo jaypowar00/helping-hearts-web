@@ -57,6 +57,24 @@
   margin-top: -10px;
 }
 
+.mycard {
+  width: 75vw !important;
+}
+@media (max-width: 1160px) {
+  .mycard {
+    width: 68vw !important;
+  }
+}
+@media (max-width: 906px) {
+  .mycard {
+    width: 60vw !important;
+  }
+}
+@media (max-width: 750px) {
+  .mycard {
+    width: 55vw !important;
+  }
+}
 @media (max-width: 700px) {
 
   #menuBtn {

@@ -18,6 +18,7 @@ class Hospitals extends PureComponent {
     }
 
     componentDidMount() {
+        console.log('page='+this.props.get_page);
         var access_token = this.getCookie("access_token");
         var loggedin = false;
         if(access_token!=null){
@@ -37,7 +38,7 @@ class Hospitals extends PureComponent {
                 // alert(err);
             });
         }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/')
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+this.props.get_page)
         .then(response => {
             console.log(response);
             if(response.data.status){
@@ -45,7 +46,9 @@ class Hospitals extends PureComponent {
                     hospitals: response.data.hospitals,
                     loading: false
                 });
-                this.props.set_state_values(response.data.total_pages, response.data.hospitals.length, loggedin);
+                let isNext = response.data.next_page!=null;
+                let isPrev = response.data.previous_page!=null;
+                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
             }else{
                 console.log('error: '+response.data.message);
                 this.setState({
