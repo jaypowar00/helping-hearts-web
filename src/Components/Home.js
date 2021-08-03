@@ -19,6 +19,7 @@ class Home extends PureComponent {
             get_page: (urlParams.has('pg'))?urlParams.get('pg'):1,
             order: '',
             search: '',
+            active_dropdown: 'dp-default',
         }
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
@@ -81,6 +82,23 @@ class Home extends PureComponent {
             }
             this.hospitalRef.current.set_search(this.state.search);
         });
+    }
+
+    onSortingChange(order, id) {
+        let oldElement = document.getElementById(this.state.active_dropdown);
+        oldElement.classList.remove('active');
+        let sortElement = document.getElementById(id);
+        sortElement.classList.add('active');
+        let btnElement = document.getElementById('dropdown_sortby');
+        btnElement.innerHTML = sortElement.innerHTML;
+        this.setState({
+            active_dropdown: id,
+            order: order
+        }, ()=>{
+            this.hospitalRef.current.set_order(this.state.order);
+        })
+        document.getElementById('sidebar-search-input').value = "";
+        document.getElementById('dropdown-search-input').value = "";
     }
 
     onRadioChange(e) {
@@ -229,6 +247,23 @@ class Home extends PureComponent {
                     </div>
                 </div>
                 <section style={{textAlign: 'left'}}>
+                    <div className="dropdown-sorting" style={{float: 'right', marginBottom: '-60px', marginTop: '10px', marginRight: '10px'}}>
+                        <div className="dropdown">
+                            <span className="mx-2 px-1" style={{fontSize: '13px', fontWeight: 'bold'}}>sort by:</span>
+                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdown_sortby" data-bs-toggle="dropdown" aria-expanded="false">
+                                Default
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdown_sortby">
+                                <li><span className="dropdown-item active" onClick={()=>{this.onSortingChange('', 'dp-default')}} id="dp-default">Default</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_a', 'dp-beds-a')}} id="dp-beds-a">Beds ↑</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_d', 'dp-beds-d')}} id="dp-beds-d">Beds ↓</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ven_a', 'dp-ven-a')}} id="dp-ven-a">Ventilators ↑</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ven_d', 'dp-ven-d')}} id="dp-ven-d">Ventilators ↓</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ox_a', 'dp-oxy-a')}} id="dp-oxy-a">Oxygens ↑</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ox_d', 'dp-oxy-d')}} id="dp-oxy-d">Oxygens ↓</span></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div className="sidebar p-3">
                         <div  className='mb-1'><b>Search:</b></div>
                         <input className='m-1' name='search' id="sidebar-search-input"/>
@@ -283,33 +318,33 @@ class Home extends PureComponent {
                                     (this.state.page_count>=3)?
                                         [...Array(3)].map((x, i) => 
                                         (i+1===this.state.current_page)?
-                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                            <span key={i+1} className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}}>{i+1}</span>
                                         :
-                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                            <span key={i+1} onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1">{i+1}</span>)
                                     :(this.state.page_count>=2)?
                                         [...Array(2)].map((x, i) => 
                                         (i+1===this.state.current_page)?
-                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                            <span key={i+1} className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}}>{i+1}</span>
                                         :
-                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                            <span key={i+1} onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1">{i+1}</span>)
                                     :
                                         [...Array(1)].map((x, i) => 
                                         (i+1===this.state.current_page)?
-                                            <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                            <span key={i+1} className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}}>{i+1}</span>
                                         :
-                                            <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                            <span key={i+1} onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1">{i+1}</span>)
                                 :((this.state.page_count-this.state.current_page)===0)?
                                     [...Array(3)].map((x, i) => 
                                     (i+1===this.state.current_page)?
-                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
+                                        <span key={i+1} className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}}>{i+1}</span>
                                     :
-                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
+                                        <span key={i+1} onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1">{i+1}</span>)
                                 :(this.state.page_count-this.state.current_page>=1)?
                                     [...this.range(this.state.current_page-1, this.state.current_page+1)].map((x, i) => 
                                     (x===this.state.current_page)?
-                                        <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{x}</span>
+                                        <span key={i+1} className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}}>{x}</span>
                                     :
-                                        <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{x}</span>)
+                                        <span key={i+1} onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1">{x}</span>)
                                 :<></>
                             :<></>
                             }

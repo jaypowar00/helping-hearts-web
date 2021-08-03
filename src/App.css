@@ -38,6 +38,10 @@
   border-radius: 50%;
 }
 
+.dropdown-sorting {
+  display: none;
+}
+
 @media (max-width: 1160px) {
   .mycard {
     width: 66vw !important;
@@ -55,6 +59,18 @@
   }
 }
 @media (max-width: 700px) {
+
+  .dropdown-sorting {
+    display: inline-block;
+  }
+
+  .dropdown-sorting .dropdown-item {
+    font-size: 12px;
+  }
+
+  .dropdown-sorting button {
+    font-size: 12px;
+  }
 
   .header {
     padding-bottom: 0px !important;
