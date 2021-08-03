@@ -16,11 +16,15 @@ class Home extends PureComponent {
             isPrev: false,
             total_hospitals: 0,
             loggedin: false,
-            get_page: (urlParams.has('pg'))?urlParams.get('pg'):1
+            get_page: (urlParams.has('pg'))?urlParams.get('pg'):1,
+            order: '',
+            search: '',
         }
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
+        this.onRadioChange = this.onRadioChange.bind(this);
+        this.hospitalRef = React.createRef();
     }
 
     range(start, end) {
@@ -48,6 +52,32 @@ class Home extends PureComponent {
         });
     }
 
+    onSearchHospital(sinput_id) {
+        let input_tag = document.getElementById(sinput_id);
+        this.setState({
+            search: input_tag.value
+        }, ()=>{
+            if (window.history.pushState) {
+                const newURL = new URL(window.location.href);
+                newURL.search = '?';
+                window.history.pushState({ path: newURL.href }, '', newURL.href);
+            }
+            this.hospitalRef.current.set_search(this.state.search);
+        });
+    }
+
+    onRadioChange(e) {
+        let input_tag1 = document.getElementById('sidebar-search-input');
+        let input_tag2 = document.getElementById('dropdown-search-input');
+        input_tag1.value = ''
+        input_tag2.value = ''
+        this.setState(
+            {order: (e.target.value!=='default')?e.target.value:''
+        }, ()=>{
+            this.hospitalRef.current.set_order(this.state.order);
+        });
+    }
+
     onMenuBtnClick() {
         var MenuBtn = document.getElementById("menuBtn");
         MenuBtn.classList.toggle("active");
@@ -67,7 +97,21 @@ class Home extends PureComponent {
     }
 
     goToPage(page) {
-        window.location.href = '/?pg='+page;
+        if (window.history.pushState) {
+            const newURL = new URL(window.location.href);
+            newURL.search = '?pg='+page;
+            window.history.pushState({ path: newURL.href }, '', newURL.href);
+        }
+        this.setState({
+            get_page: page
+        }, ()=>{
+            this.hospitalRef.current.set_order(this.state.order);
+        });
+        
+        let input_tag1 = document.getElementById('sidebar-search-input');
+        let input_tag2 = document.getElementById('dropdown-search-input');
+        input_tag1.value = ''
+        input_tag2.value = ''
     }
 
     onLogoutClick(e) {
@@ -158,8 +202,8 @@ class Home extends PureComponent {
                                         }
                                         </ul>
                                         <form className="form-inline my-2 my-lg-0">
-                                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                                        <button className="btn btn-success form-control my-2 my-sm-0" type="submit">Search</button>
+                                        <input id="dropdown-search-input" className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                                        <button onClick={()=>{this.onSearchHospital('dropdown-search-input');}} className="btn btn-success form-control my-2 my-sm-0" type="submit">Search</button>
                                         </form>
                                     </div>
                                     {/*  */}
@@ -169,50 +213,50 @@ class Home extends PureComponent {
                 </div>
                 <section style={{textAlign: 'left'}}>
                     <div className="sidebar p-3">
-                        <div className='mb-1'><b>Search:</b></div>
-                        <input className='m-1' name='search'/>
-                        <button style={{borderRadius: '17%'}}><i className="fas fa-search"></i></button>
+                        <div  className='mb-1'><b>Search:</b></div>
+                        <input className='m-1' name='search' id="sidebar-search-input"/>
+                        <button onClick={()=>{this.onSearchHospital('sidebar-search-input');}} style={{borderRadius: '17%'}}><i className="fas fa-search"></i></button>
                         <hr/>
                         <div className='mb-1'><b>Sort by:</b></div>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="default" name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
                             Default
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="bed_a" name='sort_radio' type='radio'></input>
                             Beds ↑
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="bed_d" name='sort_radio' type='radio'></input>
                             Beds ↓
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="ven_a" name='sort_radio' type='radio'></input>
                             Ventilators ↑
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="ven_d" name='sort_radio' type='radio'></input>
                             Ventilators ↓
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="ox_a" name='sort_radio' type='radio'></input>
                             Oxygens ↑
                         </label>
                         <br/>
                         <label>
-                            <input className='mx-2' name='sort_radio' type='radio'></input>
+                            <input onClick={this.onRadioChange} className='mx-2' value="ox_d" name='sort_radio' type='radio'></input>
                             Oxygens ↓
                         </label>
                         <br/>
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
-                        <Hospitals get_page={this.state.get_page} set_state_values={this.set_state_values} />
+                        <Hospitals ref={this.hospitalRef} get_page={this.state.get_page} set_state_values={this.set_state_values} />
                         <div className="container mx-5 pagination">
                             <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
                             <small style={{marginTop: '17px'}}>
@@ -232,7 +276,7 @@ class Home extends PureComponent {
                                         :
                                             <span onClick={() => this.goToPage(i+1)} style={{cursor:"pointer"}} className="mx-1 px-2 py-1" id={i+1}>{i+1}</span>)
                                     :
-                                        [...Array(2)].map((x, i) => 
+                                        [...Array(1)].map((x, i) => 
                                         (i+1===this.state.current_page)?
                                             <span className="rounded-circle bg-info mx-1 px-2 py-1" style={{cursor:"default"}} id={i+1}>{i+1}</span>
                                         :
