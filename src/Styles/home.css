@@ -24,14 +24,17 @@
     .mycard {
         padding-left: 15px;
         padding-right: 15px;
-        margin-bottom: 5px;
+        margin-left: 13px !important;
+        margin-right: -50px !important;
+        margin-bottom: 10px;
+        min-width: 93vw !important;
     }
     .mycard h1 {
-        font-size: 18px;
-        margin-bottom: -5px;
+        font-size: 20px;
+        margin-bottom: 0px;
     }
     .mycard span {
-        font-size: 10px;
+        font-size: 14px;
     }
 }
 @media (min-width: 431px) and (max-width: 720px) {

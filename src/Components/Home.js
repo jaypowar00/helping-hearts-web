@@ -57,8 +57,10 @@ class Home extends PureComponent {
             panel.style.maxHeight=null;
             window.setTimeout(() => {
                 panel.classList.toggle('panel-margin-top');
+                panel.classList.toggle('panel-hide');
             }, 200);
         }else{
+            panel.classList.toggle('panel-hide');
             panel.classList.toggle('panel-margin-top');
             panel.style.maxHeight = panel.scrollHeight + 'px';
         }
@@ -127,7 +129,7 @@ class Home extends PureComponent {
                         </div>
                         <div className="header-right-mobile">
                             <button className="btn btn-success my-1" id="menuBtn" style={{float: 'right'}} onClick={this.onMenuBtnClick} ><i className="fas fa-bars"></i></button><br/><br/>
-                            <section className="panel">
+                            <section className="panel panel-hide">
                                     {/*  */}
                                     <div className="navbar-collapse">
                                         <ul className="navbar-nav mr-auto">
@@ -212,8 +214,8 @@ class Home extends PureComponent {
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
                         <Hospitals get_page={this.state.get_page} set_state_values={this.set_state_values} />
                         <div className="container mx-5 pagination">
-                            <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 py-1"></i></span>
-                            <small className="my-3">
+                            <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
+                            <small style={{marginTop: '17px'}}>
                             {   
                             (this.state.page_count!==0)?
                                 (this.state.current_page===1 || this.state.current_page===2)?

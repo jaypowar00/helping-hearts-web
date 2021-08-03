@@ -31,6 +31,7 @@
   float: left;
   text-align: center;
   padding: 12px;
+  padding-right: 0 !important;
   text-decoration: none;
   font-size: 35px;
   line-height: 25px;
@@ -39,8 +40,12 @@
 
 /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header a.logo {
+  padding-top: 0;
+  padding-bottom: 0;
   font-size: 25px;
   font-weight: bold;
+  margin-top: 10px;
+  user-select: none;
 }
 
 /* Change the background color on mouse-over */

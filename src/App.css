@@ -1,41 +1,4 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 .panel {
   display: none;
@@ -46,12 +9,16 @@
   transition: all 0.2s linear;
 }
 
+.panel-hide {
+  display: none !important;
+}
+
 #menuBtn {
   display: none;
   font-size: 18px;
   padding: 3px 9px;
   margin-top: -8px !important;
-  margin-bottom: -5px !important;
+  margin-bottom: -15px !important;
 }
 .panel-margin-top {
   margin-top: -10px;
@@ -59,10 +26,21 @@
 
 .mycard {
   width: 75vw !important;
+  margin-right: -50px !important;
 }
+
+.pagination span {
+  user-select: none;
+}
+
+.pagination span:hover{
+  background-color: rgb(159, 210, 255);
+  border-radius: 50%;
+}
+
 @media (max-width: 1160px) {
   .mycard {
-    width: 68vw !important;
+    width: 66vw !important;
   }
 }
 @media (max-width: 906px) {
@@ -73,9 +51,14 @@
 @media (max-width: 750px) {
   .mycard {
     width: 55vw !important;
+
   }
 }
 @media (max-width: 700px) {
+
+  .header {
+    padding-bottom: 0px !important;
+  }
 
   #menuBtn {
     display: inline-block;
@@ -93,8 +76,9 @@
 
   .header .logo {
     margin-left: 0px !important; 
-    margin-top: -15px !important; 
+    margin-top: -3px !important; 
     margin-bottom: -15px !important; 
+    user-select: none;
   }
 
   .header .logo img {
@@ -107,7 +91,12 @@
     font-size: 19px;
     margin-left: -12px;
     margin-top: -15px;
-    margin-bottom: -15px;
+    margin-bottom: -25px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .header-right-mobile {
+    margin-bottom: -7px;
   }
 
   .header-right {
@@ -121,6 +110,7 @@
   
   .panel-margin-top {
     padding-top: 10px;
+    margin-bottom: 5px;
   }
 
   .panel a{
@@ -128,4 +118,5 @@
     margin-top: 5px;
     margin-bottom: 5px;
   }
+
 }
