@@ -97,15 +97,22 @@ export class Update extends Component {
                 }
             }).then(response => {
                 console.log(response);
-                this.setState({
-                    name: (response.data.user.name)?response.data.user.name:"",
-                    age: (response.data.user.detail.age)?response.data.user.detail.age:"",
-                    gender: (response.data.user.detail.gender)?response.data.user.detail.gender:"",
-                    phone: (response.data.user.phone)?response.data.user.phone:"",
-                    address: (response.data.user.address)?response.data.user.address:"",
-                    pincode: (response.data.user.pincode)?response.data.user.pincode:"",
-                    about: (response.data.user.about!==null)?response.data.user.about:""
-                });
+                if(response.data.status){
+                    this.setState({
+                        name: (response.data.user.name)?response.data.user.name:"",
+                        age: (response.data.user.detail.age)?response.data.user.detail.age:"",
+                        gender: (response.data.user.detail.gender)?response.data.user.detail.gender:"",
+                        phone: (response.data.user.phone)?response.data.user.phone:"",
+                        address: (response.data.user.address)?response.data.user.address:"",
+                        pincode: (response.data.user.pincode)?response.data.user.pincode:"",
+                        about: (response.data.user.about!==null)?response.data.user.about:""
+                    });
+                }else{
+                    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    window.location.href='/login';
+                }
             }).catch(e=>{
                 console.log(e.detail);
             })

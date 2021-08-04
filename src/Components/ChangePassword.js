@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 
@@ -5,9 +6,37 @@ export class ChangePassword extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            password: "",
+            new_password: "",
+            new_password2: "",
+        }
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onNewPasswordChange = this.onNewPasswordChange.bind(this);
+        this.onNewPassword2Change = this.onNewPassword2Change.bind(this);
+        
     }
     
+    onPasswordChange(e) {
+        this.setState({
+            password: e.target.value
+        })
+    }
+    
+    onNewPasswordChange(e) {
+        this.setState({
+            new_password: e.target.value
+        })
+    }
+    
+    onNewPassword2Change(e) {
+        this.setState({
+            new_password2: e.target.value
+        })
+    }
+
     onMenuBtnClick() {
         var MenuBtn = document.getElementById("menuBtn");
         MenuBtn.classList.toggle("active");
@@ -23,6 +52,45 @@ export class ChangePassword extends Component {
             panel.classList.toggle('panel-hide');
             panel.classList.toggle('panel-margin-top');
             panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+    }
+
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+        let access_token = this.getCookie('access_token');
+        let csrf_token = this.getCookie('csrf_token');
+        if(this.state.new_password!==this.state.new_password2){
+            alert("new confirm password did not matched!\ntry again");
+        }else{
+            let changeData = {
+                'password': this.state.password,
+                'new_password': this.state.new_password,
+            }
+            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update', changeData, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': 'Token '+access_token,
+                    'X-CSRFToken': csrf_token
+                }
+            }).then(response=>{
+                if(response.data.status){
+                    alert('password changed!');
+                    window.location.href='/profile';
+                }else{
+                    if(response.data.status===false){
+                        alert("password change Failed!\n"+response.data.message);
+                    }else{
+                        alert("Something went wring!");
+                    }
+                    window.location.href='/profile';
+                }
+            })
         }
     }
 
@@ -68,15 +136,15 @@ export class ChangePassword extends Component {
                 </div>   
             
                 <div>
-                <form /*onSubmit={this.handleSubmit}*/>
+                <form onSubmit={this.onSubmit}>
                     
                     <div className="edit-form">
                         <h1>Change Password</h1>
-                        <input type='password' placeholder='Enter Old password'  name="password-old" /*value={oldpass}*/ onChange={this.onchangeHandler} id="password-old" required onInvalid={(e) => e.target.setCustomValidity('Please Enter old password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='password' placeholder='Enter New password'  name="password-new" /*value={newpass}*/ onChange={this.onchangeHandler} id="password-new" required onInvalid={(e) => e.target.setCustomValidity('Please Enter new password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='password' placeholder='Confirm password'  name="confirm-pass" /*value={confirmpass}*/ onChange={this.onchangeHandler} id="confirm-pass" required onInvalid={(e) => e.target.setCustomValidity('Confirm your password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='password' placeholder='Enter Old password'  name="password-old" value={this.state.password} onChange={this.onPasswordChange} id="password-old" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Old password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='password' placeholder='Enter New password'  name="password-new" value={this.state.new_password} onChange={this.onNewPasswordChange} id="password-new" required onInvalid={(e) => e.target.setCustomValidity('Please Enter New password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='password' placeholder='Confirm password'  name="confirm-pass" value={this.state.new_password2} onChange={this.onNewPassword2Change} id="confirm-pass" required onInvalid={(e) => e.target.setCustomValidity('Confirm your password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
                         
-                        <button type='submit' className="btnn" onClick={this.onSubmit} value="Login" >Change Password</button><br/>
+                        <button type='submit' className="btnn" value="Login" >Change Password</button><br/>
                     </div>
                 </form>
                 </div>
