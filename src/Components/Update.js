@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import '../Styles/mycss.css'
@@ -7,6 +8,59 @@ export class Update extends Component {
     constructor(props) {
         super(props);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
+        this.state = {
+            name: '',
+            age: '',
+            gender: '',
+            phone: '',
+            address: '',
+            pincode: '',
+            about: '',
+        }
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onAgeChange = this.onAgeChange.bind(this);
+        this.onGenderChange = this.onGenderChange.bind(this);
+        this.onPhoneChange = this.onPhoneChange.bind(this);
+        this.onAddressChange = this.onAddressChange.bind(this);
+        this.onPincodeChange = this.onPincodeChange.bind(this);
+        this.onAboutChange = this.onAboutChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onNameChange(e) {
+        this.setState({
+            name: e.target.value
+        });
+    }
+    onPincodeChange(e) {
+        this.setState({
+            pincode: e.target.value
+        });
+    }
+    onAboutChange(e) {
+        this.setState({
+            about: e.target.value
+        });
+    }
+    onAgeChange(e) {
+        this.setState({
+            age: e.target.value
+        });
+    }
+    onGenderChange(e) {
+        this.setState({
+            gender: e.target.value
+        });
+    }
+    onPhoneChange(e) {
+        this.setState({
+            phone: e.target.value
+        });
+    }
+    onAddressChange(e) {
+        this.setState({
+            address: e.target.value
+        });
     }
     
     onMenuBtnClick() {
@@ -31,6 +85,56 @@ export class Update extends Component {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    componentDidMount() {
+        let access_token = this.getCookie('access_token');
+        if(access_token!==null){
+            axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
+                headers : {
+                    'Authorization' : `token `+access_token
+                }
+            }).then(response => {
+                console.log(response);
+                this.setState({
+                    name: response.data.user.name,
+                    age: response.data.user.detail.age,
+                    gender: response.data.user.detail.gender,
+                    phone: response.data.user.phone,
+                    address: response.data.user.address,
+                    pincode: response.data.user.pincode,
+                    about: response.data.user.about
+                });
+            })
+        }else{
+            window.location.href='/login';
+        }
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+        let access_token = this.getCookie('access_token');
+        let csrf_token = this.getCookie('csrf_token');
+        if(access_token!==null && csrf_token!==null){
+            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update', this.state, {
+                headers: {
+                    'Authorization': `Token `+access_token,
+                    'X-CSRFToken': csrf_token
+                }
+            }).then(response=>{
+                if(response.data.status){
+                    window.location.href='/profile';
+                }else{
+                    if(response.data.status===false)
+                        alert('something went wrong!\n'+response.data.message);
+                    else
+                        alert('something went wrong!\nTry again later');
+                }
+            }).catch(e=>{
+                // alert('Error:\n'+e);
+                // window.location.href='/profile';
+            })
+        }
     }
 
     render() {
@@ -74,17 +178,18 @@ export class Update extends Component {
                 </div>
                 </div>   
                 <div>
-                <form /*onSubmit={this.handleSubmit}*/>
+                <form onSubmit={this.onSubmit}>
                     
                     <div className="edit-form">
                         <h1>Edit Your Information</h1>
-                        <input type='text' placeholder='Enter Name'  name="name" /*value={email}*/ onChange={this.onchangeHandler} id="name" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Name')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='email' placeholder='Enter Email'  name="email" /*value={email}*/ onChange={this.onchangeHandler} id="email_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Email')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='text' placeholder='Enter Age'  name="age" /*value={email}*/ onChange={this.onchangeHandler} id="age" required onInvalid={(e) => e.target.setCustomValidity('Please Enter age')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='text' placeholder='Enter Gender'  name="gender" /*value={email}*/ onChange={this.onchangeHandler} id="gender" required onInvalid={(e) => e.target.setCustomValidity('Please Enter gender')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='text' placeholder='Enter Phone number'  name="ph-number" /*value={email}*/ onChange={this.onchangeHandler} id="ph-number" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Phone Number')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <input type='text' placeholder='Enter Address'  name="email" /*value={email}*/ onChange={this.onchangeHandler} id="address" required onInvalid={(e) => e.target.setCustomValidity('Please Enter address')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                        <button type='submit' className="btnn" onClick={this.onSubmit} value="Login" >Update</button><br/>
+                        <input type='text' placeholder='Enter Name' onChange={this.onNameChange} name="name" value={this.state.name} id="name" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Name')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter Age' onChange={this.onAgeChange} name="age" value={this.state.age} id="age" required onInvalid={(e) => e.target.setCustomValidity('Please Enter age')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter Gender' onChange={this.onGenderChange} name="gender" value={this.state.gender} id="gender" required onInvalid={(e) => e.target.setCustomValidity('Please Enter gender')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter Phone number'onChange={this.onPhoneChange}  name="ph-number" value={this.state.phone} id="ph-number" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Phone Number')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter Address' onChange={this.onAddressChange} name="email" value={this.state.address} id="address" required onInvalid={(e) => e.target.setCustomValidity('Please Enter address')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter Pincode'onChange={this.onPincodeChange}  name="pincode" value={this.state.pincode} id="pincode" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Pincode')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
+                        <input type='text' placeholder='Enter About' onChange={this.onAboutChange} name="about" value={this.state.about} id="about" /><br/>
+                        <button type='submit' className="btnn" value="Login" >Update</button><br/>
                     </div>
                 </form>
                 </div>

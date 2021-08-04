@@ -69,30 +69,20 @@ class LoginPage extends Component {
     }
 
     handleSubmit = (event) => {
-
         event.preventDefault()
         console.log(this.state)
-
         axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', this.state)
         .then(response=>{
             console.log(response)
             document.cookie = 'access_token=' + response.data['access_token'];
             document.cookie = 'refresh_token=' + response.data['refresh_token'];
             document.cookie = 'csrf_token=' + response.data['csrf_token'];
-            window.location.href = '/';
+            window.location.href = '/login/#';
         })
         .catch(error=>{
             console.log(error)
         })
-
-        
         // this.props.history.push('/profile/');
-
-        this.setState({
-            email: "",
-            password: "",
-        })
-        
     }
     
     render() {
@@ -143,20 +133,6 @@ class LoginPage extends Component {
 
 
             <div className="container">
-                {/* <div className="card pt-4 px-5 pb-4 my-5" style={{width: '40vw', minWidth: '500px'}}>
-                    <form className="form-group" onSubmit={this.handleSubmit}>
-                        <div className=" form-group container" style={{textAlign: 'left'}}>
-                            <label className="form-control-plaintext" htmlFor="email_login"><b>Email:</b></label>
-                            <input style={{width: '100%'}} className="form-control" type='email' placeholder='Enter Email'  name="email"
-                            value={email} onChange={this.onchangeHandler} id="email_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Email')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
-                            <label htmlFor="password_login" className="form-control-plaintext"><b>Password:</b></label>
-                            <input style={{width: '100%'}} className="form-control" type='password' placeholder='Enter password'  name="password"
-                            value={password} onChange={this.onchangeHandler} id="password_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>      
-                        </div>
-                        <input type='submit' className='form-control registerButton btn my-3' onClick={this.onSubmit} value="Login" />
-                   </form>
-                   <div className="mt-2 mb-2">New User? <a href="/register">Register Here</a></div>
-                </div> */}
                 <form onSubmit={this.handleSubmit}> 
                     <div className="loginform">    
                          <h1>Login Here</h1>       

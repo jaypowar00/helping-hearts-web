@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 
@@ -5,7 +6,42 @@ class Contact extends Component {
 
     constructor(props) {
         super(props)
+
+        this.state = {
+            loggedIn: false
+        }
+
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
+        this.getCookie = this.getCookie.bind(this);
+        this.onLogoutClick = this.onLogoutClick.bind(this);
+    }
+
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    componentDidMount() {
+        var access_token = this.getCookie('access_token');
+        if(access_token){
+            axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
+                headers : {
+                    'Authorization' : `token `+access_token
+                }
+            })
+            .then(response=>{
+                console.log(response)
+                if(response.data.status){
+                    this.setState({
+                        loggedIn: true
+                    })
+                }
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+        }
     }
 
     onMenuBtnClick() {
@@ -25,7 +61,37 @@ class Contact extends Component {
             panel.style.maxHeight = panel.scrollHeight + 'px';
         }
     }
-    
+
+    onLogoutClick(e) {
+        e.preventDefault();
+        var access_token = this.getCookie('access_token');
+        var csrf_token = this.getCookie('csrf_token');
+        if(access_token!=null) {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            .then(response=>{
+                console.log(response);
+                if(response.data.status){
+                    console.log('successfully logged out!');
+                    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                }else{
+                    console.log('something went wrong!');
+                }
+            }).catch(e=>{
+                document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                console.log(e);
+                window.location.reload();
+            }).finally(() => {
+                window.location.reload();
+            });
+        }else{
+            console.log('already logged out!');
+            window.location.reload();
+        }
+    }
 
     render() {
         return (
@@ -40,9 +106,19 @@ class Contact extends Component {
                         <div className='project_name'><b>Helping Hearts</b></div>
                         <div className="header-right">
                             <a className="mx-1" href="/">Home</a>
-                            <a className="mx-1" href="/login">Login</a>
+                            {
+                                (this.state.loggedIn)?
+                                <a className="mx-1" href="/profile">Profile</a>
+                                :
+                                <a className="mx-1" href="/login">Login</a>
+                            }
                             <a className="active mx-1" href="/contact">Contact</a>
                             <a className="mx-1" href="/about">About</a>
+                            {
+                                (this.state.loggedIn)?
+                                <a className="mx-1" href="/contact/#" onClick={this.onLogoutClick}>Logout</a>
+                                :<></>
+                            }
                         </div>
                         <div className="header-right-mobile">
                             <button className="btn btn-success my-1" id="menuBtn" style={{float: 'right'}} onClick={this.onMenuBtnClick} ><i className="fas fa-bars"></i></button><br/><br/>
@@ -53,7 +129,12 @@ class Contact extends Component {
                                             <a className="nav-link" href="/">Home</a>
                                         </li>
                                         <li className="nav-item">
-                                        <a className="nav-link" href="/login">Login</a>
+                                            {
+                                                (this.state.loggedIn)?
+                                                    <a className="nav-link" href="/profile">Profile</a>
+                                                :
+                                                    <a className="nav-link" href="/login">Login</a>
+                                            }
                                         </li>
                                         <li className="nav-item">
                                             <a className="active nav-link" href="/contact">Contact</a>
@@ -61,6 +142,14 @@ class Contact extends Component {
                                         <li className="nav-item">
                                             <a className="nav-link" href="/about">About</a>
                                         </li>
+                                        {
+                                            (this.state.loggedIn)?
+                                            <li className="nav-item">
+                                                <a className="nav-link" href="/contact/#" onClick={this.onLogoutClick}>Logout</a>
+                                            </li>
+
+                                            :<></>
+                                        }
                                         </ul>
                                     </div>
                             </section>
