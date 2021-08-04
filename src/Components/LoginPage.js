@@ -166,7 +166,7 @@ class LoginPage extends Component {
                         <input type='password' placeholder='Enter Password'  name="password"
                         value={password} onChange={this.onchangeHandler} id="password_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>                   
                         <button type='submit' className="btnn" onClick={this.onSubmit} value="Login" >Login</button><br/>
-                        <br/><a>Don't have an account?   </a>
+                        <br/><span>Don't have an account?   </span>
                         <a className="link" href="/register">SignUp</a><br/>
                     </div>
                 </form>

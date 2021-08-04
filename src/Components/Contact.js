@@ -77,12 +77,12 @@ class Contact extends Component {
                     +919503745710
                 </p>
                 <br/>
-                <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+                <a href="/#"><ion-icon name="logo-google"></ion-icon></a>
                 {/* <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
                 <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>  */}
                 <a href="https://www.linkedin.com/in/manasi-shinde-54aa4719b"><ion-icon name="logo-linkedin"></ion-icon></a>                    
-                <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
-                <a href="#"><ion-icon name="logo-skype"></ion-icon></a>
+                <a href="/#"><ion-icon name="logo-twitter"></ion-icon></a>
+                <a href="/#"><ion-icon name="logo-skype"></ion-icon></a>
             </div>
 
         </div>

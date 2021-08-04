@@ -3,9 +3,6 @@ import '../Styles/mycss.css'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 
 class About extends Component {
-    constructor(props) {
-        super(props)
-    }
     
     onMenuBtnClick() {
         var MenuBtn = document.getElementById("menuBtn");
@@ -71,12 +68,12 @@ class About extends Component {
                             <p>&emsp;&emsp;This project is still under development and is being deployed just to showcase the teams development capabilities along with their skills.</p>
                             <br/>
                             <h5>Created by :</h5>
-                            <a className="names">
+                            <span className="names">
                                 Rohan Mane [Backend + FrontEnd Dev.]<br/>
                                 Ajay Powar [Frontend Dev.]<br/>
                                 Manasi Shinde [Frontend Dev.]<br/>
                                 Jay Powar [Backend + Frontend Dev.]<br/>
-                            </a>
+                            </span>
                         </div>
                     </div>
                 </div> 

@@ -568,11 +568,11 @@ class Register extends Component {
                 </div>
                 <button type='submit' className="btnn mb-3" value="Register" >Register</button>
                 <br/>
-                <a style={{fontSize: '15px'}}>Already have an Account? &nbsp;
+                <span style={{fontSize: '15px'}}>Already have an Account? &nbsp;
                     <Link className="link" to='/login'>
                         <span >Log in</span>
                     </Link>
-                </a>
+                </span>
                </form>
             </div>
             {/* */}</div>

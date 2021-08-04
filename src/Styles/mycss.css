@@ -332,13 +332,15 @@ br{
 
 
 .btnn{
-  width: 10vw;
+  width: fit-content;
   min-width: 150px;
   height: 40px;
   background: darkslateblue;
   border: none;
   color: #fff;
   cursor: pointer;
+  padding-left: 15px;
+  padding-right: 15px;
   border-radius: 10px;
   margin-top: 10px;
   font-size: 18px;
@@ -424,7 +426,7 @@ br{
 }
 
 .aboutpg{
-  background: linear-gradient(to top, lightskyblue 50%, lightskyblue 50%);
+  background: rgb(194, 230, 253);
   height: auto;
   width: 50vw;
   min-width: 300px;
@@ -446,7 +448,6 @@ br{
   font-size: 14px;
   color: black;
   text-align: center;
-  padding:5px;
 }
 
 
@@ -458,16 +459,13 @@ br{
 
 
 .edit-form{
-  background-size: auto;
-  background-size: auto;
-  background:linear-gradient(to top, lightskyblue 50%, lightskyblue 50%);
+  background: rgb(194, 230, 253);
   height: auto;
-  width: 450px;
-  position: absolute;
+  width: 30vw;
+  min-width: 300px;
+  margin: 30px auto;
   border-radius: 10px;
-  padding: 25px;
-  top: 140px;
-  left: 440px;
+  padding: 30px;
   font-family: Arial, Helvetica, sans-serif !important;
 
 }
@@ -509,7 +507,7 @@ br{
   border-right-style: hidden;
   border-left-style: hidden;
   height: 35px;
-  width: 240px;
+  width: 95%;
   color: black;
   font-family: Arial;
   font-size: 15px;
@@ -525,6 +523,10 @@ br{
 
 .edit-form input:focus{
   outline: none;
+}
+
+.edit-form .btnn {
+  margin: 10px auto;
 }
 
 
