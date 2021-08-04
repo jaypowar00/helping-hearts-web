@@ -120,6 +120,7 @@ export class Update extends Component {
         let csrf_token = this.getCookie('csrftoken');
         if(access_token!==null && csrf_token!==null){
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', this.state, {
+                withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token,
                     'X-CSRFToken': csrf_token
