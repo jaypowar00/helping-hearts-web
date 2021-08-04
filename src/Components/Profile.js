@@ -14,7 +14,9 @@ export class Profile extends Component {
              email : "",
              username : "",
              age: "",
-             gender: ""
+             gender: "",
+             pincode: "",
+             about: ""
         }
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.getCookie = this.getCookie.bind(this);
@@ -95,7 +97,14 @@ export class Profile extends Component {
                         username: response.data.user.username,
                         age: response.data.user.detail.age,
                         gender: response.data.user.detail.gender,
+                        pincode: response.data.user.pincode,
+                        about: response.data.user.about,
                     })
+                }else{
+                    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    window.location.hre="/login";
                 }
             })
             .catch(error=>{
@@ -162,6 +171,8 @@ export class Profile extends Component {
                         <h5>Gender : &nbsp; </h5> <span> {this.state.gender} </span> <br/>
                         <h5>Phone : &nbsp; </h5> <span> {this.state.phone} </span> <br/>
                         <h5>Address : &nbsp; </h5> <span> {this.state.address} </span> <br/>
+                        <h5>Pincode : &nbsp; </h5> <span> {this.state.pincode} </span> <br/>
+                        <h5>About : &nbsp; </h5> <span> {this.state.about} </span> <br/>
                         <input type="button" className="btn btn-success mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/update'}} value="Edit" />
                         <input type="button" className="btn btn-primary mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/changepassword'}} value="Change Password" />
                     </div>
