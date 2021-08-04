@@ -124,9 +124,7 @@ export class Update extends Component {
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', this.state, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token `+access_token,
-                    'X-CSRFToken': csrf_token
+                    'Authorization': `Token `+access_token
                 }
             }).then(response=>{
                 if(response.data.status){
