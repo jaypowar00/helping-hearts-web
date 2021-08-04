@@ -203,13 +203,10 @@ class Home extends PureComponent {
                                 (this.state.loggedin)?
                                 <a className="mx-1" href='/' onClick={this.onLogoutClick}>Logout</a>:<></>
                             }
-                {/*  */}
-                {/*  */}
                         </div>
                         <div className="header-right-mobile">
                             <button className="btn btn-success my-1" id="menuBtn" style={{float: 'right'}} onClick={this.onMenuBtnClick} ><i className="fas fa-bars"></i></button><br/><br/>
                             <section className="panel panel-hide">
-                                    {/*  */}
                                     <div className="navbar-collapse">
                                         <ul className="navbar-nav mr-auto">
                                         <li className="nav-item active">
@@ -241,7 +238,6 @@ class Home extends PureComponent {
                                         <button onClick={()=>{this.onSearchHospital('dropdown-search-input');}} className="btn btn-success form-control my-2 my-sm-0" type="button">Search</button>
                                         </form>
                                     </div>
-                                    {/*  */}
                             </section>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 .mycard {
+    background: rgb(194, 230, 253);
     width: 70vw;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -14,7 +15,7 @@
     font-size: 20px;
 }
 .mycard:hover {
-    background-color: rgb(242, 253, 253);
+    background: rgb(163, 219, 253);
     box-shadow: none;
     top: 1px;
     left: 1px;

@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
+import '../Styles/mycss.css'
 
 export class Update extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+    
+
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     render() {
         return (          
             <div>
@@ -18,9 +31,9 @@ export class Update extends Component {
                         </div>
                     </div>
                 </div>   
-            
                 <div>
-                    <h1>Update Page</h1>
+
+                
                 </div>
             </div>          
         )
