@@ -88,7 +88,7 @@ export class Update extends Component {
     }
 
     componentDidMount() {
-        let access_token = this.getCookie('accesstoken');
+        let access_token = this.getCookie('access_token');
         console.log(access_token)
         if(access_token!==null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
@@ -116,8 +116,8 @@ export class Update extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let access_token = this.getCookie('accesstoken');
-        let csrf_token = this.getCookie('csrftoken');
+        let access_token = this.getCookie('access_token');
+        let csrf_token = this.getCookie('csrf_token');
         if(access_token!==null && csrf_token!==null){
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', this.state, {
                 withCredentials: true,
