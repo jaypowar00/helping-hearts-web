@@ -48,21 +48,21 @@ class LoginPage extends Component {
     }
 
     componentDidMount() {
-        var access_token = this.getCookie('access_token');
+        var access_token = this.getCookie('accesstoken');
         if(access_token != null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {headers: {'Authorization': 'Token '+access_token}})
             .then(response => {
                 if(response.data.status) {
                     window.location.href = '/';
                 }else{
-                    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }
             }).catch(err => {
-                document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 console.log(err);
             });
         }
@@ -74,9 +74,9 @@ class LoginPage extends Component {
         axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', this.state)
         .then(response=>{
             console.log(response)
-            document.cookie = 'access_token=' + response.data['access_token'];
-            document.cookie = 'refresh_token=' + response.data['refresh_token'];
-            document.cookie = 'csrf_token=' + response.data['csrf_token'];
+            document.cookie = 'accesstoken=' + response.data['access_token'];
+            document.cookie = 'refreshtoken=' + response.data['refresh_token'];
+            document.cookie = 'csrftoken=' + response.data['csrf_token'];
             window.location.href = '/login/#';
         })
         .catch(error=>{

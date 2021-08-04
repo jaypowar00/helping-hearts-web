@@ -88,23 +88,26 @@ export class Update extends Component {
     }
 
     componentDidMount() {
-        let access_token = this.getCookie('access_token');
+        let access_token = this.getCookie('accesstoken');
+        console.log(access_token)
         if(access_token!==null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
                 headers : {
-                    'Authorization' : `token `+access_token
+                    'Authorization' : `Token `+access_token
                 }
             }).then(response => {
                 console.log(response);
                 this.setState({
-                    name: response.data.user.name,
-                    age: response.data.user.detail.age,
-                    gender: response.data.user.detail.gender,
-                    phone: response.data.user.phone,
-                    address: response.data.user.address,
-                    pincode: response.data.user.pincode,
-                    about: response.data.user.about
+                    name: (response.data.user.name)?response.data.user.name:"",
+                    age: (response.data.user.detail.age)?response.data.user.detail.age:"",
+                    gender: (response.data.user.detail.gender)?response.data.user.detail.gender:"",
+                    phone: (response.data.user.phone)?response.data.user.phone:"",
+                    address: (response.data.user.address)?response.data.user.address:"",
+                    pincode: (response.data.user.pincode)?response.data.user.pincode:"",
+                    about: (response.data.user.about!==null)?response.data.user.about:""
                 });
+            }).catch(e=>{
+                console.log(e.detail);
             })
         }else{
             window.location.href='/login';
@@ -113,8 +116,8 @@ export class Update extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let access_token = this.getCookie('access_token');
-        let csrf_token = this.getCookie('csrf_token');
+        let access_token = this.getCookie('accesstoken');
+        let csrf_token = this.getCookie('csrftoken');
         if(access_token!==null && csrf_token!==null){
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', this.state, {
                 headers: {
@@ -131,8 +134,8 @@ export class Update extends Component {
                         alert('something went wrong!\nTry again later');
                 }
             }).catch(e=>{
-                alert('Error:\n'+e);
-                window.location.href='/profile';
+                console.log('Error:\n'+e);
+                // window.location.href='/profile';
             })
         }
     }

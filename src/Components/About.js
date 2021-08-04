@@ -23,7 +23,7 @@ class About extends Component {
     }
 
     componentDidMount() {
-        var access_token = this.getCookie('access_token');
+        var access_token = this.getCookie('accesstoken');
         if(access_token){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
                 headers : {
@@ -64,24 +64,24 @@ class About extends Component {
 
     onLogoutClick(e) {
         e.preventDefault();
-        var access_token = this.getCookie('access_token');
-        var csrf_token = this.getCookie('csrf_token');
+        var access_token = this.getCookie('accesstoken');
+        var csrf_token = this.getCookie('csrftoken');
         if(access_token!=null) {
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){
                     console.log('successfully logged out!');
-                    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }else{
                     console.log('something went wrong!');
                 }
             }).catch(e=>{
-                document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 console.log(e);
                 window.location.reload();
             }).finally(() => {

@@ -13,7 +13,7 @@ class Hospitals extends PureComponent {
     }
 
     set_search(search){
-        var access_token = this.getCookie("access_token");
+        var access_token = this.getCookie("accesstoken");
         var loggedin = false;
         if(access_token!=null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
@@ -66,7 +66,7 @@ class Hospitals extends PureComponent {
     }
 
     set_order(order){
-        var access_token = this.getCookie("access_token");
+        var access_token = this.getCookie("accesstoken");
         var loggedin = false;
         if(access_token!=null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
@@ -123,7 +123,7 @@ class Hospitals extends PureComponent {
 
     componentDidMount() {
         console.log('page='+this.props.get_page);
-        var access_token = this.getCookie("access_token");
+        var access_token = this.getCookie("accesstoken");
         var loggedin = false;
         if(access_token!=null){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
