@@ -116,7 +116,7 @@ export class Update extends Component {
         let access_token = this.getCookie('access_token');
         let csrf_token = this.getCookie('csrf_token');
         if(access_token!==null && csrf_token!==null){
-            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update', this.state, {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', this.state, {
                 headers: {
                     'Authorization': `Token `+access_token,
                     'X-CSRFToken': csrf_token
@@ -131,8 +131,8 @@ export class Update extends Component {
                         alert('something went wrong!\nTry again later');
                 }
             }).catch(e=>{
-                // alert('Error:\n'+e);
-                // window.location.href='/profile';
+                alert('Error:\n'+e);
+                window.location.href='/profile';
             })
         }
     }
