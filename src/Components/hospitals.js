@@ -4,15 +4,13 @@ import React, {PureComponent} from 'react'
 class Hospitals extends PureComponent {
     constructor(props) {
         super(props)
-
         this.state = {
             hospitals : [],
-            loading: true,
-            order: (this.props.order && this.props.order!=='default')?this.props.order:''
+            loading: true
         }
     }
 
-    set_search(search){
+    set_search_order_page(search, order, page){
         var access_token = this.getCookie("access_token");
         var loggedin = false;
         if(access_token!=null){
@@ -32,7 +30,7 @@ class Hospitals extends PureComponent {
                 // alert(err);
             });
         }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+this.props.get_page+'&s_name='+search)
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+'&s_name='+search+'&order='+order)
         .then(response => {
             console.log(response);
             if(response.data.status){
@@ -42,12 +40,16 @@ class Hospitals extends PureComponent {
                 });
                 let isNext = response.data.next_page!=null;
                 let isPrev = response.data.previous_page!=null;
-                if(search==='')
-                    if (window.history.pushState) {
-                        const newURL = new URL(window.location.href);
-                        newURL.search = '?';
-                        window.history.pushState({ path: newURL.href }, '', newURL.href);
-                    }
+                if (window.history.pushState) {
+                    const newURL = new URL(window.location.href);
+                    let pageUrl = '?pg='+response.data.current_page;
+                    if(search!=='')
+                        pageUrl+='&ser='+search;
+                    if(order!=='')
+                        pageUrl+='&or='+order;
+                    newURL.search = pageUrl;
+                    window.history.pushState({ path: newURL.href }, '', newURL.href);
+                }
                 this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
             }else{
                 console.log('error: '+response.data.message);
@@ -64,57 +66,7 @@ class Hospitals extends PureComponent {
             console.log(err);
         });
     }
-
-    set_order(order){
-        var access_token = this.getCookie("access_token");
-        var loggedin = false;
-        if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
-            {
-                headers: {
-                    'Authorization': 'Token '+access_token
-                }
-            }
-            )
-            .then(response=>{
-                if(response.data.status){
-                    loggedin = true;
-                }
-            }).catch(err=>{
-                console.log(err);
-                // alert(err);
-            });
-        }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+this.props.get_page+'&order='+order)
-        .then(response => {
-            console.log(response);
-            if(response.data.status){
-                this.setState({
-                    hospitals: response.data.hospitals,
-                    loading: false
-                });
-                let isNext = response.data.next_page!=null;
-                let isPrev = response.data.previous_page!=null;
-                if (window.history.pushState) {
-                    const newURL = new URL(window.location.href);
-                    newURL.search = '?pg='+response.data.current_page;
-                    window.history.pushState({ path: newURL.href }, '', newURL.href);
-                }
-                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
-            }else{
-                console.log('error: '+response.data.message);
-                this.setState({
-                    loading: false
-                });
-            }
-        }).catch(err => {
-            this.setState({
-                loading: false
-            });
-            console.log(err);
-        });
-    }
-
+    
     getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -122,6 +74,7 @@ class Hospitals extends PureComponent {
     }
 
     componentDidMount() {
+        let urlParams = new URLSearchParams(window.location.search);
         console.log('page='+this.props.get_page);
         var access_token = this.getCookie("access_token");
         var loggedin = false;
@@ -142,7 +95,16 @@ class Hospitals extends PureComponent {
                 // alert(err);
             });
         }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+this.props.get_page+'&order='+this.state.order)
+        let page=1;
+        let order='';
+        let search='';
+        if(urlParams.has('pg'))
+            page = (urlParams.get('pg')!=='' && urlParams.get('pg')!==null)?urlParams.get('pg'):1;
+        if(urlParams.has('or'))
+            order = (urlParams.get('or')!=='' && urlParams.get('or')!==null)?urlParams.get('or'):'';
+        if(urlParams.has('ser'))
+            search = (urlParams.get('ser')!=='' && urlParams.get('ser')!==null)?urlParams.get('ser'):'';
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+'&order='+order+'&s_name='+search)
         .then(response => {
             console.log(response);
             if(response.data.status){
@@ -152,11 +114,12 @@ class Hospitals extends PureComponent {
                 });
                 let isNext = response.data.next_page!=null;
                 let isPrev = response.data.previous_page!=null;
-                if (window.history.pushState) {
-                    const newURL = new URL(window.location.href);
-                    newURL.search = '?pg='+response.data.current_page;
-                    window.history.pushState({ path: newURL.href }, '', newURL.href);
-                }
+                // if (window.history.pushState) {
+                //     const newURL = new URL(window.location.href);
+                //     let pageurl = '?pg='+response.data.current_page;
+                //     newURL.search = pageurl;
+                //     window.history.pushState({ path: newURL.href }, '', newURL.href);
+                // }
                 this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
             }else{
                 console.log('error: '+response.data.message);

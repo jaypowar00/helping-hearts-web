@@ -17,8 +17,8 @@ class Home extends PureComponent {
             total_hospitals: 0,
             loggedin: false,
             get_page: (urlParams.has('pg'))?urlParams.get('pg'):1,
-            order: '',
-            search: '',
+            order: (urlParams.has('or'))?urlParams.get('or'):'',
+            search: (urlParams.has('ser'))?urlParams.get('ser'):'',
             active_dropdown: 'dp-default',
         }
         this.set_state_values = this.set_state_values.bind(this);
@@ -75,12 +75,7 @@ class Home extends PureComponent {
         this.setState({
             search: input_tag.value
         }, ()=>{
-            if (window.history.pushState) {
-                const newURL = new URL(window.location.href);
-                newURL.search = '?';
-                window.history.pushState({ path: newURL.href }, '', newURL.href);
-            }
-            this.hospitalRef.current.set_search(this.state.search);
+            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
     }
 
@@ -95,21 +90,21 @@ class Home extends PureComponent {
             active_dropdown: id,
             order: order
         }, ()=>{
-            this.hospitalRef.current.set_order(this.state.order);
+            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         })
         document.getElementById('sidebar-search-input').value = "";
         document.getElementById('dropdown-search-input').value = "";
     }
 
     onRadioChange(e) {
-        let input_tag1 = document.getElementById('sidebar-search-input');
-        let input_tag2 = document.getElementById('dropdown-search-input');
-        input_tag1.value = ''
-        input_tag2.value = ''
+        // let input_tag1 = document.getElementById('sidebar-search-input');
+        // let input_tag2 = document.getElementById('dropdown-search-input');
+        // input_tag1.value = ''
+        // input_tag2.value = ''
         this.setState(
             {order: (e.target.value!=='default')?e.target.value:''
         }, ()=>{
-            this.hospitalRef.current.set_order(this.state.order);
+            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
     }
 
@@ -132,21 +127,21 @@ class Home extends PureComponent {
     }
 
     goToPage(page) {
-        if (window.history.pushState) {
-            const newURL = new URL(window.location.href);
-            newURL.search = '?pg='+page;
-            window.history.pushState({ path: newURL.href }, '', newURL.href);
-        }
+        // if (window.history.pushState) {
+        //     const newURL = new URL(window.location.href);
+        //     newURL.search = '?pg='+page;
+        //     window.history.pushState({ path: newURL.href }, '', newURL.href);
+        // }
         this.setState({
             get_page: page
         }, ()=>{
-            this.hospitalRef.current.set_order(this.state.order);
+            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
         
-        let input_tag1 = document.getElementById('sidebar-search-input');
-        let input_tag2 = document.getElementById('dropdown-search-input');
-        input_tag1.value = ''
-        input_tag2.value = ''
+        // let input_tag1 = document.getElementById('sidebar-search-input');
+        // let input_tag2 = document.getElementById('dropdown-search-input');
+        // input_tag1.value = ''
+        // input_tag2.value = ''
     }
 
     onLogoutClick(e) {
@@ -304,7 +299,7 @@ class Home extends PureComponent {
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
-                        <Hospitals ref={this.hospitalRef} get_page={this.state.get_page} set_state_values={this.set_state_values} />
+                        <Hospitals ref={this.hospitalRef} set_state_values={this.set_state_values} />
                         <div className="container pagination">
                             <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop', display: 'none'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
                             <small style={{marginTop: '17px'}}>
