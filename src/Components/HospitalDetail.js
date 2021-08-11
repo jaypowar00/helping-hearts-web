@@ -12,7 +12,7 @@ export class HospitalDetail extends Component {
         this.state = {
             loading: true,
             hdUrl: false,
-            id: (urlParams.has('hd'))?urlParams.get('hd'):0,
+            id: parseInt((urlParams.has('hd'))?urlParams.get('hd'):0),
             corona_count: 0,
             beds: 0,
             ventilators: 0,
@@ -36,6 +36,8 @@ export class HospitalDetail extends Component {
             date_joined: "",
             loggedIn: false,
             file: null,
+            requested: null,
+            admitted: null,
         }
         this.ctscanRef = React.createRef();
         this.bedTypeRef = React.createRef();
@@ -95,7 +97,9 @@ export class HospitalDetail extends Component {
                 if(response.data.status){
                     this.setState({
                         loggedIn: true,
-                        account_type: response.data.user.account_type
+                        account_type: response.data.user.account_type,
+                        requested: (response.data.user.detail.admit_request)?response.data.user.detail.requested_hospital.id:null,
+                        admitted: (response.data.user.detail.admitted)?response.data.user.detail.admitted_hospital.id:null,
                     })
                 }
             })
@@ -251,6 +255,31 @@ export class HospitalDetail extends Component {
             closeBtn.click();
         }
     }
+
+    cancleAdmitRequest(e) {
+        let access_token = this.getCookie('access_token');
+        if(access_token!=null){
+            e.preventDefault();
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/cancle-request', {}, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Token `+access_token
+                }
+            }).then(response=>{
+                if(response.data.status){
+                    alert('request cancelled');
+                    window.location.reload();
+                }else{
+                    alert('error!\n'+response.data.message);
+                }
+            }).catch(error=>{
+                console.log('error!\n'+error);
+                console.log('error!\n'+error.response);
+            });
+        }else{
+            alert('not logged in!');
+        }
+    }
     
     render() {
         let date = (this.state.date_joined!=="")?new Date(this.state.date_joined): new Date();
@@ -372,7 +401,8 @@ export class HospitalDetail extends Component {
                             {
                                 (this.state.hdUrl)?
                                 <>
-                                    <h3 className="pb-1 mt-2">{this.state.name}</h3><hr className="detailHR" style={{width: '69.5vw', minWidth: '295px', marginLeft: '-57px'}}/>
+                                    <h3 className="pb-1 mt-2">{this.state.name}</h3>
+                                    <hr className="detailHR" style={{width: '69.5vw', minWidth: '295px', marginLeft: '-57px'}}/>
                                     <span className="badge bg-info m-1 no-txt-cursor non-selectable">{this.state.beds} beds</span>
                                     <span className="badge bg-info m-1 no-txt-cursor non-selectable">{this.state.ventilators} ventilators</span>
                                     <span className="badge bg-info m-1 no-txt-cursor non-selectable">{this.state.oxygens} oxygens</span>
@@ -395,13 +425,29 @@ export class HospitalDetail extends Component {
                                             :<></>
                                         }
                                     </div>
-                                    <button type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
-                                    Request
-                                    </button><br/>
+                                    {
+                                        (this.state.id === this.state.requested)?
+                                            <button type="button" onClick={this.cancleAdmitRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
+                                            Cancle
+                                            </button>
+                                        :(this.state.id === this.state.admitted)?
+                                            <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
+                                            (Admitted)
+                                            </button>
+                                        :(this.state.admitted || this.state.requested)?
+                                            <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{cursor: 'not-allowed'}:{display: 'none'}} className="btnn bg-secondary" data-bs-toggle="modal" data-bs-target="#mymodal">
+                                            Request
+                                            </button>
+                                        :
+                                            <button type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
+                                            Request
+                                            </button>
+                                    }
+                                    <br/>
                                 </>
                                 :
                                 <>
-                                    <h3 className="pb-1 mt-2">{(this.state.loading)?"Loading Data ...":"Invalid URL"}</h3><hr style={{width: '69.5vw', minWidth: '295px', marginLeft: '-57px'}}/>
+                                    <h3 className="pb-1 mt-2">{(this.state.loading)?"Loading Data ...":"Invalid URL"}</h3><hr className="detailHR" style={{width: '69.5vw', minWidth: '295px', marginLeft: '-57px'}}/>
                                 </>
                             }
                         </div>
