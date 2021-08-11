@@ -261,7 +261,7 @@ export class HospitalDetail extends Component {
         let access_token = this.getCookie('access_token');
         if(access_token!=null){
             e.preventDefault();
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/cancle-request', {}, {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/cancel-request/', {}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
