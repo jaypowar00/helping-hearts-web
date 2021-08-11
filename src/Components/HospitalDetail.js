@@ -239,7 +239,7 @@ export class HospitalDetail extends Component {
                         <div className="modal-footer">
                             <button type="button" id="requestFormCloseBtn" className="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
                             {
-                                (['ventilator provider','coworker','doctor','nurse'].includes(this.state.account_type))?
+                                (['coworker','doctor','nurse'].includes(this.state.account_type))?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
                                 :(this.state.account_type==='patient')?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
