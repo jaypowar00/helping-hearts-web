@@ -343,7 +343,7 @@ export class HospitalDetail extends Component {
                                             :<></>
                                         }
                                     </div>
-                                    <button type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
+                                    <button type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
                                     Request
                                     </button><br/>
                                 </>
