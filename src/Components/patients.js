@@ -6,11 +6,11 @@ class Patients extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            hospitals : [],
+            patients : [],
             loading: true,
             accountType: 0
         }
-        this.onHospitalClick = this.onHospitalClick.bind(this);
+        this.onpatientClick = this.onpatientClick.bind(this);
     }
 
     set_search_order_page(search, order, page){
@@ -35,12 +35,15 @@ class Patients extends PureComponent {
                 }
             });
         }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+'&s_name='+search+'&order='+order)
-        .then(response => {
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-patients/', {
+            headers: {
+                'Authorization': `Token `+access_token
+            }
+        }).then(response => {
             console.log(response);
             if(response.data.status){
                 this.setState({
-                    hospitals: response.data.hospitals,
+                    patients: response.data.patients,
                     loading: false
                 });
                 let isNext = response.data.next_page!=null;
@@ -55,12 +58,12 @@ class Patients extends PureComponent {
                     newURL.search = pageUrl;
                     window.history.pushState({ path: newURL.href }, '', newURL.href);
                 }
-                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
+                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_patients, loggedin, isNext, isPrev);
             }else{
                 console.log('error: '+response.data.message);
                 this.setState({
                     loading: false,
-                    hospitals: []
+                    patients: []
                 });
                 this.props.set_state_values(0, 1, 0, loggedin, false, false);
             }
@@ -113,12 +116,16 @@ class Patients extends PureComponent {
             order = (urlParams.get('or')!=='' && urlParams.get('or')!==null)?urlParams.get('or'):'';
         if(urlParams.has('ser'))
             search = (urlParams.get('ser')!=='' && urlParams.get('ser')!==null)?urlParams.get('ser'):'';
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+'&order='+order+'&s_name='+search)
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-patients/', {
+            headers: {
+                'Authorization': `Token `+access_token
+            }
+        })
         .then(response => {
             console.log(response);
             if(response.data.status){
                 this.setState({
-                    hospitals: response.data.hospitals,
+                    patients: response.data.patients,
                     loading: false
                 });
                 let isNext = response.data.next_page!=null;
@@ -129,7 +136,7 @@ class Patients extends PureComponent {
                 //     newURL.search = pageurl;
                 //     window.history.pushState({ path: newURL.href }, '', newURL.href);
                 // }
-                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
+                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.patients.length, loggedin, isNext, isPrev);
             }else{
                 console.log('error: '+response.data.message);
                 this.setState({
@@ -144,12 +151,12 @@ class Patients extends PureComponent {
         });
     }
 
-    onHospitalClick(id) {
-        window.location.href = '/hospital/?hd='+id;
+    onpatientClick(id) {
+        window.location.href = '/patient/?hd='+id;
     }
 
     render() {
-        const { hospitals: patients } = this.state;
+        const { patients: patients } = this.state;
         return ( 
             <>
             {
@@ -158,17 +165,17 @@ class Patients extends PureComponent {
                     <h5>Loading...</h5>
                 </div>
                 :
-                (this.state.hospitals.length===0)?
+                (this.state.patients.length===0)?
                 <div className="mycard py-4">
-                    <h5>There are no such hospitals to show right now...</h5>
+                    <h5>There are no such patients to show right now...</h5>
                 </div>
                 :<></>
             }
             {
-                patients.map((hospital)=>
-                <div key={hospital.id} className="mycard py-3" onClick={()=>this.onHospitalClick(hospital.id)}>
-                    <h1>{hospital.name}</h1>
-                    <span>beds: {hospital.beds} &nbsp; | ventilators: {hospital.ventilators} &nbsp; | oxygens: {hospital.oxygens}</span>
+                patients.map((patient)=>
+                <div key={patient.id} className="mycard py-3" onClick={()=>this.onpatientClick(patient.id)}>
+                    <h1>{patient.name}</h1>
+                    <span>beds: {patient.beds} &nbsp; | ventilators: {patient.ventilators} &nbsp; | oxygens: {patient.oxygens}</span>
                 </div>
                 )
             }

@@ -14,19 +14,18 @@ class Hospitals extends PureComponent {
     }
 
     set_search_order_page(search, order, page){
-        var access_token = this.getCookie("access_token");
-        var loggedin = false;
+        let access_token = this.getCookie("access_token");
+        let loggedin = false;
+        let account_type = null;
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
-            {
+            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {
                 headers: {
                     'Authorization': 'Token '+access_token
                 }
-            }
-            )
-            .then(response=>{
+            }).then(response=>{
                 if(response.data.status){
                     loggedin = true;
+                    account_type = response.data.user.account_type;
                 }
             }).catch(error=>{
                 console.log(error)
@@ -55,14 +54,14 @@ class Hospitals extends PureComponent {
                     newURL.search = pageUrl;
                     window.history.pushState({ path: newURL.href }, '', newURL.href);
                 }
-                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
+                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev, account_type);
             }else{
                 console.log('error: '+response.data.message);
                 this.setState({
                     loading: false,
                     hospitals: []
                 });
-                this.props.set_state_values(0, 1, 0, loggedin, false, false);
+                this.props.set_state_values(0, 1, 0, loggedin, false, false, account_type);
             }
         }).catch(err => {
             this.setState({
@@ -81,17 +80,14 @@ class Hospitals extends PureComponent {
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
         console.log('page='+this.props.get_page);
-        var access_token = this.getCookie("access_token");
-        var loggedin = false;
+        let access_token = this.getCookie("access_token");
+        let loggedin = false;
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', 
-            {
+            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {
                 headers: {
                     'Authorization': 'Token '+access_token
                 }
-            }
-            )
-            .then(response=>{
+            }).then(response=>{
                 console.log(response)
                 if(response.data.status){
                     loggedin = true;
@@ -131,7 +127,7 @@ class Hospitals extends PureComponent {
                 //     newURL.search = pageurl;
                 //     window.history.pushState({ path: newURL.href }, '', newURL.href);
                 // }
-                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev);
+                this.props.set_state_values(response.data.total_pages, response.data.current_page, response.data.total_hospitals, loggedin, isNext, isPrev, this.state.accountType);
             }else{
                 console.log('error: '+response.data.message);
                 this.setState({

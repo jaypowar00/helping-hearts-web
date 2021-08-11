@@ -20,6 +20,7 @@ class Home extends PureComponent {
             order: (urlParams.has('or'))?urlParams.get('or'):'',
             search: (urlParams.has('ser'))?urlParams.get('ser'):'',
             active_dropdown: 'dp-default',
+            account_type: null,
         }
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
@@ -42,14 +43,15 @@ class Home extends PureComponent {
         this.default_radio_ref.current.checked = true;
     }
 
-    set_state_values(pcount, cpage, hcount, loggedin, isNext, isPrev) {
+    set_state_values(pcount, cpage, hcount, loggedin, isNext, isPrev, ac_type=null) {
         this.setState({
             page_count: pcount,
             current_page: cpage,
             total_hospitals: hcount,
             loggedin: loggedin,
             isNext: isNext,
-            isPrev: isPrev
+            isPrev: isPrev,
+            account_type: ac_type
         });
     }
 
@@ -292,6 +294,14 @@ class Home extends PureComponent {
                             Oxygens ↓
                         </label>
                         <br/>
+                        {
+                            (this.state.account_type=='hospital')?
+                            <>
+                            <hr/>
+                            <a className="badge bg-info" style={{fontSize: '20px', textDecoration: 'none'}} href="/patients">Patients</a>
+                            </>
+                            :<></>
+                        }
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
