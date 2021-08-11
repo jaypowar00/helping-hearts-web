@@ -217,7 +217,20 @@ export class HospitalDetail extends Component {
                 }
             }).then(response=>{
                 if(response.data.status){
-                    window.location.href='/profile';
+                    alert('data uploaded!');
+                    axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/submit-request/', {hid: this.state.id}, {
+                        headers: {
+                            'Authorization': `Token `+access_token
+                        }
+                    }).then(response2 => {
+                        if(response2.data.status){
+                            alert('requested submitted!');
+                        }else{
+                            alert('error!\n'+response2.data.message);
+                        }
+                    }).catch(error=>{
+                        console.log(error);
+                    })
                 }else{
                     if(response.data.status===false)
                     alert('something went wrong!\n'+response.data.message);
