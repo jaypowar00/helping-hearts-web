@@ -537,3 +537,36 @@ br{
 .profile-div span {
   font-size: 18px;
 }
+
+.no-txt-cursor {
+  cursor: default;
+}
+
+.non-selectable{
+  user-select: none;
+}
+
+.detail {
+  padding: 30px 60px;
+  background-color: rgb(221, 232, 255);
+  margin: 30px auto;
+  text-align: center;
+}
+
+@media (max-width: 582px) {
+  
+  .hospitalDetailContainer {
+    position: relative;
+    width: 90vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .detail {
+    padding: 30px 20px;
+  }
+  .detailHR {
+    margin-left: -17px !important;
+    width: 89vw !important;
+  }
+}

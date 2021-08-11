@@ -10,21 +10,23 @@ import Profile from './Components/Profile';
 import ChangePassword from './Components/ChangePassword';
 import Home from './Components/Home';
 import React from 'react';
+import HospitalDetail from './Components/HospitalDetail';
 
 function App() {
   return (
     <div className="App">
       <React.Fragment>
         <Switch>
-          <Route path='/' exact component={Home}/>
-          <Route path='/register'   component={Register}/>
-          <Route path='/login'  component={LoginPage}/>
-          <Route path='/thankyoupage'  component={ThankYou}/>
-          <Route path='/about'  component={About}/>
-          <Route path='/contact'  component={Contact}/>
-          <Route path='/update'  component={Update}/>
-          <Route path='/profile'  component={Profile}/>
-          <Route path='/changepassword'  component={ChangePassword}/>
+          <Route exact path='/' component={Home}/>
+          <Route exact path='/register'   component={Register}/>
+          <Route exact path='/login'  component={LoginPage}/>
+          <Route exact path='/thankyoupage'  component={ThankYou}/>
+          <Route exact path='/about'  component={About}/>
+          <Route exact path='/contact'  component={Contact}/>
+          <Route exact path='/update'  component={Update}/>
+          <Route exact path='/profile'  component={Profile}/>
+          <Route exact path='/changepassword'  component={ChangePassword}/>
+          <Route exact path='/hospital' component={HospitalDetail} />
         </Switch>
       </React.Fragment> 
     </div>

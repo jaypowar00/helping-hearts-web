@@ -97,10 +97,6 @@ class Home extends PureComponent {
     }
 
     onRadioChange(e) {
-        // let input_tag1 = document.getElementById('sidebar-search-input');
-        // let input_tag2 = document.getElementById('dropdown-search-input');
-        // input_tag1.value = ''
-        // input_tag2.value = ''
         this.setState(
             {order: (e.target.value!=='default')?e.target.value:''
         }, ()=>{

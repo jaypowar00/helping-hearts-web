@@ -16,12 +16,6 @@ class Contact extends Component {
         this.onLogoutClick = this.onLogoutClick.bind(this);
     }
 
-    getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
     componentDidMount() {
         var access_token = this.getCookie('access_token');
         if(access_token){
@@ -42,6 +36,12 @@ class Contact extends Component {
                 console.log(error)
             })
         }
+    }
+    
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
     onMenuBtnClick() {
@@ -158,7 +158,7 @@ class Contact extends Component {
                 </div>
             </div>  
 
-            <div className="icon">
+            <div className="icon text-center">
                 <h1>Contact Us</h1>
                 <p>
                     contact@helpinghearts.in<br/>
@@ -166,12 +166,12 @@ class Contact extends Component {
                     +919503745710
                 </p>
                 <br/>
-                <a href="/#"><ion-icon name="logo-google"></ion-icon></a>
-                {/* <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
-                <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>  */}
-                <a href="https://www.linkedin.com/in/manasi-shinde-54aa4719b"><ion-icon name="logo-linkedin"></ion-icon></a>                    
-                <a href="/#"><ion-icon name="logo-twitter"></ion-icon></a>
-                <a href="/#"><ion-icon name="logo-skype"></ion-icon></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://google.com"><i className="fab fa-google-plus-square"></i></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://instagram.com"><i className="fab fa-facebook-square"></i></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://facebook.com"><i className="fab fa-instagram-square"></i></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://www.linkedin.com/in/manasi-shinde-54aa4719b"><i className="fab fa-linkedin"></i></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://twitter.com"><i className="fab fa-twitter-square"></i></a>
+                <a style={{fontSize: '25px'}} className="mx-2" href="https://skype.com"><i className="fab fa-skype"></i></a>
             </div>
 
         </div>

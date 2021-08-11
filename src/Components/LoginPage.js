@@ -74,10 +74,14 @@ class LoginPage extends Component {
         axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', this.state)
         .then(response=>{
             console.log(response)
-            document.cookie = 'access_token=' + response.data['access_token'];
-            document.cookie = 'refresh_token=' + response.data['refresh_token'];
-            document.cookie = 'csrf_token=' + response.data['csrf_token'];
-            window.location.href = '/login/#';
+            if(response.data.status){
+                document.cookie = 'access_token=' + response.data['access_token'];
+                document.cookie = 'refresh_token=' + response.data['refresh_token'];
+                document.cookie = 'csrf_token=' + response.data['csrf_token'];
+                window.setTimeout(()=>window.location.href = '/', 500);
+            }else{
+                alert('Login Failed!\n'+response.data.message);
+            }
         })
         .catch(error=>{
             console.log(error)

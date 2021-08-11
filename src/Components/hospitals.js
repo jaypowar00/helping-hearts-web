@@ -6,8 +6,10 @@ class Hospitals extends PureComponent {
         super(props)
         this.state = {
             hospitals : [],
-            loading: true
+            loading: true,
+            accountType: 0
         }
+        this.onHospitalClick = this.onHospitalClick.bind(this);
     }
 
     set_search_order_page(search, order, page){
@@ -87,9 +89,13 @@ class Hospitals extends PureComponent {
             }
             )
             .then(response=>{
+                console.log(response)
                 if(response.data.status){
                     loggedin = true;
                 }
+                this.setState({
+                    accountType: response.data.user.account_type
+                })
             }).catch(err=>{
                 console.log(err);
                 // alert(err);
@@ -135,6 +141,10 @@ class Hospitals extends PureComponent {
         });
     }
 
+    onHospitalClick(id) {
+        window.location.href = '/hospital/?hd='+id;
+    }
+
     render() {
         const { hospitals } = this.state;
         return ( 
@@ -153,7 +163,7 @@ class Hospitals extends PureComponent {
             }
             {
                 hospitals.map((hospital)=>
-                <div key={hospital.id} className="mycard py-3">
+                <div key={hospital.id} className="mycard py-3" onClick={()=>this.onHospitalClick(hospital.id)}>
                     <h1>{hospital.name}</h1>
                     <span>beds: {hospital.beds} &nbsp; | ventilators: {hospital.ventilators} &nbsp; | oxygens: {hospital.oxygens}</span>
                 </div>
