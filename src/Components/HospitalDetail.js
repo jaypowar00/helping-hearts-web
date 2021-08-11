@@ -233,7 +233,7 @@ export class HospitalDetail extends Component {
                             alert('requested submitted!');
                             this.setState({
                                 requested: this.id
-                            })
+                            }, ()=>{console.log(this.state);})
                         }else{
                             alert('error!\n'+response2.data.message);
                         }
