@@ -232,7 +232,7 @@ export class HospitalDetail extends Component {
                         if(response2.data.status){
                             alert('requested submitted!');
                             this.setState({
-                                requested: this.id
+                                requested: this.state.id
                             }, ()=>{console.log(this.state);})
                         }else{
                             alert('error!\n'+response2.data.message);
