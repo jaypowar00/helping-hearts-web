@@ -47,6 +47,7 @@ export class HospitalDetail extends Component {
         this.onFileSelect = this.onFileSelect.bind(this);
         this.getBase64 = this.getBase64.bind(this);
         this.onAdmitRequestSubmit = this.onAdmitRequestSubmit.bind(this);
+        this.cancleAdmitRequest = this.cancleAdmitRequest.bind(this);
     }
 
     getBase64 = file => {
