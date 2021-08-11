@@ -218,7 +218,7 @@ export class HospitalDetail extends Component {
             }).then(response=>{
                 if(response.data.status){
                     alert('data uploaded!');
-                    axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/submit-request/', {hid: this.state.id}, {
+                    axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/submit-request/', {hid: parseInt(this.state.id, 10)}, {
                         withCredentials: true,
                         headers: {
                             'Authorization': `Token `+access_token
