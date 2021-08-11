@@ -62,7 +62,7 @@ class LoginPage extends Component {
                 }
             }).catch(error => {
                 console.log(error)
-                if(error.response.data.detail === "access token expired!"){
+                if(error.response && error.response.data && error.response.data.detail === "access token expired!"){
                     refreshToken();
                     window.location.reload();
                 }
