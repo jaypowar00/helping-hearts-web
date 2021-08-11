@@ -47,7 +47,7 @@ export class HospitalDetail extends Component {
         this.onFileSelect = this.onFileSelect.bind(this);
         this.getBase64 = this.getBase64.bind(this);
         this.onAdmitRequestSubmit = this.onAdmitRequestSubmit.bind(this);
-        this.cancleAdmitRequest = this.cancleAdmitRequest.bind(this);
+        this.cancelAdmitRequest = this.cancelAdmitRequest.bind(this);
     }
 
     getBase64 = file => {
@@ -231,6 +231,9 @@ export class HospitalDetail extends Component {
                     }).then(response2 => {
                         if(response2.data.status){
                             alert('requested submitted!');
+                            this.setState({
+                                requested: this.id
+                            })
                         }else{
                             alert('error!\n'+response2.data.message);
                         }
@@ -257,7 +260,7 @@ export class HospitalDetail extends Component {
         }
     }
 
-    cancleAdmitRequest(e) {
+    cancelAdmitRequest(e) {
         let access_token = this.getCookie('access_token');
         if(access_token!=null){
             e.preventDefault();
@@ -269,7 +272,9 @@ export class HospitalDetail extends Component {
             }).then(response=>{
                 if(response.data.status){
                     alert('request cancelled');
-                    window.location.reload();
+                    this.setState({
+                        requested: null
+                    })
                 }else{
                     alert('error!\n'+response.data.message);
                 }
@@ -428,8 +433,8 @@ export class HospitalDetail extends Component {
                                     </div>
                                     {
                                         (this.state.id === this.state.requested)?
-                                            <button type="button" onClick={this.cancleAdmitRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
-                                            Cancle
+                                            <button type="button" onClick={this.cancelAdmitRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
+                                            Cancel
                                             </button>
                                         :(this.state.id === this.state.admitted)?
                                             <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
