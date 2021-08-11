@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../Styles/mycss.css'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios'
+import { refreshToken } from '../utils/tokenRefresh'
 
 class About extends Component {
 
@@ -40,6 +41,9 @@ class About extends Component {
             })
             .catch(error=>{
                 console.log(error)
+                if(error.response.data.detail === "access token expired!"){
+                    refreshToken();
+                }
             })
         }
     }
@@ -73,14 +77,14 @@ class About extends Component {
                 if(response.data.status){
                     console.log('successfully logged out!');
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }else{
                     console.log('something went wrong!');
                 }
             }).catch(e=>{
                 document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 console.log(e);
                 window.location.reload();

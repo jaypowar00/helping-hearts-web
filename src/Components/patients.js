@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, {PureComponent} from 'react'
 import { refreshToken } from '../utils/tokenRefresh'
 
-class Hospitals extends PureComponent {
+class Patients extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -99,11 +99,9 @@ class Hospitals extends PureComponent {
                 this.setState({
                     accountType: response.data.user.account_type
                 })
-            }).catch(error=>{
-                console.log(error)
-                if(error.response.data.detail === "access token expired!"){
-                    refreshToken();
-                }
+            }).catch(err=>{
+                console.log(err);
+                // alert(err);
             });
         }
         let page=1;
@@ -151,7 +149,7 @@ class Hospitals extends PureComponent {
     }
 
     render() {
-        const { hospitals } = this.state;
+        const { hospitals: patients } = this.state;
         return ( 
             <>
             {
@@ -167,7 +165,7 @@ class Hospitals extends PureComponent {
                 :<></>
             }
             {
-                hospitals.map((hospital)=>
+                patients.map((hospital)=>
                 <div key={hospital.id} className="mycard py-3" onClick={()=>this.onHospitalClick(hospital.id)}>
                     <h1>{hospital.name}</h1>
                     <span>beds: {hospital.beds} &nbsp; | ventilators: {hospital.ventilators} &nbsp; | oxygens: {hospital.oxygens}</span>
@@ -179,4 +177,4 @@ class Hospitals extends PureComponent {
     }
 }
 
-export default Hospitals
+export default Patients

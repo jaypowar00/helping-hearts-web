@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react'
 import '../Styles/home.css'
-import Hospitals from './hospitals'
+import Patients from '../Components/patients'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
-import axios from 'axios'
+import axios from 'axios';
 
-class Home extends PureComponent {
+class PatientsContainer extends PureComponent {
     constructor(props) {
         super(props);
         this.default_radio_ref = React.createRef();
@@ -25,7 +25,7 @@ class Home extends PureComponent {
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.onRadioChange = this.onRadioChange.bind(this);
-        this.hospitalRef = React.createRef();
+        this.PatientRef = React.createRef();
     }
 
     range(start, end) {
@@ -75,7 +75,7 @@ class Home extends PureComponent {
         this.setState({
             search: input_tag.value
         }, ()=>{
-            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
+            this.PatientRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
     }
 
@@ -90,17 +90,15 @@ class Home extends PureComponent {
             active_dropdown: id,
             order: order
         }, ()=>{
-            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
+            this.PatientRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         })
-        document.getElementById('sidebar-search-input').value = "";
-        document.getElementById('dropdown-search-input').value = "";
     }
 
     onRadioChange(e) {
         this.setState(
             {order: (e.target.value!=='default')?e.target.value:''
         }, ()=>{
-            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
+            this.PatientRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
     }
 
@@ -131,7 +129,7 @@ class Home extends PureComponent {
         this.setState({
             get_page: page
         }, ()=>{
-            this.hospitalRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
+            this.PatientRef.current.set_search_order_page(this.state.search, this.state.order, this.state.get_page);
         });
         
         // let input_tag1 = document.getElementById('sidebar-search-input');
@@ -181,7 +179,7 @@ class Home extends PureComponent {
                         </a>
                         <div className='project_name'><b>Helping Hearts</b></div>
                         <div className="header-right">
-                            <a className="active mx-1" href="/">Home</a>
+                            <a className="mx-1" href="/">Home</a>
                             {
                                 (this.state.loggedin)?
                                 <a className="mx-1" href='/profile'>Profile</a>
@@ -200,8 +198,8 @@ class Home extends PureComponent {
                             <section className="panel panel-hide">
                                     <div className="navbar-collapse">
                                         <ul className="navbar-nav mr-auto">
-                                        <li className="nav-item active">
-                                            <a className="nav-link active" href="/">Home</a>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/">Home</a>
                                         </li>
                                         <li className="nav-item">
                                         {
@@ -224,10 +222,6 @@ class Home extends PureComponent {
                                             </li>:<></>
                                         }
                                         </ul>
-                                        <form className="form-inline my-2 my-lg-0">
-                                        <input id="dropdown-search-input" className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                                        <button onClick={()=>{this.onSearchHospital('dropdown-search-input');}} className="btn btn-success form-control my-2 my-sm-0" type="button">Search</button>
-                                        </form>
                                     </div>
                             </section>
                         </div>
@@ -242,20 +236,13 @@ class Home extends PureComponent {
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdown_sortby">
                                 <li><span className="dropdown-item active" onClick={()=>{this.onSortingChange('', 'dp-default')}} id="dp-default">Default</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_a', 'dp-beds-a')}} id="dp-beds-a">Beds ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_d', 'dp-beds-d')}} id="dp-beds-d">Beds ↓</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ven_a', 'dp-ven-a')}} id="dp-ven-a">Ventilators ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ven_d', 'dp-ven-d')}} id="dp-ven-d">Ventilators ↓</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ox_a', 'dp-oxy-a')}} id="dp-oxy-a">Oxygens ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ox_d', 'dp-oxy-d')}} id="dp-oxy-d">Oxygens ↓</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_a', 'dp-beds-a')}} id="dp-beds-a">CT Scan Score ↑</span></li>
+                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('bed_d', 'dp-beds-d')}} id="dp-beds-d">CT Scan Score ↓</span></li>
                             </ul>
                         </div>
                     </div>
                     <div className="sidebar p-3">
-                        <div  className='mb-1'><b>Search:</b></div>
-                        <input className='m-1' name='search' id="sidebar-search-input"/>
-                        <button onClick={()=>{this.onSearchHospital('sidebar-search-input');}} style={{borderRadius: '17%'}}><i className="fas fa-search"></i></button>
-                        <hr/>
+                        
                         <div className='mb-1'><b>Sort by:</b></div>
                         <label>
                             <input onClick={this.onRadioChange} className='mx-2' value="default" name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
@@ -264,38 +251,18 @@ class Home extends PureComponent {
                         <br/>
                         <label>
                             <input onClick={this.onRadioChange} className='mx-2' value="bed_a" name='sort_radio' type='radio'></input>
-                            Beds ↑
+                            CT Scan Score ↑
                         </label>
                         <br/>
                         <label>
                             <input onClick={this.onRadioChange} className='mx-2' value="bed_d" name='sort_radio' type='radio'></input>
-                            Beds ↓
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ven_a" name='sort_radio' type='radio'></input>
-                            Ventilators ↑
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ven_d" name='sort_radio' type='radio'></input>
-                            Ventilators ↓
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ox_a" name='sort_radio' type='radio'></input>
-                            Oxygens ↑
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ox_d" name='sort_radio' type='radio'></input>
-                            Oxygens ↓
+                            CT Scan Score ↓
                         </label>
                         <br/>
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
-                        <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Hospitals found!</b></div>
-                        <Hospitals ref={this.hospitalRef} set_state_values={this.set_state_values} />
+                        <div className='container mx-4 mb-3'><b>{this.state.total_hospitals} Requests Found!</b></div>
+                        <Patients ref={this.PatientRef} set_state_values={this.set_state_values} />
                         <div className="container pagination">
                             <span onClick={() => {if(this.state.isPrev){this.goToPage(this.state.current_page-1)}}} style={(this.state.isPrev)?{cursor: 'pointer'}:{cursor: 'no-drop', display: 'none'}} ><i className="fas fa-step-backward my-3 mx-1 px-2 p-1"></i></span>
                             <small style={{marginTop: '17px'}}>
@@ -374,4 +341,4 @@ class Home extends PureComponent {
     }
 }
 
-export default Home
+export default PatientsContainer

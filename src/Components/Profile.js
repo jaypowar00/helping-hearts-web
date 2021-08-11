@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios'
+import { refreshToken } from '../utils/tokenRefresh'
 
 export class Profile extends Component {
 
@@ -59,14 +60,14 @@ export class Profile extends Component {
                 if(response.data.status){
                     console.log('successfully logged out!');
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }else{
                     console.log('something went wrong!');
                 }
             }).catch(e=>{
                 document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 console.log(e);
                 window.location.reload();
@@ -102,13 +103,16 @@ export class Profile extends Component {
                     })
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     window.location.hre="/login";
                 }
             })
             .catch(error=>{
-                console.log(error.detail)
+                console.log(error)
+                if(error.response.data.detail === "access token expired!"){
+                    refreshToken();
+                }
             })
         }else{
             console.log('Not logged in!\nPlease log in again!');
@@ -117,10 +121,8 @@ export class Profile extends Component {
     }
 
     render() {    
-         
         return (
             <div>
-            
                 <div>
                 <div className="header">
                     <div>

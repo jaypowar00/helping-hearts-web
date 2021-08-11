@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../Styles/mycss.css'
 import axios from 'axios'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
+import { refreshToken } from '../utils/tokenRefresh'
 
 
 class LoginPage extends Component {
@@ -56,14 +57,15 @@ class LoginPage extends Component {
                     window.location.href = '/';
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }
-            }).catch(err => {
-                document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                console.log(err);
+            }).catch(error => {
+                console.log(error)
+                if(error.response.data.detail === "access token expired!"){
+                    refreshToken();
+                    window.location.reload();
+                }
             });
         }
     }
@@ -76,7 +78,7 @@ class LoginPage extends Component {
             console.log(response)
             if(response.data.status){
                 document.cookie = 'access_token=' + response.data['access_token'];
-                document.cookie = 'refresh_token=' + response.data['refresh_token'];
+                document.cookie = 'refreshtoken=' + response.data['refresh_token'];
                 document.cookie = 'csrf_token=' + response.data['csrf_token'];
                 window.setTimeout(()=>window.location.href = '/', 500);
             }else{

@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import '../Styles/mycss.css'
+import { refreshToken } from '../utils/tokenRefresh'
 
 export class HospitalDetail extends Component {
 
@@ -36,11 +37,14 @@ export class HospitalDetail extends Component {
             loggedIn: false,
             file: null,
         }
+        this.ctscanRef = React.createRef();
+        this.bedTypeRef = React.createRef();
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.getCookie = this.getCookie.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onFileSelect = this.onFileSelect.bind(this);
         this.getBase64 = this.getBase64.bind(this);
+        this.onAdmitRequestSubmit = this.onAdmitRequestSubmit.bind(this);
     }
 
     getBase64 = file => {
@@ -97,6 +101,9 @@ export class HospitalDetail extends Component {
             })
             .catch(error=>{
                 console.log(error)
+                if(error.response.data.detail === "access token expired!"){
+                    refreshToken();
+                }
             })
         }
         if(urlParams.has('hd')){
@@ -174,14 +181,14 @@ export class HospitalDetail extends Component {
                 if(response.data.status){
                     console.log('successfully logged out!');
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }else{
                     console.log('something went wrong!');
                 }
             }).catch(e=>{
                 document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 console.log(e);
                 window.location.reload();
@@ -195,9 +202,40 @@ export class HospitalDetail extends Component {
     }
 
     onAdmitRequestSubmit(e){
-        e.preventDefault();
-        let closeBtn = document.getElementById('requestFormCloseBtn');
-        closeBtn.click();
+        let access_token = this.getCookie('access_token');
+        if(access_token!=null){
+            e.preventDefault();
+            let admitData = {
+                ct_scan_score: this.ctscanRef.current.value,
+                ct_scan_document: this.state.file,
+                bed_type: this.bedTypeRef.current.value
+            }
+            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', admitData, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Token `+access_token
+                }
+            }).then(response=>{
+                if(response.data.status){
+                    window.location.href='/profile';
+                }else{
+                    if(response.data.status===false)
+                    alert('something went wrong!\n'+response.data.message);
+                    else
+                    alert('something went wrong!\nTry again later');
+                }
+            }).catch(e=>{
+                console.log('Error:\n'+e);
+                // window.location.href='/profile';
+            }).finally(()=>{
+                let closeBtn = document.getElementById('requestFormCloseBtn');
+                closeBtn.click();
+            })
+        }else{
+            alert('not logged in!');
+            let closeBtn = document.getElementById('requestFormCloseBtn');
+            closeBtn.click();
+        }
     }
     
     render() {
@@ -220,14 +258,14 @@ export class HospitalDetail extends Component {
                                     <form id="form1" onSubmit={this.onAdmitRequestSubmit}>
                                         <span style={{display: 'block'}}>
                                         <label className="form-control-label mb-2" style={{marginRight: '5px'}} htmlFor="bed_type">Bed Type:</label>
-                                        <select className="selectopt"  id="bed_type" ref={this.accountRef} onChange={this.onAccountChange}>
+                                        <select className="selectopt"  id="bed_type" ref={this.bedTypeRef} onChange={this.onAccountChange}>
                                             <option value={1} >Bed</option>
                                             <option value={2} >Bed + Ventilator</option>
                                             <option value={3} >Bed + Oxygen</option>
                                         </select>
                                         </span>
                                         <label htmlFor="ctscore" className="form-control-label">CT Scan Score:</label>
-                                        <input id="ctscore" className="form-control mb-2" onInput={(e)=>e.target.setCustomValidity('')} onInvalid={(e)=>{e.target.setCustomValidity('Please provide CT Scan Score!');}} required/>
+                                        <input id="ctscore" className="form-control mb-2" ref={this.ctscanRef} name="ctscore" onInput={(e)=>e.target.setCustomValidity('')} onInvalid={(e)=>{e.target.setCustomValidity('Please provide CT Scan Score!');}} required/>
                                         <label htmlFor="ctfile" className="form-control-label">CT Scan Document:</label>
                                         <input id="ctfile" type="file" className="form-control mb-2" onInput={(e)=>e.target.setCustomValidity('')} onInvalid={(e)=>{e.target.setCustomValidity('Please provide CT Scan document!');}} onChange={this.onFileSelect} required/>
                                         <p>document preview:</p>
@@ -240,7 +278,7 @@ export class HospitalDetail extends Component {
                             <button type="button" id="requestFormCloseBtn" className="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
                             {
                                 (['coworker','doctor','nurse'].includes(this.state.account_type))?
-                                <button type="submit" form="form1" className="btn btn-success">Submit</button>
+                                <button type="button" className="btn btn-success">Submit</button>
                                 :(this.state.account_type==='patient')?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
                                 :<></>

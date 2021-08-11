@@ -11,6 +11,7 @@ import ChangePassword from './Components/ChangePassword';
 import Home from './Components/Home';
 import React from 'react';
 import HospitalDetail from './Components/HospitalDetail';
+import PatientsContainer from './Components/PatientsContainer';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route exact path='/profile'  component={Profile}/>
           <Route exact path='/changepassword'  component={ChangePassword}/>
           <Route exact path='/hospital' component={HospitalDetail} />
+          <Route exact path='/patients' component={PatientsContainer} />
         </Switch>
       </React.Fragment> 
     </div>
