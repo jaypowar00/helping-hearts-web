@@ -241,7 +241,7 @@ export class HospitalDetail extends Component {
                             {
                                 (['ventilator provider','coworker','doctor','nurse'].includes(this.state.account_type))?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
-                                :(this.state.account_type===1)?
+                                :(this.state.account_type==='patient')?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
                                 :<></>
                             }
