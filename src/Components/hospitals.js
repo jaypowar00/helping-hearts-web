@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, {PureComponent} from 'react'
 import { refreshToken } from '../utils/tokenRefresh'
+import '../Styles/spinkit.css'
 
 class Hospitals extends PureComponent {
     constructor(props) {
@@ -18,6 +19,7 @@ class Hospitals extends PureComponent {
         let loggedin = false;
         let account_type = null;
         if(access_token!=null){
+            this.setState({loading: true, hospitals: []});
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {
                 headers: {
                     'Authorization': 'Token '+access_token
@@ -153,7 +155,13 @@ class Hospitals extends PureComponent {
             {
                 (this.state.loading)?
                 <div className="mycard py-4">
-                    <h5>Loading...</h5>
+                    <div className="sk-wave sk-center" style={{inlineSize: '40px', blockSize: '40px'}} >
+                        <div className="sk-wave-rect"></div>
+                        <div className="sk-wave-rect"></div>
+                        <div className="sk-wave-rect"></div>
+                        <div className="sk-wave-rect"></div>
+                        <div className="sk-wave-rect"></div>
+                    </div>
                 </div>
                 :
                 (this.state.hospitals.length===0)?

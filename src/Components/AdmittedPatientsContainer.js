@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react'
 import '../Styles/home.css'
-import Patients from '../Components/patients'
+import AdmittedPatients from './admittedPatients'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios';
 
-class PatientsContainer extends PureComponent {
+class AdmittedPatientsContainer extends PureComponent {
     constructor(props) {
         super(props);
         let urlParams = new URLSearchParams(window.location.search);
@@ -17,9 +17,7 @@ class PatientsContainer extends PureComponent {
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
-        this.onRadioChange = this.onRadioChange.bind(this);
         this.PatientRef = React.createRef();
-        this.default_radio_ref = React.createRef();
     }
 
     range(start, end) {
@@ -32,37 +30,10 @@ class PatientsContainer extends PureComponent {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    componentDidMount() {
-        this.default_radio_ref.current.checked = true;
-    }
-
     set_state_values(pcount, loggedin) {
         this.setState({
             total_patients: pcount,
             loggedin: loggedin,
-        });
-    }
-
-    onSortingChange(order, id) {
-        let oldElement = document.getElementById(this.state.active_dropdown);
-        oldElement.classList.remove('active');
-        let sortElement = document.getElementById(id);
-        sortElement.classList.add('active');
-        let btnElement = document.getElementById('dropdown_sortby');
-        btnElement.innerHTML = sortElement.innerHTML;
-        this.setState({
-            active_dropdown: id,
-            order: order
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
-        })
-    }
-
-    onRadioChange(e) {
-        this.setState(
-            {order: (e.target.value!=='default')?e.target.value:''
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
         });
     }
 
@@ -162,10 +133,10 @@ class PatientsContainer extends PureComponent {
                                             <a className="nav-link" href="/about">About</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link active" href="/patients">Admit Requests</a>
+                                            <a className="nav-link" href="/patients">Admit Requests</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="/patients/admitted">Admitted Patients</a>
+                                            <a className="nav-link active" href="/patients/admitted">Admitted Patients</a>
                                         </li>
                                         {
                                             (this.state.loggedin)?
@@ -195,28 +166,13 @@ class PatientsContainer extends PureComponent {
                     </div>
                     <div className="sidebar p-3">
                         
-                        <div className='mb-1'><b>Sort by:</b></div>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="default" name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
-                            Default
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_a" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↑
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_d" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↓
-                        </label>
-                        <br/>
+                        <div className='mb-1'><b>Navigate to:</b></div>
                         <hr/>
-                            <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a>
+                            <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a>
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
-                        <div className='container mx-4 mb-3'><b>{this.state.total_patients} Requests Found!</b></div>
-                        <Patients ref={this.PatientRef} set_state_values={this.set_state_values} />
+                        <div className='container mx-4 mb-3'><b>{this.state.total_patients} Patients Found!</b></div>
+                        <AdmittedPatients ref={this.PatientRef} set_state_values={this.set_state_values} />
                     </div>
                 </section>
             </>
@@ -224,4 +180,4 @@ class PatientsContainer extends PureComponent {
     }
 }
 
-export default PatientsContainer
+export default AdmittedPatientsContainer

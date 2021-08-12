@@ -220,6 +220,17 @@ class Home extends PureComponent {
                                             <a className="nav-link" href="/about">About</a>
                                         </li>
                                         {
+                                            (this.state.account_type==='hospital')?
+                                            <>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" href="/patients">Admit Requests</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" href="/patients/admitted">Admitted Patients</a>
+                                                </li>
+                                            </>:<></>
+                                        }
+                                        {
                                             (this.state.loggedin)?
                                             <li className="nav-item">
                                                 <a className="nav-link" href='/' onClick={this.onLogoutClick}>Logout</a>
@@ -295,10 +306,12 @@ class Home extends PureComponent {
                         </label>
                         <br/>
                         {
-                            (this.state.account_type=='hospital')?
+                            (this.state.account_type==='hospital')?
                             <>
                             <hr/>
-                            <a className="badge bg-info" style={{fontSize: '20px', textDecoration: 'none'}} href="/patients">Patients</a>
+                            <div className='mb-1'><b>Navigate to:</b></div>
+                            <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a><br/>
+                            <a className="badge bg-info mt-2 active" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a>
                             </>
                             :<></>
                         }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios'
 import { refreshToken } from '../utils/tokenRefresh'
+import '../Styles/spinkit.css'
 
 export class Profile extends Component {
 
@@ -17,7 +18,8 @@ export class Profile extends Component {
              age: "",
              gender: "",
              pincode: "",
-             about: ""
+             about: "",
+             loading: true
         }
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.getCookie = this.getCookie.bind(this);
@@ -54,6 +56,7 @@ export class Profile extends Component {
         var access_token = this.getCookie('access_token');
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
+            this.setState({loading: true});
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
@@ -82,6 +85,7 @@ export class Profile extends Component {
     componentDidMount(){
         var access_token = this.getCookie('access_token');
         if(access_token){
+            this.setState({loading: true});
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
                 headers : {
                     'Authorization' : `token `+access_token
@@ -100,6 +104,7 @@ export class Profile extends Component {
                         gender: response.data.user.detail.gender,
                         pincode: response.data.user.pincode,
                         about: response.data.user.about,
+                        loading: false
                     })
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -113,8 +118,10 @@ export class Profile extends Component {
                 if(error.response && error.response.data && error.response.data.detail === "access token expired!"){
                     refreshToken();
                 }
+                this.setState({loading: false})
             })
         }else{
+            this.setState({loading: false})
             console.log('Not logged in!\nPlease log in again!');
             window.location.href='/login';
         }
@@ -167,14 +174,166 @@ export class Profile extends Component {
                 <div style={{textAlign: 'center'}}>
                     <div className="container card profile-div p-4 mt-3" style={{textAlign: 'left', minWidth: '350px', backgroundColor: 'rgb(194, 230, 253)'}}>
                         <h2 className="mb-3">Profile </h2>
-                        <h5>Name : &nbsp; </h5> <span> {this.state.name} </span> <br/>
-                        <h5>Email : &nbsp; </h5> <span> {this.state.email} </span> <br/>
-                        <h5>Age : &nbsp; </h5> <span> {this.state.age} </span> <br/>
-                        <h5>Gender : &nbsp; </h5> <span> {this.state.gender} </span> <br/>
-                        <h5>Phone : &nbsp; </h5> <span> {this.state.phone} </span> <br/>
-                        <h5>Address : &nbsp; </h5> <span> {this.state.address} </span> <br/>
-                        <h5>Pincode : &nbsp; </h5> <span> {this.state.pincode} </span> <br/>
-                        <h5>About : &nbsp; </h5> <span> {this.state.about} </span> <br/>
+                        <h5 style={{float: 'left'}}>Name : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.name
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Email : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.email
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Age : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.age
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Gender : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.gender
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Phone : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.phone
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Address : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.address
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>Pincode : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.pincode
+                        } </span> <br/><br/>
+                        <h5 style={{float: 'left'}}>About : &nbsp; </h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
+                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            //     <div className="sk-wave-rect"></div>
+                            // </span>
+                            :
+                            this.state.about
+                        } </span> <br/><br/>
                         <input type="button" className="btn btn-success mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/update'}} value="Edit" />
                         <input type="button" className="btn btn-primary mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/changepassword'}} value="Change Password" />
                     </div>

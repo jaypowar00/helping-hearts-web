@@ -192,7 +192,7 @@ export class Update extends Component {
                 <div>
                 <form onSubmit={this.onSubmit}>
                     
-                    <div className="edit-form">
+                    <div className="edit-form text-center">
                         <h1>Edit Your Information</h1>
                         <input type='text' placeholder='Enter Name' onChange={this.onNameChange} name="name" value={this.state.name} id="name" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Name')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
                         <input type='text' placeholder='Enter Age' onChange={this.onAgeChange} name="age" value={this.state.age} id="age" required onInvalid={(e) => e.target.setCustomValidity('Please Enter age')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>

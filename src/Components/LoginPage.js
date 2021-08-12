@@ -11,7 +11,8 @@ class LoginPage extends Component {
     
         this.state = {
              email: "",
-             password: ""
+             password: "",
+             loading: true
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -51,14 +52,17 @@ class LoginPage extends Component {
     componentDidMount() {
         var access_token = this.getCookie('access_token');
         if(access_token != null){
+            this.setState({loading: true});
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {headers: {'Authorization': 'Token '+access_token}})
             .then(response => {
                 if(response.data.status) {
+                    this.setState({loading: false});
                     window.location.href = '/';
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     document.cookie = "csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    this.setState({loading: false});
                 }
             }).catch(error => {
                 console.log(error)
@@ -67,38 +71,38 @@ class LoginPage extends Component {
                     window.location.reload();
                 }
             });
-        }
+        }else
+            this.setState({loading: false});
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
         console.log(this.state)
-        axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', this.state)
+        this.setState({loading: true});
+        axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', {email: this.state.email, password: this.state.password})
         .then(response=>{
             console.log(response)
             if(response.data.status){
                 document.cookie = 'access_token=' + response.data['access_token'];
                 document.cookie = 'refreshtoken=' + response.data['refresh_token'];
                 document.cookie = 'csrf_token=' + response.data['csrf_token'];
-                window.setTimeout(()=>window.location.href = '/', 500);
+                window.setTimeout(()=>{this.setState({loading: false});window.location.href = '/';}, 500);
             }else{
                 alert('Login Failed!\n'+response.data.message);
+                this.setState({loading: false});
             }
         })
         .catch(error=>{
-            console.log(error)
+            console.log(error);
+            this.setState({loading: false});
         })
         // this.props.history.push('/profile/');
     }
-    
+
     render() {
-
         const {email, password} = this.state
-
-        return ( 
-
+        return (
         <div>
-
             <div>
                 <div className="header">
                     <div>
@@ -140,13 +144,24 @@ class LoginPage extends Component {
 
             <div className="container">
                 <form onSubmit={this.handleSubmit}> 
-                    <div className="loginform">    
+                    <div className="loginform text-center">    
                          <h1>Login Here</h1>       
                         <input type='email' placeholder='Enter Email'  name="email"
                         value={email} onChange={this.onchangeHandler} id="email_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Email')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
                         <p>We'll never share your email with anyone else.</p> 
                         <input type='password' placeholder='Enter Password'  name="password"
                         value={password} onChange={this.onchangeHandler} id="password_login" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>                   
+                        {
+                            (this.state.loading)?
+                            <div className="sk-wave sk-center" style={{inlineSize: '40px', blockSize: '40px', opacity: '50%'}} >
+                                <div className="sk-wave-rect"></div>
+                                <div className="sk-wave-rect"></div>
+                                <div className="sk-wave-rect"></div>
+                                <div className="sk-wave-rect"></div>
+                                <div className="sk-wave-rect"></div>
+                            </div>
+                            :<></>
+                        }
                         <button type='submit' className="btnn" onClick={this.onSubmit} value="Login" >Login</button><br/>
                         <br/><span>Don't have an account?   </span>
                         <a className="link" href="/register">SignUp</a><br/>

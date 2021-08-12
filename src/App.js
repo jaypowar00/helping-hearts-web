@@ -12,6 +12,7 @@ import Home from './Components/Home';
 import React from 'react';
 import HospitalDetail from './Components/HospitalDetail';
 import PatientsContainer from './Components/PatientsContainer';
+import AdmittedPatientsContainer from './Components/AdmittedPatientsContainer';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route exact path='/changepassword'  component={ChangePassword}/>
           <Route exact path='/hospital' component={HospitalDetail} />
           <Route exact path='/patients' component={PatientsContainer} />
+          <Route exact path='/patients/admitted' component={AdmittedPatientsContainer} />
         </Switch>
       </React.Fragment> 
     </div>

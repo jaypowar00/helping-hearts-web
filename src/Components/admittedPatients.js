@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, {PureComponent} from 'react'
 
-class Patients extends PureComponent {
+class AdmittedPatients extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -11,28 +11,26 @@ class Patients extends PureComponent {
         }
         this.onpatientClick = this.onpatientClick.bind(this);
         this.onCollapseClick = this.onCollapseClick.bind(this);
-        this.onResponseRequest = this.onResponseRequest.bind(this);
-        this.getRequestedPatients = this.getRequestedPatients.bind(this);
+        this.onDischargeRequest = this.onDischargeRequest.bind(this);
+        this.getAdmittedPatients = this.getAdmittedPatients.bind(this);
     }
 
     /**
      * &nbsp;
      * @param {number} pid patient's id
-     * @param {boolean} accept request accepted or rejected status
      */
-    onResponseRequest(pid, accept){
+    onDischargeRequest(pid){
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/answer-request/', {pid: pid, accept: accept}, {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/discharge/', {pid: pid}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
                 }
             }).then(response => {
                 if(response.data.status){
-                    (accept)?alert('request successfully accepted!'):alert('request successfully declined!');
-                    this.getRequestedPatients();
+                    alert('patient successfully discharged!');
+                    this.getAdmittedPatients();
                 }else{
                     alert('action failed!\n'+response.data.message);
                 }
@@ -62,7 +60,7 @@ class Patients extends PureComponent {
     }
 
     set_order(order){
-        this.getRequestedPatients();
+        this.getAdmittedPatients();
     }
     
     getCookie(name) {
@@ -73,13 +71,14 @@ class Patients extends PureComponent {
     
     componentDidMount() {
         // let urlParams = new URLSearchParams(window.location.search);
-        this.getRequestedPatients();
+        this.getAdmittedPatients();
     }
 
-    getRequestedPatients() {
+    getAdmittedPatients() {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-patients/', {
+            this.setState({loading: true})
+            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-admitted-patients/', {
                 headers: {
                     'Authorization': `Token `+access_token
                 }
@@ -108,7 +107,7 @@ class Patients extends PureComponent {
             });
         }else{
             alert('not logged in!');
-            window.location.href = '/login';
+            window.location.href='/login';
         }
     }
 
@@ -140,18 +139,11 @@ class Patients extends PureComponent {
             }
             {
                 patients.map((patient)=>
-                <div key={patient.id} className="mycard py-3" style={{cursor: 'default'}}>
-                    <div id={patient.id} onClick={() => {this.onCollapseClick(patient.id)}} style={{cursor: 'pointer'}} >
+                <div key={patient.id} className="mycard py-3" style={{cursor: 'default', paddingRight: '10px'}}>
+                    <input type="button" onClick={() => {this.onDischargeRequest(patient.id)}} style={{float: 'right', position: 'relative', top: '5px'}} className="btn btn-success" value="Discharge"/>
+                    <div id={patient.id}>
                         <h1>{patient.name}</h1>
-                        <span>Gender: {patient.gender} &nbsp; | &nbsp; Age: {patient.age} &nbsp; | &nbsp; CT Scan Score: {patient.ct_scan_score}</span>
-                    </div>
-                    <div className="collapsible-content rounded text-center px-3 pb-3" style={{cursor: 'default', paddingBottom: "15px", backgroundColor: 'rgba(0, 0, 0, 0.02)', opacity: '0%'}}>
-                        <span style={{float: 'left'}}>CT Scan Document:</span><br/>
-                        <a className="mb-3 rounded" href={patient.ct_scan_document} target="_blank" rel="noreferrer" download={"[ct_scan]"+patient.name+".png"}>
-                            <img src={patient.ct_scan_document} alt="CT Scan Document.png" width="20%" style={{minWidth: '250px'}} /><br/>click to download document
-                        </a><br/>
-                        <input type="button" onClick={() => {this.onResponseRequest(patient.id, true)}} className="btn btn-success mt-3 mx-2" value="Accept"/>
-                        <input type="button" onClick={() => {this.onResponseRequest(patient.id, false)}} className="btn btn-danger mt-3 mx-2" value="Decline"/>
+                        <span>Gender: {patient.gender} &nbsp; | &nbsp; Age: {patient.age}</span>
                     </div>
                 </div>
                 )
@@ -161,4 +153,4 @@ class Patients extends PureComponent {
     }
 }
 
-export default Patients
+export default AdmittedPatients

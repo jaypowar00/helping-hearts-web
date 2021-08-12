@@ -138,7 +138,7 @@ export class ChangePassword extends Component {
                 <div>
                 <form onSubmit={this.onSubmit}>
                     
-                    <div className="edit-form">
+                    <div className="edit-form text-center">
                         <h1>Change Password</h1>
                         <input type='password' placeholder='Enter Old password'  name="password-old" value={this.state.password} onChange={this.onPasswordChange} id="password-old" required onInvalid={(e) => e.target.setCustomValidity('Please Enter Old password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>
                         <input type='password' placeholder='Enter New password'  name="password-new" value={this.state.new_password} onChange={this.onNewPasswordChange} id="password-new" required onInvalid={(e) => e.target.setCustomValidity('Please Enter New password')} onInput={(e)=>e.target.setCustomValidity('')}/><br/>

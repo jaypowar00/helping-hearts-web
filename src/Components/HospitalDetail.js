@@ -87,6 +87,8 @@ export class HospitalDetail extends Component {
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
         var access_token = this.getCookie('access_token');
+        if(urlParams.has('hd'))
+            this.setState({hdUrl: true})
         if(access_token){
             axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
                 headers : {
@@ -215,6 +217,9 @@ export class HospitalDetail extends Component {
                 ct_scan_document: this.state.file,
                 bed_type: this.bedTypeRef.current.value
             }
+            this.setState({
+                loading: true
+            })
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', admitData, {
                 withCredentials: true,
                 headers: {
@@ -232,13 +237,15 @@ export class HospitalDetail extends Component {
                         if(response2.data.status){
                             alert('requested submitted!');
                             this.setState({
-                                requested: this.state.id
+                                requested: this.state.id,
+                                loading: false
                             }, ()=>{console.log(this.state);})
                         }else{
                             alert('error!\n'+response2.data.message);
                         }
                     }).catch(error=>{
                         console.log(error);
+                        this.setState({loading: false})
                     })
                 }else{
                     if(response.data.status===false)
@@ -250,10 +257,12 @@ export class HospitalDetail extends Component {
                 console.log('Error:\n'+e);
                 // window.location.href='/profile';
             }).finally(()=>{
+                this.setState({loading: false})
                 let closeBtn = document.getElementById('requestFormCloseBtn');
                 closeBtn.click();
             })
         }else{
+            this.setState({loading: false})
             alert('not logged in!');
             let closeBtn = document.getElementById('requestFormCloseBtn');
             closeBtn.click();
@@ -264,6 +273,7 @@ export class HospitalDetail extends Component {
         let access_token = this.getCookie('access_token');
         if(access_token!=null){
             e.preventDefault();
+            this.setState({loading: true})
             axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/cancel-request/', {}, {
                 withCredentials: true,
                 headers: {
@@ -273,7 +283,8 @@ export class HospitalDetail extends Component {
                 if(response.data.status){
                     alert('request cancelled');
                     this.setState({
-                        requested: null
+                        requested: null,
+                        loading: false
                     })
                 }else{
                     alert('error!\n'+response.data.message);
@@ -281,6 +292,8 @@ export class HospitalDetail extends Component {
             }).catch(error=>{
                 console.log('error!\n'+error);
                 console.log('error!\n'+error.response);
+            }).finally(()=>{
+                this.setState({loading: false});
             });
         }else{
             alert('not logged in!');
@@ -407,7 +420,18 @@ export class HospitalDetail extends Component {
                             {
                                 (this.state.hdUrl)?
                                 <>
-                                    <h3 className="pb-1 mt-2">{this.state.name}</h3>
+                                    <h3 className="pb-1 mt-2">{
+                                        (this.state.loading)?
+                                        <>
+                                            <div className="sk-flow sk-center" style={{inlineSize: '60px', blockSize: '60px', marginBottom: '-30px'}}>
+                                                <div className="sk-flow-dot"></div>
+                                                <div className="sk-flow-dot"></div>
+                                                <div className="sk-flow-dot"></div>
+                                            </div>
+                                        </>
+                                        :
+                                        this.state.name
+                                    }</h3>
                                     <hr className="detailHR" style={{width: '69.5vw', minWidth: '295px', marginLeft: '-57px'}}/>
                                     <span className="badge bg-info m-1 no-txt-cursor non-selectable">{this.state.beds} beds</span>
                                     <span className="badge bg-info m-1 no-txt-cursor non-selectable">{this.state.ventilators} ventilators</span>
@@ -416,10 +440,54 @@ export class HospitalDetail extends Component {
                                     <span style={{marginRight: '10px', display: 'inline-block'}}><i className="fas fa-envelope-square fa-lg m-1"></i><a href={"mailto:"+this.state.email}>{this.state.email}</a></span>
                                     <span style={{display: 'inline-block'}}><i className="fas fa-phone-square-alt fa-lg m-1 my-3"></i><a href={"tel:"+this.state.phone}>{this.state.phone}</a></span><br/>
                                     <div style={{textAlign: 'left'}}>
-                                        <span className="my-2" style={{display: 'inline-block'}} ><b>Address : </b> {this.state.address} </span> <br/>
-                                        <span className="my-2" style={{display: 'inline-block'}} ><b>Pincode :</b> {this.state.pincode} </span> <br/>
-                                        <span className="my-2" style={{display: 'inline-block'}} ><b>About :</b> {this.state.about} </span> <br/>
-                                        <span className="my-2" style={{display: 'inline-block'}} ><b>Joined Date :</b> {date.toLocaleDateString()} </span> <br/>
+                                        <span className="my-2" style={{display: 'inline-block'}} ><b>Address : </b> {
+                                            (this.state.loading)?
+                                            <>
+                                                <div className="sk-flow" style={{marginTop: '-15px', marginLeft: '90px', marginBottom: '-15px', inlineSize: '30px', blockSize: '30px'}}>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                </div>
+                                            </>
+                                            :
+                                            this.state.address
+                                        } </span> <br/>
+                                        <span className="mb-2 mt-n3" style={{display: 'inline-block'}} ><b>Pincode :</b> {
+                                            (this.state.loading)?
+                                            <>
+                                                <div className="sk-flow" style={{marginTop: '-15px', marginLeft: '90px', marginBottom: '-15px', inlineSize: '30px', blockSize: '30px'}}>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                </div>
+                                            </>
+                                            :
+                                            this.state.pincode
+                                            } </span> <br/>
+                                        <span className="my-2" style={{display: 'inline-block'}} ><b>About :</b> {
+                                            (this.state.loading)?
+                                            <>
+                                                <div className="sk-flow" style={{marginTop: '-15px', marginLeft: '70px', marginBottom: '-15px', inlineSize: '30px', blockSize: '30px'}}>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                </div>
+                                            </>
+                                            :
+                                            this.state.about
+                                            } </span> <br/>
+                                        <span className="my-2" style={{display: 'inline-block'}} ><b>Joined Date :</b> {
+                                            (this.state.loading)?
+                                            <>
+                                                <div className="sk-flow" style={{marginTop: '-15px', marginLeft: '115px', marginBottom: '-15px', inlineSize: '30px', blockSize: '30px'}}>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                    <div className="sk-flow-dot"></div>
+                                                </div>
+                                            </>
+                                            :
+                                            date.toLocaleDateString()
+                                            } </span> <br/>
                                         {
                                             (this.state.loggedIn && this.state.account_type!=='patient')?
                                             <>
