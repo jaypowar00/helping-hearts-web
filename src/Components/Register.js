@@ -263,7 +263,7 @@ class Register extends Component {
             doctors_required,
             nurses_required,
             coworkers_required,
-            total_ven, working_at
+            total_ven
         } = this.state
 
         console.log(radio, acc_type);
