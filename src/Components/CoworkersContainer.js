@@ -199,8 +199,8 @@ class CoworkersContainer extends PureComponent {
                         </div>
                     </div>
                     <div className="sidebar p-3">
+                        <div className='mb-1'><b>Navigate To:</b></div>
                         <hr/>
-                            <div className='mb-1'><b>Navigate To:</b></div>
                             <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a><br/>
                             <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a><br/>
                             <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers/working">Working CoWorkers</a><br/>

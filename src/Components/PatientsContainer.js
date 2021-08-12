@@ -17,9 +17,7 @@ class PatientsContainer extends PureComponent {
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
-        this.onRadioChange = this.onRadioChange.bind(this);
         this.PatientRef = React.createRef();
-        this.default_radio_ref = React.createRef();
     }
 
     range(start, end) {
@@ -32,37 +30,10 @@ class PatientsContainer extends PureComponent {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    componentDidMount() {
-        this.default_radio_ref.current.checked = true;
-    }
-
     set_state_values(pcount, loggedin) {
         this.setState({
             total_patients: pcount,
             loggedin: loggedin,
-        });
-    }
-
-    onSortingChange(order, id) {
-        let oldElement = document.getElementById(this.state.active_dropdown);
-        oldElement.classList.remove('active');
-        let sortElement = document.getElementById(id);
-        sortElement.classList.add('active');
-        let btnElement = document.getElementById('dropdown_sortby');
-        btnElement.innerHTML = sortElement.innerHTML;
-        this.setState({
-            active_dropdown: id,
-            order: order
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
-        })
-    }
-
-    onRadioChange(e) {
-        this.setState(
-            {order: (e.target.value!=='default')?e.target.value:''
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
         });
     }
 
@@ -186,39 +157,9 @@ class PatientsContainer extends PureComponent {
                     </div>
                 </div>
                 <section style={{textAlign: 'left'}}>
-                    <div className="dropdown-sorting" style={{float: 'right', marginBottom: '-60px', marginTop: '10px', marginRight: '10px'}}>
-                        <div className="dropdown">
-                            <span className="mx-2 px-1" style={{fontSize: '13px', fontWeight: 'bold'}}>sort by:</span>
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdown_sortby" data-bs-toggle="dropdown" aria-expanded="false">
-                                Default
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdown_sortby">
-                                <li><span className="dropdown-item active" onClick={()=>{this.onSortingChange('', 'dp-default')}} id="dp-default">Default</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_a', 'dp-ct-a')}} id="dp-ct-a">CT Scan Score ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_d', 'dp-ct-d')}} id="dp-ct-d">CT Scan Score ↓</span></li>
-                            </ul>
-                        </div>
-                    </div>
                     <div className="sidebar p-3">
-                        
-                        <div className='mb-1'><b>Sort by:</b></div>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="default" name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
-                            Default
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_a" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↑
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_d" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↓
-                        </label>
-                        <br/>
-                        <hr/>
                             <div className='mb-1'><b>Navigate To:</b></div>
+                        <hr/>
                             <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a><br/>
                             <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers">Work Requests</a><br/>
                             <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers/working">Working CoWorkers</a>
