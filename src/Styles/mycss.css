@@ -27,6 +27,8 @@
 }
 
 .project_name{
+  cursor: pointer;
+  user-select: none;
   color:white;
   float: left;
   text-align: center;
