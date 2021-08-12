@@ -23,7 +23,7 @@ class Coworkers extends PureComponent {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
 
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/answer-request/', {pid: cid, accept: accept}, {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/answer-request/', {cid: cid, accept: accept}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
