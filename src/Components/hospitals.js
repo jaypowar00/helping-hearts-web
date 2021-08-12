@@ -36,7 +36,14 @@ class Hospitals extends PureComponent {
                 }
             });
         }
-        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+'&s_name='+search+'&order='+order)
+        let s_query = "";
+        if (parseInt(search).toString().length===6){
+            search = parseInt(search).toString()
+            s_query = "&s_pin="+search;
+        }else
+            s_query = "&s_name="+search;
+
+        axios.get('https://helpinghearts-mraj.herokuapp.com/api/get-hospitals/?page='+page+s_query+'&order='+order)
         .then(response => {
             console.log(response);
             if(response.data.status){
@@ -63,6 +70,16 @@ class Hospitals extends PureComponent {
                     loading: false,
                     hospitals: []
                 });
+                if (window.history.pushState) {
+                    const newURL = new URL(window.location.href);
+                    let pageUrl = '?pg=1';
+                    if(search!=='')
+                        pageUrl+='&ser='+search;
+                    if(order!=='')
+                        pageUrl+='&or='+order;
+                    newURL.search = pageUrl;
+                    window.history.pushState({ path: newURL.href }, '', newURL.href);
+                }
                 this.props.set_state_values(0, 1, 0, loggedin, false, false, account_type);
             }
         }).catch(err => {
