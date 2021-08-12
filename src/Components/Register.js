@@ -34,9 +34,9 @@ class Register extends Component {
             nurses_required: "",
             coworkers_required: "",
             ven_available: false,
-            available: false,          
+            available: true,          
             total_ven: "",
-            working_at: ""
+            working_at: null
              
         }
 
@@ -143,19 +143,15 @@ class Register extends Component {
     }
 
     handleSubmit = (event) => {
-
         event.preventDefault()
-
-        alert(`${this.state.name} Registered Successfully!`)
-
         const final_data = {
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password,
-                name: this.state.name,
-                phone: this.state.phone,
-                address: this.state.address,
-                acc_type: this.state.acc_type,
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+            name: this.state.name,
+            phone: this.state.phone,
+            address: this.state.address,
+            account_type: parseInt(this.state.acc_type),
         };
 
         if(this.state.acc_type === "1")
@@ -163,7 +159,6 @@ class Register extends Component {
             final_data.age = this.state.age                             
             final_data.gender = this.state.gender
             final_data.diseases = this.state.diseases
-            
         }
         else if(this.state.acc_type === "2")
         {
@@ -202,7 +197,7 @@ class Register extends Component {
         {
             final_data.age = this.state.age                             
             final_data.gender = this.state.gender
-            final_data.ven_available = this.state.ven_available 
+            final_data.ven_avail = this.state.ven_available 
             
             if(this.state.ven_available === true)
                 final_data.total_ven = this.state.total_ven
@@ -215,10 +210,10 @@ class Register extends Component {
             final_data.gender = this.state.gender
             final_data.available = this.state.available
 
-            if(this.state.available === false)                          
+            if(this.state.available === false)
                 final_data.working_at = this.state.working_at
             else
-            final_data.working_at = 0
+            final_data.working_at = null
         }
 
         console.log(final_data)
@@ -252,8 +247,8 @@ class Register extends Component {
             available: false,          
             total_ven: "",
             working_at: ""
-            
         })
+        this.accountRef.current.value = "none"
 
         //console.log(this.state)
         
@@ -313,7 +308,7 @@ class Register extends Component {
                 </div>
 
             </div>  
-            <div className="registerform">
+            <div className="registerform text-center">
                 <div >
                     <h1 >Register Here</h1>
                <form  onSubmit={this.handleSubmit}>
@@ -542,25 +537,6 @@ class Register extends Component {
                             <input className="radiobtn" type="radio" value="female" id="female_r" checked={this.state.gender === "female"} onChange={this.genderHandler}/><label className="mylabel" htmlFor="female_r">Female</label>
                             <input className="radiobtn" type="radio" value="other" id="other_r"  checked={this.state.gender === "other"} onChange={this.genderHandler}/><label className="mylabel" htmlFor="other_r">Other</label>
                         </div>
-                        
-                        
-                        <div >                           
-                            <input class="selectval" type="checkbox" name="myCheckbox" defaultChecked={this.state.available} id="available"
-                            onChange={this.handle_available}  />
-                            <label className="mylabel" htmlFor="available" ><b>Available for work? </b></label>                            
-                        </div>
-
-                        {
-                            (this.state.available)?
-                                <></>
-                                :
-                                <div >
-                                    {/*<label className="mylabel" htmlFor="working_at" ><b>Currently Working At: &nbsp; </b></label><br/>*/}
-                                    <input  type="number"  id="hospital_id" name="working_at" placeholder="Enter current working place" value={working_at} onChange={this.onchangeHandler}required/>
-                                </div>
-                        }
-                        
-                        
                         </>   
                         :
                         <></>
