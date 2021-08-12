@@ -19,7 +19,9 @@ export class Profile extends Component {
              gender: "",
              pincode: "",
              about: "",
-             loading: true
+             loading: true,
+             requested: null,
+             admitted: null,
         }
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.getCookie = this.getCookie.bind(this);
@@ -104,7 +106,9 @@ export class Profile extends Component {
                         gender: response.data.user.detail.gender,
                         pincode: response.data.user.pincode,
                         about: response.data.user.about,
-                        loading: false
+                        loading: false,
+                        requested: response.data.user.detail.requested_hospital,
+                        admitted: response.data.user.detail.admitted_hospital,
                     })
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -174,166 +178,124 @@ export class Profile extends Component {
                 <div style={{textAlign: 'center'}}>
                     <div className="container card profile-div p-4 mt-3" style={{textAlign: 'left', minWidth: '350px', backgroundColor: 'rgb(194, 230, 253)'}}>
                         <h2 className="mb-3">Profile </h2>
-                        <h5 style={{float: 'left'}}>Name : &nbsp; </h5> <span> {
+                        <h5>Name : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '80px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.name
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Email : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Email : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '75px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.email
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Age : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Age : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '65px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.age
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Gender : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Gender : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '95px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.gender
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Phone : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Phone : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '80px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.phone
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Address : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Address : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '105px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.address
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>Pincode : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>Pincode : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '100px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.pincode
-                        } </span> <br/><br/>
-                        <h5 style={{float: 'left'}}>About : &nbsp; </h5> <span> {
+                        } </span> <br/>
+                        <h5>About : &nbsp; </h5> <span> {
                             (this.state.loading)?
                             <>
-                                <span style={{float: 'left'}}> &nbsp; &nbsp; </span>
-                                <div className="sk-flow mt-2" style={{float: 'left', inlineSize: '30px', blockSize: '30px'}}>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '90px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                     <div className="sk-flow-dot"></div>
                                 </div>
                             </>
-                            // <span className="sk-wave" style={{inlineSize: '30px', blockSize: '30px', float: 'left'}} >
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            //     <div className="sk-wave-rect"></div>
-                            // </span>
                             :
                             this.state.about
-                        } </span> <br/><br/>
+                        } </span> <br/>
+                        <h5>Requested Hospital :&nbsp;</h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '205px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            :(this.state.requested)?<a href={"/hospital?hd="+this.state.requested.id}>{this.state.requested.name}</a>:'None'
+                        } </span> <br/>
+                        <h5>Admitted Hospital :&nbsp;</h5> <span> {
+                            (this.state.loading)?
+                            <>
+                                <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '190px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                            </>
+                            :(this.state.admitted)?<a href={"/hospital?hd="+this.state.admitted.id}>{this.state.admitted.name}</a>:'None'
+                        } </span> <br/>
                         <input type="button" className="btn btn-success mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/update'}} value="Edit" />
                         <input type="button" className="btn btn-primary mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/changepassword'}} value="Change Password" />
                     </div>
