@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../Styles/mycss.css'
 import {Link} from 'react-router-dom';
 import mylogo from '../Styles/helpinghearts_logo.jpg'
+import axios from 'axios';
 
 class Register extends Component {
 
@@ -218,40 +219,51 @@ class Register extends Component {
 
         console.log(final_data)
 
-        this.setState({
-            username: "",
-            email: "",
-            password: "",
-            name: "",
-            phone: "",
-            address: "",
-            acc_type: "",
-            radio: 0,
-            age: "",
-            gender: "",
-            diseases: "",
-            c_count :"",
-            beds :"", 
-            ventilators:"" , 
-            oxygens :"",
-            accepting_patients : true,
-            accepting_coworkers : false,
-            accepting_doctors: false,
-            accepting_nurses: false,
-            need_ventilators: false,
-            ventilators_required: "",
-            doctors_required: "",
-            nurses_required: "",
-            coworkers_required: "",
-            ven_available: false,
-            available: false,          
-            total_ven: "",
-            working_at: ""
-        })
-        this.accountRef.current.value = "none"
-
-        //console.log(this.state)
         
+        //console.log(this.state)
+        axios.post('https://helpinghearts-mraj.herokuapp.com/user/register/', final_data)
+        .then(response => {
+            if(response.data.status){
+                alert('User Successfully registered!');
+                window.location.href="/";
+            }else{
+                alert('Registration Failed!\n'+response.data.message);
+            }
+        }).catch(error=> {
+            alert('Error!\n'+error);
+        }).finally(()=>{
+            this.setState({
+                username: "",
+                email: "",
+                password: "",
+                name: "",
+                phone: "",
+                address: "",
+                acc_type: "",
+                radio: 0,
+                age: "",
+                gender: "",
+                diseases: "",
+                c_count :"",
+                beds :"", 
+                ventilators:"" , 
+                oxygens :"",
+                accepting_patients : true,
+                accepting_coworkers : false,
+                accepting_doctors: false,
+                accepting_nurses: false,
+                need_ventilators: false,
+                ventilators_required: "",
+                doctors_required: "",
+                nurses_required: "",
+                coworkers_required: "",
+                ven_available: false,
+                available: false,          
+                total_ven: "",
+                working_at: ""
+            })
+            this.accountRef.current.value = "none"
+        });
     }
     
 
