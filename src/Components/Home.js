@@ -228,6 +228,12 @@ class Home extends PureComponent {
                                                 <li className="nav-item">
                                                     <a className="nav-link" href="/patients/admitted">Admitted Patients</a>
                                                 </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" href="/coworkers">Work Requests</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" href="/coworkers/working">Working Coworkers</a>
+                                                </li>
                                             </>:<></>
                                         }
                                         {
@@ -311,7 +317,9 @@ class Home extends PureComponent {
                             <hr/>
                             <div className='mb-1'><b>Navigate to:</b></div>
                             <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a><br/>
-                            <a className="badge bg-info mt-2 active" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a>
+                            <a className="badge bg-info mt-2 active" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a><br/>
+                            <a className="badge bg-info mt-2" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers">Work Requests</a><br/>
+                            <a className="badge bg-info mt-2" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers/working">Working CoWorkers</a><br/>
                             </>
                             :<></>
                         }

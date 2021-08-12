@@ -138,6 +138,12 @@ class AdmittedPatientsContainer extends PureComponent {
                                         <li className="nav-item">
                                             <a className="nav-link active" href="/patients/admitted">Admitted Patients</a>
                                         </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/coworkers">Work Requests</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/coworkers/working">Working CoWorkers</a>
+                                        </li>
                                         {
                                             (this.state.loggedin)?
                                             <li className="nav-item">
@@ -151,24 +157,13 @@ class AdmittedPatientsContainer extends PureComponent {
                     </div>
                 </div>
                 <section style={{textAlign: 'left'}}>
-                    <div className="dropdown-sorting" style={{float: 'right', marginBottom: '-60px', marginTop: '10px', marginRight: '10px'}}>
-                        <div className="dropdown">
-                            <span className="mx-2 px-1" style={{fontSize: '13px', fontWeight: 'bold'}}>sort by:</span>
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdown_sortby" data-bs-toggle="dropdown" aria-expanded="false">
-                                Default
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdown_sortby">
-                                <li><span className="dropdown-item active" onClick={()=>{this.onSortingChange('', 'dp-default')}} id="dp-default">Default</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_a', 'dp-ct-a')}} id="dp-ct-a">CT Scan Score ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_d', 'dp-ct-d')}} id="dp-ct-d">CT Scan Score ↓</span></li>
-                            </ul>
-                        </div>
-                    </div>
                     <div className="sidebar p-3">
                         
                         <div className='mb-1'><b>Navigate to:</b></div>
                         <hr/>
                             <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a>
+                            <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers">Work Requests</a><br/>
+                            <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers/working">Working CoWorkers</a>
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
                         <div className='container mx-4 mb-3'><b>{this.state.total_patients} Patients Found!</b></div>

@@ -1,15 +1,15 @@
 import React, {PureComponent} from 'react'
 import '../Styles/home.css'
-import Patients from './patients'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios';
+import WorkingCoworkers from './workingCoworkers';
 
-class PatientsContainer extends PureComponent {
+class WorkingCoworkersContainer extends PureComponent {
     constructor(props) {
         super(props);
         let urlParams = new URLSearchParams(window.location.search);
         this.state = {
-            total_patients: 0,
+            total_coworkers: 0,
             loggedin: false,
             order: (urlParams.has('or'))?urlParams.get('or'):'',
             active_dropdown: 'dp-default',
@@ -17,8 +17,7 @@ class PatientsContainer extends PureComponent {
         this.set_state_values = this.set_state_values.bind(this);
         this.onLogoutClick = this.onLogoutClick.bind(this);
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
-        this.onRadioChange = this.onRadioChange.bind(this);
-        this.PatientRef = React.createRef();
+        this.CoworkerRef = React.createRef();
         this.default_radio_ref = React.createRef();
     }
 
@@ -33,38 +32,38 @@ class PatientsContainer extends PureComponent {
     }
 
     componentDidMount() {
-        this.default_radio_ref.current.checked = true;
+        // this.default_radio_ref.current.checked = true;
     }
 
-    set_state_values(pcount, loggedin) {
+    set_state_values(ccount, loggedin) {
         this.setState({
-            total_patients: pcount,
+            total_coworkers: ccount,
             loggedin: loggedin,
         });
     }
 
-    onSortingChange(order, id) {
-        let oldElement = document.getElementById(this.state.active_dropdown);
-        oldElement.classList.remove('active');
-        let sortElement = document.getElementById(id);
-        sortElement.classList.add('active');
-        let btnElement = document.getElementById('dropdown_sortby');
-        btnElement.innerHTML = sortElement.innerHTML;
-        this.setState({
-            active_dropdown: id,
-            order: order
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
-        })
-    }
+    // onSortingChange(order, id) {
+    //     let oldElement = document.getElementById(this.state.active_dropdown);
+    //     oldElement.classList.remove('active');
+    //     let sortElement = document.getElementById(id);
+    //     sortElement.classList.add('active');
+    //     let btnElement = document.getElementById('dropdown_sortby');
+    //     btnElement.innerHTML = sortElement.innerHTML;
+    //     this.setState({
+    //         active_dropdown: id,
+    //         order: order
+    //     }, ()=>{
+    //         this.CoworkerRef.current.set_order(this.state.order);
+    //     })
+    // }
 
-    onRadioChange(e) {
-        this.setState(
-            {order: (e.target.value!=='default')?e.target.value:''
-        }, ()=>{
-            this.PatientRef.current.set_order(this.state.order);
-        });
-    }
+    // onRadioChange(e) {
+    //     this.setState(
+    //         {order: (e.target.value!=='default')?e.target.value:''
+    //     }, ()=>{
+    //         this.CoworkerRef.current.set_order(this.state.order);
+    //     });
+    // }
 
     onMenuBtnClick() {
         var MenuBtn = document.getElementById("menuBtn");
@@ -162,7 +161,7 @@ class PatientsContainer extends PureComponent {
                                             <a className="nav-link" href="/about">About</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link active" href="/patients">Admit Requests</a>
+                                            <a className="nav-link" href="/patients">Admit Requests</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" href="/patients/admitted">Admitted Patients</a>
@@ -171,7 +170,7 @@ class PatientsContainer extends PureComponent {
                                             <a className="nav-link" href="/coworkers">Work Requests</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="/coworkers/working">Working CoWorkers</a>
+                                            <a className="nav-link active" href="/coworkers/working">Working CoWorkers</a>
                                         </li>
                                         {
                                             (this.state.loggedin)?
@@ -186,46 +185,16 @@ class PatientsContainer extends PureComponent {
                     </div>
                 </div>
                 <section style={{textAlign: 'left'}}>
-                    <div className="dropdown-sorting" style={{float: 'right', marginBottom: '-60px', marginTop: '10px', marginRight: '10px'}}>
-                        <div className="dropdown">
-                            <span className="mx-2 px-1" style={{fontSize: '13px', fontWeight: 'bold'}}>sort by:</span>
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdown_sortby" data-bs-toggle="dropdown" aria-expanded="false">
-                                Default
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdown_sortby">
-                                <li><span className="dropdown-item active" onClick={()=>{this.onSortingChange('', 'dp-default')}} id="dp-default">Default</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_a', 'dp-ct-a')}} id="dp-ct-a">CT Scan Score ↑</span></li>
-                                <li><span className="dropdown-item" onClick={()=>{this.onSortingChange('ct_d', 'dp-ct-d')}} id="dp-ct-d">CT Scan Score ↓</span></li>
-                            </ul>
-                        </div>
-                    </div>
                     <div className="sidebar p-3">
-                        
-                        <div className='mb-1'><b>Sort by:</b></div>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="default" name='sort_radio' type='radio' ref={this.default_radio_ref}></input>
-                            Default
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_a" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↑
-                        </label>
-                        <br/>
-                        <label>
-                            <input onClick={this.onRadioChange} className='mx-2' value="ct_d" name='sort_radio' type='radio'></input>
-                            CT Scan Score ↓
-                        </label>
-                        <br/>
                         <hr/>
                             <div className='mb-1'><b>Navigate To:</b></div>
-                            <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a><br/>
+                            <a className="badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients">Admit Requests</a><br/>
+                            <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/patients/admitted">Admitted Patients</a><br/>
                             <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers">Work Requests</a><br/>
-                            <a className="mt-2 badge bg-info" style={{fontSize: '16px', textDecoration: 'none'}} href="/coworkers/working">Working CoWorkers</a>
                     </div>
                     <div className="mt-4 hospitals-list" style={{float:'left'}}>
-                        <div className='container mx-4 mb-3'><b>{this.state.total_patients} Requests Found!</b></div>
-                        <Patients ref={this.PatientRef} set_state_values={this.set_state_values} />
+                        <div className='container mx-4 mb-3'><b>{this.state.total_coworkers} Workers Found!</b></div>
+                        <WorkingCoworkers ref={this.CoworkerRef} set_state_values={this.set_state_values} />
                     </div>
                 </section>
             </>
@@ -233,4 +202,4 @@ class PatientsContainer extends PureComponent {
     }
 }
 
-export default PatientsContainer
+export default WorkingCoworkersContainer

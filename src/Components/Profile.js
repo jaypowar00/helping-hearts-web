@@ -22,6 +22,7 @@ export class Profile extends Component {
              loading: true,
              requested: null,
              admitted: null,
+             account_type: null,
         }
         this.onMenuBtnClick = this.onMenuBtnClick.bind(this);
         this.getCookie = this.getCookie.bind(this);
@@ -108,7 +109,8 @@ export class Profile extends Component {
                         about: response.data.user.about,
                         loading: false,
                         requested: response.data.user.detail.requested_hospital,
-                        admitted: response.data.user.detail.admitted_hospital,
+                        admitted: (this.state.account_type==='patient')?response.data.user.detail.admitted_hospital:response.data.user.detail.working_at,
+                        account_type: response.data.user.account_type
                     })
                 }else{
                     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -274,6 +276,8 @@ export class Profile extends Component {
                             :
                             this.state.about
                         } </span> <br/>
+                        {(this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider' && this.state.account_type!==null)?
+                        <>
                         <h5>Requested Hospital :&nbsp;</h5> <span> {
                             (this.state.loading)?
                             <>
@@ -285,7 +289,7 @@ export class Profile extends Component {
                             </>
                             :(this.state.requested)?<a href={"/hospital?hd="+this.state.requested.id}>{this.state.requested.name}</a>:'None'
                         } </span> <br/>
-                        <h5>Admitted Hospital :&nbsp;</h5> <span> {
+                        <h5>{(this.state.account_type==="patient")?"Admitted Hospital ":"Working At "} :&nbsp;</h5> <span> {
                             (this.state.loading)?
                             <>
                                 <div className="sk-flow" style={{marginTop: '-20px', marginLeft: '190px', marginBottom: '-36px', inlineSize: '30px', blockSize: '30px'}}>
@@ -296,6 +300,7 @@ export class Profile extends Component {
                             </>
                             :(this.state.admitted)?<a href={"/hospital?hd="+this.state.admitted.id}>{this.state.admitted.name}</a>:'None'
                         } </span> <br/>
+                        </>:<></>}
                         <input type="button" className="btn btn-success mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/update'}} value="Edit" />
                         <input type="button" className="btn btn-primary mx-3 mt-4" style={{float: 'right'}} onClick={()=>{window.location.href='/changepassword'}} value="Change Password" />
                     </div>

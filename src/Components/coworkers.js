@@ -1,29 +1,29 @@
 import axios from 'axios'
 import React, {PureComponent} from 'react'
 
-class Patients extends PureComponent {
+class Coworkers extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            patients : [],
+            coworkers : [],
             loading: true,
             accountType: 0
         }
         this.onCollapseClick = this.onCollapseClick.bind(this);
         this.onResponseRequest = this.onResponseRequest.bind(this);
-        this.getRequestedPatients = this.getRequestedPatients.bind(this);
+        this.getRequestedCoworkers = this.getRequestedCoworkers.bind(this);
     }
 
     /**
      * &nbsp;
-     * @param {number} pid patient's id
+     * @param {number} cid patient's id
      * @param {boolean} accept request accepted or rejected status
      */
-    onResponseRequest(pid, accept){
+    onResponseRequest(cid, accept){
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
 
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/answer-request/', {pid: pid, accept: accept}, {
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/answer-request/', {pid: cid, accept: accept}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -31,7 +31,7 @@ class Patients extends PureComponent {
             }).then(response => {
                 if(response.data.status){
                     (accept)?alert('request successfully accepted!'):alert('request successfully declined!');
-                    this.getRequestedPatients();
+                    this.getRequestedCoworkers();
                 }else{
                     alert('action failed!\n'+response.data.message);
                 }
@@ -59,10 +59,6 @@ class Patients extends PureComponent {
             content.style.opacity = '100%';
         }
     }
-
-    set_order(order){
-        this.getRequestedPatients();
-    }
     
     getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -72,13 +68,13 @@ class Patients extends PureComponent {
     
     componentDidMount() {
         // let urlParams = new URLSearchParams(window.location.search);
-        this.getRequestedPatients();
+        this.getRequestedCoworkers();
     }
 
-    getRequestedPatients() {
+    getRequestedCoworkers() {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-patients/', {
+            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-coworkers/', {
                 headers: {
                     'Authorization': `Token `+access_token
                 }
@@ -87,10 +83,10 @@ class Patients extends PureComponent {
                 console.log(response);
                 if(response.data.status){
                     this.setState({
-                        patients: response.data.patients,
+                        coworkers: response.data.coworkers,
                         loading: false
                     });
-                    this.props.set_state_values(response.data.patients.length, true);
+                    this.props.set_state_values(response.data.coworkers.length, true);
                 }else{
                     this.props.set_state_values(0, true);
                     console.log('error: '+response.data.message);
@@ -112,7 +108,7 @@ class Patients extends PureComponent {
     }
 
     render() {
-        const { patients } = this.state;
+        const { coworkers } = this.state;
         return ( 
             <>
             {
@@ -127,26 +123,22 @@ class Patients extends PureComponent {
                     </div>
                 </div>
                 :
-                (this.state.patients.length===0)?
+                (this.state.coworkers.length===0)?
                 <div className="mycard py-4">
-                    <h5>There are no such patients to show right now...</h5>
+                    <h5>There are no CoWorker Work Requests to show right now...</h5>
                 </div>
                 :<></>
             }
             {
-                patients.map((patient)=>
-                <div key={patient.id} className="mycard py-3" style={{cursor: 'default'}}>
-                    <div id={patient.id} onClick={() => {this.onCollapseClick(patient.id)}} style={{cursor: 'pointer'}} >
-                        <h1>{patient.name}</h1>
-                        <span>Gender: {patient.gender} &nbsp; | &nbsp; Age: {patient.age} &nbsp; | &nbsp; CT Scan Score: {patient.ct_scan_score}</span>
+                coworkers.map((coworker)=>
+                <div key={coworker.id} className="mycard py-3" style={{cursor: 'default'}}>
+                    <div id={coworker.id} onClick={() => {this.onCollapseClick(coworker.id)}} style={{cursor: 'pointer'}} >
+                        <h1>{coworker.name}</h1>
+                        <span>Gender: {coworker.gender} &nbsp; | &nbsp; Age: {coworker.age} &nbsp;</span>
                     </div>
                     <div className="collapsible-content rounded text-center px-3 pb-3" style={{cursor: 'default', paddingBottom: "15px", backgroundColor: 'rgba(0, 0, 0, 0.02)', opacity: '0%'}}>
-                        <span style={{float: 'left'}}>CT Scan Document:</span><br/>
-                        <a className="mb-3 rounded" href={patient.ct_scan_document} target="_blank" rel="noreferrer" download={"[ct_scan]"+patient.name+".png"}>
-                            <img src={patient.ct_scan_document} alt="CT Scan Document.png" width="20%" style={{minWidth: '250px'}} /><br/>click to download document
-                        </a><br/>
-                        <input type="button" onClick={() => {this.onResponseRequest(patient.id, true)}} className="btn btn-success mt-3 mx-2" value="Accept"/>
-                        <input type="button" onClick={() => {this.onResponseRequest(patient.id, false)}} className="btn btn-danger mt-3 mx-2" value="Decline"/>
+                        <input type="button" onClick={() => {this.onResponseRequest(coworker.id, true)}} className="btn btn-success mt-3 mx-2" value="Accept"/>
+                        <input type="button" onClick={() => {this.onResponseRequest(coworker.id, false)}} className="btn btn-danger mt-3 mx-2" value="Decline"/>
                     </div>
                 </div>
                 )
@@ -156,4 +148,4 @@ class Patients extends PureComponent {
     }
 }
 
-export default Patients
+export default Coworkers

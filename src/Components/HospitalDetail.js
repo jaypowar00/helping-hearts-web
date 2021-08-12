@@ -99,12 +99,20 @@ export class HospitalDetail extends Component {
             .then(response=>{
                 console.log(response)
                 if(response.data.status){
-                    this.setState({
-                        loggedIn: true,
-                        account_type: response.data.user.account_type,
-                        requested: (response.data.user.detail.admit_request)?response.data.user.detail.requested_hospital.id:null,
-                        admitted: (response.data.user.detail.admitted)?response.data.user.detail.admitted_hospital.id:null,
-                    })
+                    if(response.data.user.account_type === 'coworker' || response.data.user.account_type === 'doctor' || response.data.user.account_type === 'nurse')
+                        this.setState({
+                            loggedIn: true,
+                            account_type: response.data.user.account_type,
+                            requested: (response.data.user.detail.work_request)?response.data.user.detail.requested_hospital.id:null,
+                            admitted: (!response.data.user.detail.available)?response.data.user.detail.working_at.id:null,
+                        }, console.log(this.state))
+                    else
+                        this.setState({
+                            loggedIn: true,
+                            account_type: response.data.user.account_type,
+                            requested: (response.data.user.detail.admit_request)?response.data.user.detail.requested_hospital.id:null,
+                            admitted: (response.data.user.detail.admitted)?response.data.user.detail.admitted_hospital.id:null,
+                        })
                 }
             })
             .catch(error=>{
@@ -518,7 +526,7 @@ export class HospitalDetail extends Component {
                                             </button>
                                         :(this.state.id === this.state.admitted)?
                                             <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
-                                            (Admitted)
+                                            {(this.state.account_type==='patient')?"(Admitted)":"(Working)"}
                                             </button>
                                         :(this.state.admitted || this.state.requested)?
                                             <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{cursor: 'not-allowed'}:{display: 'none'}} className="btnn bg-secondary" data-bs-toggle="modal" data-bs-target="#mymodal">
