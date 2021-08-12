@@ -38,6 +38,7 @@ export class HospitalDetail extends Component {
             file: null,
             requested: null,
             admitted: null,
+            submittingRequest: false,
         }
         this.ctscanRef = React.createRef();
         this.bedTypeRef = React.createRef();
@@ -218,7 +219,8 @@ export class HospitalDetail extends Component {
                 bed_type: this.bedTypeRef.current.value
             }
             this.setState({
-                loading: true
+                loading: true,
+                submittingRequest: true
             })
             axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', admitData, {
                 withCredentials: true,
@@ -227,7 +229,6 @@ export class HospitalDetail extends Component {
                 }
             }).then(response=>{
                 if(response.data.status){
-                    alert('data uploaded!');
                     axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/submit-request/', {hid: parseInt(this.state.id, 10)}, {
                         withCredentials: true,
                         headers: {
@@ -238,14 +239,16 @@ export class HospitalDetail extends Component {
                             alert('requested submitted!');
                             this.setState({
                                 requested: this.state.id,
-                                loading: false
+                                loading: false,
+                                submittingRequest: false
                             }, ()=>{console.log(this.state);})
                         }else{
                             alert('error!\n'+response2.data.message);
                         }
                     }).catch(error=>{
                         console.log(error);
-                        this.setState({loading: false})
+                        this.setState({loading: false, submittingRequest: false})
+                        alert('error! try again later');
                     })
                 }else{
                     if(response.data.status===false)
@@ -255,9 +258,10 @@ export class HospitalDetail extends Component {
                 }
             }).catch(e=>{
                 console.log('Error:\n'+e);
+                alert('error! try again later');
                 // window.location.href='/profile';
             }).finally(()=>{
-                this.setState({loading: false})
+                this.setState({loading: false, submittingRequest: false})
                 let closeBtn = document.getElementById('requestFormCloseBtn');
                 closeBtn.click();
             })
@@ -334,6 +338,14 @@ export class HospitalDetail extends Component {
                                         <img src={this.state.file} className="mb-2" alt="preview.png" width={'100px'} style={{backgroundColor: 'lightgrey'}}/>
                                     </form>
                                 </div>
+                            }{
+                                (this.state.submittingRequest)?
+                                <div className="sk-flow sk-center mt-2" style={{inlineSize: '40px', blockSize: '40px', marginBottom: '-30px'}}>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                    <div className="sk-flow-dot"></div>
+                                </div>
+                                :<></>
                             }
                         </div>
                         <div className="modal-footer">
