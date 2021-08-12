@@ -224,8 +224,8 @@ class Register extends Component {
         axios.post('https://helpinghearts-mraj.herokuapp.com/user/register/', final_data)
         .then(response => {
             if(response.data.status){
-                alert('User Successfully registered!');
-                window.location.href="/";
+                alert('User Successfully registered!\nPlease login with same credentials to proceed further...');
+                window.location.href="/login";
             }else{
                 alert('Registration Failed!\n'+response.data.message);
             }
