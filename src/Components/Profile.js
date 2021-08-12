@@ -109,7 +109,7 @@ export class Profile extends Component {
                         about: response.data.user.about,
                         loading: false,
                         requested: response.data.user.detail.requested_hospital,
-                        admitted: (this.state.account_type==='patient')?response.data.user.detail.admitted_hospital:response.data.user.detail.working_at,
+                        admitted: (response.data.user.account_type==='patient')?response.data.user.detail.admitted_hospital:response.data.user.detail.working_at,
                         account_type: response.data.user.account_type
                     })
                 }else{
