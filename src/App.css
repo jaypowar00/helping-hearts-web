@@ -143,3 +143,30 @@
   transition: all 0.1s ease-in-out;
   background-color: #f1f1f1;
 }
+/* custom scrollbar */
+        
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+  background: rgba(53, 53, 53, 0.178);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #292929c2;
+}
+/* custom scrollbar for firefox */
+
+.scroller {
+  scrollbar-color: #7f7f7f white;
+  /* thumb and track color */
+  scrollbar-width: thin;
+}
