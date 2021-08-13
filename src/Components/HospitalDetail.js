@@ -49,6 +49,8 @@ export class HospitalDetail extends Component {
         this.getBase64 = this.getBase64.bind(this);
         this.onAdmitRequestSubmit = this.onAdmitRequestSubmit.bind(this);
         this.cancelAdmitRequest = this.cancelAdmitRequest.bind(this);
+        this.onWorkRequestSubmit = this.onWorkRequestSubmit.bind(this);
+        this.cancelWorkRequest = this.cancelWorkRequest.bind(this);
     }
 
     getBase64 = file => {
@@ -116,7 +118,11 @@ export class HospitalDetail extends Component {
                 }
             })
             .catch(error=>{
-                console.log(error)
+                if(error.message==="Network Error")
+                    alert(error.message);
+                this.setState({
+                    loading: false
+                })
                 if(error.response && error.response.data && error.response.data.detail === "access token expired!"){
                     refreshToken();
                 }
@@ -280,6 +286,46 @@ export class HospitalDetail extends Component {
             closeBtn.click();
         }
     }
+    onWorkRequestSubmit(e){
+        let access_token = this.getCookie('access_token');
+        if(access_token!=null){
+            e.preventDefault();
+            this.setState({
+                loading: true,
+                submittingRequest: true
+            })
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/submit-request/', {hid: parseInt(this.state.id, 10)}, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Token `+access_token
+                }
+            }).then(response2 => {
+                if(response2.data.status){
+                    alert('requested submitted!');
+                    this.setState({
+                        requested: this.state.id,
+                        loading: false,
+                        submittingRequest: false
+                    }, ()=>{console.log(this.state);})
+                }else{
+                    alert('error!\n'+response2.data.message);
+                }
+            }).catch(error=>{
+                console.log(error);
+                this.setState({loading: false, submittingRequest: false})
+                alert('error! try again later');
+            }).finally(()=>{
+                this.setState({loading: false, submittingRequest: false})
+                let closeBtn = document.getElementById('requestFormCloseBtn');
+                closeBtn.click();
+            })
+        }else{
+            this.setState({loading: false})
+            alert('not logged in!');
+            let closeBtn = document.getElementById('requestFormCloseBtn');
+            closeBtn.click();
+        }
+    }
 
     cancelAdmitRequest(e) {
         let access_token = this.getCookie('access_token');
@@ -287,6 +333,36 @@ export class HospitalDetail extends Component {
             e.preventDefault();
             this.setState({loading: true})
             axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/cancel-request/', {}, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Token `+access_token
+                }
+            }).then(response=>{
+                if(response.data.status){
+                    alert('request cancelled');
+                    this.setState({
+                        requested: null,
+                        loading: false
+                    })
+                }else{
+                    alert('error!\n'+response.data.message);
+                }
+            }).catch(error=>{
+                console.log('error!\n'+error);
+                console.log('error!\n'+error.response);
+            }).finally(()=>{
+                this.setState({loading: false});
+            });
+        }else{
+            alert('not logged in!');
+        }
+    }
+    cancelWorkRequest(e) {
+        let access_token = this.getCookie('access_token');
+        if(access_token!=null){
+            e.preventDefault();
+            this.setState({loading: true})
+            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/cancel-request/', {}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -360,7 +436,7 @@ export class HospitalDetail extends Component {
                             <button type="button" id="requestFormCloseBtn" className="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
                             {
                                 (['coworker','doctor','nurse'].includes(this.state.account_type))?
-                                <button type="button" className="btn btn-success">Submit</button>
+                                <button type="button" className="btn btn-success" onClick={this.onWorkRequestSubmit}>Submit</button>
                                 :(this.state.account_type==='patient')?
                                 <button type="submit" form="form1" className="btn btn-success">Submit</button>
                                 :<></>
@@ -521,9 +597,14 @@ export class HospitalDetail extends Component {
                                     </div>
                                     {
                                         (this.state.id === this.state.requested)?
-                                            <button type="button" onClick={this.cancelAdmitRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
-                                            Cancel
-                                            </button>
+                                            (['coworker','doctor','nurse'].includes(this.state.account_type))?
+                                                <button type="button" onClick={this.cancelWorkRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
+                                                Cancel Work
+                                                </button>
+                                            :
+                                                <button type="button" onClick={this.cancelAdmitRequest} style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn bg-danger">
+                                                Cancel
+                                                </button>
                                         :(this.state.id === this.state.admitted)?
                                             <button disabled type="button" style={(this.state.loggedIn && this.state.account_type!=='hospital' && this.state.account_type!=='ventilator provider')?{}:{display: 'none'}} className="btnn" data-bs-toggle="modal" data-bs-target="#mymodal">
                                             {(this.state.account_type==='patient')?"(Admitted)":"(Working)"}
