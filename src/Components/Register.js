@@ -320,7 +320,7 @@ class Register extends Component {
                 </div>
 
             </div>  
-            <div className="registerform text-center">
+            <div className="registerform text-center" >
                 <div >
                     <h1 >Register Here</h1>
                <form  onSubmit={this.handleSubmit}>
