@@ -20,7 +20,7 @@ class WorkingCoworkers extends PureComponent {
     onRemoveRequest(cid){
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/coworker/remove-worker/', {cid: cid}, {
+            axios.post('https://helpinghearts-mraj.onrender.com/api/coworker/remove-worker/', {cid: cid}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -55,7 +55,7 @@ class WorkingCoworkers extends PureComponent {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
             this.setState({loading: true})
-            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-working-coworkers/', {
+            axios.get('https://helpinghearts-mraj.onrender.com/api/hospital/get-working-coworkers/', {
                 headers: {
                     'Authorization': `Token `+access_token
                 }

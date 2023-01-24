@@ -22,7 +22,7 @@ class AdmittedPatients extends PureComponent {
     onDischargeRequest(pid){
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/discharge/', {pid: pid}, {
+            axios.post('https://helpinghearts-mraj.onrender.com/api/patient/discharge/', {pid: pid}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -78,7 +78,7 @@ class AdmittedPatients extends PureComponent {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
             this.setState({loading: true})
-            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-admitted-patients/', {
+            axios.get('https://helpinghearts-mraj.onrender.com/api/hospital/get-admitted-patients/', {
                 headers: {
                     'Authorization': `Token `+access_token
                 }

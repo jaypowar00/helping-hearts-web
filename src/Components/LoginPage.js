@@ -53,7 +53,7 @@ class LoginPage extends Component {
         var access_token = this.getCookie('access_token');
         if(access_token != null){
             this.setState({loading: true});
-            axios.get('https://helpinghearts-mraj.herokuapp.com/user/', {headers: {'Authorization': 'Token '+access_token}})
+            axios.get('https://helpinghearts-mraj.onrender.com/user/', {headers: {'Authorization': 'Token '+access_token}})
             .then(response => {
                 if(response.data.status) {
                     this.setState({loading: false});
@@ -79,7 +79,7 @@ class LoginPage extends Component {
         event.preventDefault()
         console.log(this.state)
         this.setState({loading: true});
-        axios.post('https://helpinghearts-mraj.herokuapp.com/user/login/', {email: this.state.email, password: this.state.password})
+        axios.post('https://helpinghearts-mraj.onrender.com/user/login/', {email: this.state.email, password: this.state.password})
         .then(response=>{
             console.log(response)
             if(response.data.status){

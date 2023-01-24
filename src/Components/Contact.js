@@ -20,7 +20,7 @@ class Contact extends Component {
     componentDidMount() {
         var access_token = this.getCookie('access_token');
         if(access_token){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/user/',{
+            axios.get('https://helpinghearts-mraj.onrender.com/user/',{
                 headers : {
                     'Authorization' : `token `+access_token
                 }
@@ -71,7 +71,7 @@ class Contact extends Component {
         var access_token = this.getCookie('access_token');
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
-            axios.post('https://helpinghearts-mraj.herokuapp.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            axios.post('https://helpinghearts-mraj.onrender.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){

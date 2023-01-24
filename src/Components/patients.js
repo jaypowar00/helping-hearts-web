@@ -23,7 +23,7 @@ class Patients extends PureComponent {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
 
-            axios.post('https://helpinghearts-mraj.herokuapp.com/api/patient/answer-request/', {pid: pid, accept: accept}, {
+            axios.post('https://helpinghearts-mraj.onrender.com/api/patient/answer-request/', {pid: pid, accept: accept}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -78,7 +78,7 @@ class Patients extends PureComponent {
     getRequestedPatients() {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.herokuapp.com/api/hospital/get-patients/', {
+            axios.get('https://helpinghearts-mraj.onrender.com/api/hospital/get-patients/', {
                 headers: {
                     'Authorization': `Token `+access_token
                 }

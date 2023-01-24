@@ -72,7 +72,7 @@ export class ChangePassword extends Component {
                 'password': this.state.password,
                 'new_password': this.state.new_password,
             }
-            axios.post('https://helpinghearts-mraj.herokuapp.com/user/update/', changeData, {
+            axios.post('https://helpinghearts-mraj.onrender.com/user/update/', changeData, {
                 withCredentials: true,
                 headers: {
                     'Authorization': 'Token '+access_token,
