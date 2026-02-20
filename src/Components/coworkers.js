@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, {PureComponent} from 'react'
+import API_BASE_URL from "../utils/api";
 
 class Coworkers extends PureComponent {
     constructor(props) {
@@ -23,7 +24,7 @@ class Coworkers extends PureComponent {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
 
-            axios.post('https://helpinghearts-mraj.onrender.com/api/coworker/answer-request/', {cid: cid, accept: accept}, {
+            axios.post(`${API_BASE_URL}/api/coworker/answer-request/`, {cid: cid, accept: accept}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -74,7 +75,7 @@ class Coworkers extends PureComponent {
     getRequestedCoworkers() {
         var access_token = this.getCookie("access_token");
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.onrender.com/api/hospital/get-coworkers/', {
+            axios.get(`${API_BASE_URL}/api/hospital/get-coworkers/`, {
                 headers: {
                     'Authorization': `Token `+access_token
                 }

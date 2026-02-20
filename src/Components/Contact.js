@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import { refreshToken } from '../utils/tokenRefresh';
+import API_BASE_URL from "../utils/api";
 
 class Contact extends Component {
 
@@ -20,7 +21,7 @@ class Contact extends Component {
     componentDidMount() {
         var access_token = this.getCookie('access_token');
         if(access_token){
-            axios.get('https://helpinghearts-mraj.onrender.com/user/',{
+            axios.get(`${API_BASE_URL}/user/`,{
                 headers : {
                     'Authorization' : `token `+access_token
                 }
@@ -71,7 +72,7 @@ class Contact extends Component {
         var access_token = this.getCookie('access_token');
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
-            axios.post('https://helpinghearts-mraj.onrender.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            axios.post(`${API_BASE_URL}/user/logout/`, undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){

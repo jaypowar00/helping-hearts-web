@@ -3,7 +3,7 @@ import '../Styles/mycss.css'
 import axios from 'axios'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import { refreshToken } from '../utils/tokenRefresh'
-
+import API_BASE_URL from "../utils/api";
 
 class LoginPage extends Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class LoginPage extends Component {
         var access_token = this.getCookie('access_token');
         if(access_token != null){
             this.setState({loading: true});
-            axios.get('https://helpinghearts-mraj.onrender.com/user/', {headers: {'Authorization': 'Token '+access_token}})
+            axios.get(`${API_BASE_URL}/user/`, {headers: {'Authorization': 'Token '+access_token}})
             .then(response => {
                 if(response.data.status) {
                     this.setState({loading: false});
@@ -79,7 +79,7 @@ class LoginPage extends Component {
         event.preventDefault()
         console.log(this.state)
         this.setState({loading: true});
-        axios.post('https://helpinghearts-mraj.onrender.com/user/login/', {email: this.state.email, password: this.state.password})
+        axios.post(`${API_BASE_URL}/user/login/`, {email: this.state.email, password: this.state.password})
         .then(response=>{
             console.log(response)
             if(response.data.status){

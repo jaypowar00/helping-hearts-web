@@ -3,6 +3,7 @@ import '../Styles/home.css'
 import AdmittedPatients from './admittedPatients'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios';
+import API_BASE_URL from "../utils/api";
 
 class AdmittedPatientsContainer extends PureComponent {
     constructor(props) {
@@ -60,7 +61,7 @@ class AdmittedPatientsContainer extends PureComponent {
         var access_token = this.getCookie('access_token');
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
-            axios.post('https://helpinghearts-mraj.onrender.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            axios.post(`${API_BASE_URL}/user/logout/`, undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){

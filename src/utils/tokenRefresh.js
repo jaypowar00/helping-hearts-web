@@ -1,9 +1,10 @@
 import axios from "axios";
+import API_BASE_URL from "./api";
 
 
 export function refreshToken() {
     if(getCookie('refreshtoken')!=="" || getCookie('refreshtoken')!==null){
-        axios.post('https://helpinghearts-mraj.onrender.com/user/refresh-token/', undefined, {
+        axios.post(`${API_BASE_URL}/user/refresh-token/`, undefined, {
             withCredentials: true
         }).then(response => {
             if(response.data.status){

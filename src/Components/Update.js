@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import '../Styles/mycss.css'
+import API_BASE_URL from "../utils/api";
 
 export class Update extends Component {
 
@@ -91,7 +92,7 @@ export class Update extends Component {
         let access_token = this.getCookie('access_token');
         console.log(access_token)
         if(access_token!==null){
-            axios.get('https://helpinghearts-mraj.onrender.com/user/',{
+            axios.get(`${API_BASE_URL}/user/`,{
                 headers : {
                     'Authorization' : `Token `+access_token
                 }
@@ -128,7 +129,7 @@ export class Update extends Component {
         console.log(access_token)
         console.log(csrf_token)
         if(access_token!==null && csrf_token!==null){
-            axios.post('https://helpinghearts-mraj.onrender.com/user/update/', this.state, {
+            axios.post(`${API_BASE_URL}/user/update/`, this.state, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token

@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, {PureComponent} from 'react'
 import { refreshToken } from '../utils/tokenRefresh'
 import '../Styles/spinkit.css'
+import API_BASE_URL from "../utils/api";
 
 class Hospitals extends PureComponent {
     constructor(props) {
@@ -20,7 +21,7 @@ class Hospitals extends PureComponent {
         let account_type = null;
         if(access_token!=null){
             this.setState({loading: true, hospitals: []});
-            axios.get('https://helpinghearts-mraj.onrender.com/user/', {
+            axios.get(`${API_BASE_URL}/user/`, {
                 headers: {
                     'Authorization': 'Token '+access_token
                 }
@@ -43,7 +44,7 @@ class Hospitals extends PureComponent {
         }else
             s_query = "&s_name="+search;
 
-        axios.get('https://helpinghearts-mraj.onrender.com/api/get-hospitals/?page='+page+s_query+'&order='+order)
+        axios.get(`${API_BASE_URL}/api/get-hospitals/?page=${page}${s_query}&order=${order}`)
         .then(response => {
             console.log(response);
             if(response.data.status){
@@ -102,7 +103,7 @@ class Hospitals extends PureComponent {
         let access_token = this.getCookie("access_token");
         let loggedin = false;
         if(access_token!=null){
-            axios.get('https://helpinghearts-mraj.onrender.com/user/', {
+            axios.get(`${API_BASE_URL}/user/`, {
                 headers: {
                     'Authorization': 'Token '+access_token
                 }
@@ -130,7 +131,7 @@ class Hospitals extends PureComponent {
             order = (urlParams.get('or')!=='' && urlParams.get('or')!==null)?urlParams.get('or'):'';
         if(urlParams.has('ser'))
             search = (urlParams.get('ser')!=='' && urlParams.get('ser')!==null)?urlParams.get('ser'):'';
-        axios.get('https://helpinghearts-mraj.onrender.com/api/get-hospitals/?page='+page+'&order='+order+'&s_name='+search)
+        axios.get(`${API_BASE_URL}/api/get-hospitals/?page=${page}&order=${order}&s_name=${search}`)
         .then(response => {
             console.log(response);
             if(response.data.status){

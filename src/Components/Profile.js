@@ -3,6 +3,7 @@ import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios'
 import { refreshToken } from '../utils/tokenRefresh'
 import '../Styles/spinkit.css'
+import API_BASE_URL from "../utils/api";
 
 export class Profile extends Component {
 
@@ -60,7 +61,7 @@ export class Profile extends Component {
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
             this.setState({loading: true});
-            axios.post('https://helpinghearts-mraj.onrender.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            axios.post(`${API_BASE_URL}/user/logout/`, undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){
@@ -89,7 +90,7 @@ export class Profile extends Component {
         var access_token = this.getCookie('access_token');
         if(access_token){
             this.setState({loading: true});
-            axios.get('https://helpinghearts-mraj.onrender.com/user/',{
+            axios.get(`${API_BASE_URL}/user/`,{
                 headers : {
                     'Authorization' : `token `+access_token
                 }

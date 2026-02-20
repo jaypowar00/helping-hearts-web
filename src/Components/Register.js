@@ -3,6 +3,7 @@ import '../Styles/mycss.css'
 import {Link} from 'react-router-dom';
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import axios from 'axios';
+import API_BASE_URL from "../utils/api";
 
 class Register extends Component {
 
@@ -221,7 +222,7 @@ class Register extends Component {
 
         
         //console.log(this.state)
-        axios.post('https://helpinghearts-mraj.onrender.com/user/register/', final_data)
+        axios.post(`${API_BASE_URL}/user/register/`, final_data)
         .then(response => {
             if(response.data.status){
                 alert('User Successfully registered!\nPlease login with same credentials to proceed further...');

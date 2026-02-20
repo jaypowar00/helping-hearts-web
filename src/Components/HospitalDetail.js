@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
 import '../Styles/mycss.css'
 import { refreshToken } from '../utils/tokenRefresh'
+import API_BASE_URL from "../utils/api";
 
 export class HospitalDetail extends Component {
 
@@ -93,7 +94,7 @@ export class HospitalDetail extends Component {
         if(urlParams.has('hd'))
             this.setState({hdUrl: true})
         if(access_token){
-            axios.get('https://helpinghearts-mraj.onrender.com/user/',{
+            axios.get(`${API_BASE_URL}/user/`,{
                 headers : {
                     'Authorization' : `token `+access_token
                 }
@@ -129,7 +130,7 @@ export class HospitalDetail extends Component {
             })
         }
         if(urlParams.has('hd')){
-            axios.get('https://helpinghearts-mraj.onrender.com/api/get-hospital/?hid='+urlParams.get('hd'))
+            axios.get(`${API_BASE_URL}/api/get-hospital/?hid=${urlParams.get('hd')}`)
             .then(response => {
                 console.log(response);
                 if(response.data.status){
@@ -197,7 +198,7 @@ export class HospitalDetail extends Component {
         var access_token = this.getCookie('access_token');
         var csrf_token = this.getCookie('csrf_token');
         if(access_token!=null) {
-            axios.post('https://helpinghearts-mraj.onrender.com/user/logout/', undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
+            axios.post(`${API_BASE_URL}/user/logout/`, undefined, {headers: {'Authorization': 'Token '+access_token, 'X-CSRFToken': csrf_token}})
             .then(response=>{
                 console.log(response);
                 if(response.data.status){
@@ -236,14 +237,14 @@ export class HospitalDetail extends Component {
                 loading: true,
                 submittingRequest: true
             })
-            axios.post('https://helpinghearts-mraj.onrender.com/user/update/', admitData, {
+            axios.post(`${API_BASE_URL}/user/update/`, admitData, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
                 }
             }).then(response=>{
                 if(response.data.status){
-                    axios.post('https://helpinghearts-mraj.onrender.com/api/patient/submit-request/', {hid: parseInt(this.state.id, 10)}, {
+                    axios.post(`${API_BASE_URL}/api/patient/submit-request/`, {hid: parseInt(this.state.id, 10)}, {
                         withCredentials: true,
                         headers: {
                             'Authorization': `Token `+access_token
@@ -294,7 +295,7 @@ export class HospitalDetail extends Component {
                 loading: true,
                 submittingRequest: true
             })
-            axios.post('https://helpinghearts-mraj.onrender.com/api/coworker/submit-request/', {hid: parseInt(this.state.id, 10)}, {
+            axios.post(`${API_BASE_URL}/api/coworker/submit-request/`, {hid: parseInt(this.state.id, 10)}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -332,7 +333,7 @@ export class HospitalDetail extends Component {
         if(access_token!=null){
             e.preventDefault();
             this.setState({loading: true})
-            axios.post('https://helpinghearts-mraj.onrender.com/api/patient/cancel-request/', {}, {
+            axios.post(`${API_BASE_URL}/api/patient/cancel-request/`, {}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token
@@ -362,7 +363,7 @@ export class HospitalDetail extends Component {
         if(access_token!=null){
             e.preventDefault();
             this.setState({loading: true})
-            axios.post('https://helpinghearts-mraj.onrender.com/api/coworker/cancel-request/', {}, {
+            axios.post(`${API_BASE_URL}/api/coworker/cancel-request/`, {}, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Token `+access_token

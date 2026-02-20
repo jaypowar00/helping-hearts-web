@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import mylogo from '../Styles/helpinghearts_logo.jpg'
+import API_BASE_URL from "../utils/api";
 
 export class ChangePassword extends Component {
 
@@ -72,7 +73,7 @@ export class ChangePassword extends Component {
                 'password': this.state.password,
                 'new_password': this.state.new_password,
             }
-            axios.post('https://helpinghearts-mraj.onrender.com/user/update/', changeData, {
+            axios.post(`${API_BASE_URL}/user/update/`, changeData, {
                 withCredentials: true,
                 headers: {
                     'Authorization': 'Token '+access_token,
